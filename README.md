@@ -1,4 +1,10 @@
-# GLORy
+# CS 346 - Notes Application
+
+## Group 203 (GLORy)
+Gillian Johnson
+Lindsay Mark
+Oliver Fenton
+Richard Hua
 
 
 
