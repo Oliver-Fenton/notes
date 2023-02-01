@@ -4,8 +4,8 @@
 
 plugins {
     // Apply the common convention plugin for shared build configuration between library and application projects.
-    id 'Notes.kotlin-common-conventions'
+    id("Notes.kotlin-common-conventions")
 
     // Apply the application plugin to add support for building a CLI application in Java.
-    id 'application'
+    application
 }

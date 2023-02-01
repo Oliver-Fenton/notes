@@ -3,5 +3,5 @@
  */
 
 plugins {
-    id 'Notes.kotlin-library-conventions'
+    id("Notes.kotlin-library-conventions")
 }

@@ -3,9 +3,9 @@
  */
 
 plugins {
-    id 'Notes.kotlin-library-conventions'
+    id("Notes.kotlin-library-conventions")
 }
 
 dependencies {
-    api project(':list')
+    api(project(":list"))
 }
