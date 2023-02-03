@@ -16,10 +16,8 @@ class ConsoleUtilsTest {
     fun testPrintMessage() {
         ConsoleUtils.printMessage()
     }
-/*
     @Test
     fun failingTestExample() {
-        assertEquals(1, 2);
+        assertEquals(1, 2)
     }
-*/
 }
