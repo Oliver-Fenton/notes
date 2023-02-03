@@ -8,10 +8,18 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.Assertions.assertEquals
 
 class ConsoleUtilsTest {
-    @Test fun testGetMessage() {
+    @Test
+    fun testGetMessage() {
         assertEquals("Hello CS 346!", ConsoleUtils.getMessage())
     }
-    @Test fun testPrintMessage() {
+    @Test
+    fun testPrintMessage() {
         ConsoleUtils.printMessage()
     }
+/*
+    @Test
+    fun failingTestExample() {
+        assertEquals(1, 2);
+    }
+*/
 }

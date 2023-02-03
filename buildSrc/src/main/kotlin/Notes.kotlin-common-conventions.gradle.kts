@@ -33,7 +33,16 @@ dependencies {
     testImplementation("org.junit.jupiter:junit-jupiter:5.7.2")
 }
 
+java {
+    sourceCompatibility = JavaVersion.VERSION_1_8
+    targetCompatibility = JavaVersion.VERSION_1_8
+}
+
 tasks.named<Test>("test") {
     // Use JUnit Platform for unit tests.
     useJUnitPlatform()
+}
+
+tasks.withType<JavaCompile> {
+    options.compilerArgs.addAll(arrayOf("--release", "8"))
 }
