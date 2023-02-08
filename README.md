@@ -1,11 +1,16 @@
-Single Desktop Application
-(c) 2022 Jeff Avery
+# CS 346 - Notes Application
 
-Demonstrates how to structure a multi-project build in Gradle.
-It includes a main JavaFX project in the application/ folder,
-a console application in console/, and a shared library 
-in the shared/ folder which extracts system information (like
-the name of the current user). 
+## Group 203 (GLORy)
+Gillian Johnson
+Lindsay Mark
+Oliver Fenton
+Richard Hua
+Gillian Johnson  
+Lindsay Mark  
+Oliver Fenton  
+Richard Hua
+
+
 
 Supported gradle tasks:
 
