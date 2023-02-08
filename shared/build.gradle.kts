@@ -1,8 +1,8 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
-    application
     kotlin("jvm") version "1.6.20"
+    `java-library`
 }
 
 group = "net.codebot"
@@ -17,7 +17,6 @@ repositories {
 }
 
 dependencies {
-    implementation(project(":shared"))
     testImplementation(kotlin("test"))
 }
 
@@ -27,9 +26,4 @@ tasks.test {
 
 tasks.withType<KotlinCompile> {
     kotlinOptions.jvmTarget = "1.8"
-}
-
-application {
-    mainModule.set("console")
-    mainClass.set("net.codebot.console.MainKt")
 }
