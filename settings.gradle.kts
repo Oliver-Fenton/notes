@@ -1,4 +1,4 @@
 
 rootProject.name = "Notes"
 
-include("application", "console", "shared", "model")
+include("application", "shared", "model")

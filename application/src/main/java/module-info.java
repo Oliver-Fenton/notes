@@ -3,5 +3,6 @@ module application {
     requires javafx.controls;
     requires kotlinx.coroutines.core.jvm;
     requires shared;
-    exports net.codebot.application;
+    requires model;
+    exports notes.application;
 }

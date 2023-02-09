@@ -1,4 +1,4 @@
-package net.codebot.shared
+package notes.shared
 
 class SysInfo {
     companion object {

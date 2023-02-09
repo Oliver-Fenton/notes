@@ -1,6 +1,6 @@
-package net.codebot.console
+package notes.console
 
-import net.codebot.shared.SysInfo
+import notes.shared.SysInfo
 
 fun main() {
     println("Console Application:")

@@ -7,7 +7,7 @@ plugins {
     id("org.beryx.jlink") version "2.25.0"
 }
 
-group = "net.codebot"
+group = "notes"
 version = "1.0.0"
 
 val compileKotlin: KotlinCompile by tasks
@@ -20,6 +20,7 @@ repositories {
 
 dependencies {
     implementation(project(":shared"))
+    implementation(project(":model"))
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4")
     testImplementation(kotlin("test"))
 }
@@ -34,7 +35,7 @@ tasks.withType<KotlinCompile> {
 
 application {
     mainModule.set("application")
-    mainClass.set("net.codebot.application.Main")
+    mainClass.set("notes.application.Main")
 }
 
 javafx {
