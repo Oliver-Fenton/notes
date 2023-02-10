@@ -14,6 +14,7 @@ class Main : Application() {
         stage.isResizable = true
         stage.minWidth = 600.0
         stage.minHeight = 400.0
+        stage.isResizable = true
         stage.title = "Notes"
         stage.show()
     }
