@@ -7,6 +7,7 @@ import javafx.scene.control.MenuItem
 import javafx.scene.input.KeyCombination
 import javafx.scene.input.KeyCodeCombination
 import javafx.scene.input.KeyCode
+import kotlin.system.exitProcess
 
 class Menubar: MenuBar() {
     // FILE MENU
