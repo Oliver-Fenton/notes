@@ -1,5 +1,7 @@
 package notes.shared
 
+import java.sql.Timestamp
+
 class SysInfo {
     companion object {
         val userName = System.getProperty("user.name")
@@ -12,5 +14,6 @@ class SysInfo {
         val processors = Runtime.getRuntime().availableProcessors()
         val freeMemory =  Runtime.getRuntime().freeMemory()
         val totalMemory = Runtime.getRuntime().totalMemory()
+        val curTime = Timestamp(System.currentTimeMillis())
     }
 }
