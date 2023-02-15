@@ -10,7 +10,7 @@ import javafx.stage.Stage
 import notes.model.Model
 
 class Main : Application() {
-    private val notesModel = Model()
+    val notesModel = Model()
 
     override fun start(stage: Stage) {
         val borderPaneLayout = BorderPane()
