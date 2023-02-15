@@ -1,22 +1,16 @@
 package notes.application
 
 import javafx.application.Application
-import javafx.application.Platform
 import javafx.scene.Scene
-import javafx.scene.control.Menu
-import javafx.scene.control.MenuBar
-import javafx.scene.control.MenuItem
-import javafx.scene.input.KeyCodeCombination
 import javafx.scene.layout.BorderPane
 import javafx.scene.layout.VBox
 import javafx.stage.Stage
-import kotlin.system.exitProcess
 
 class Main : Application() {
     override fun start(stage: Stage) {
         val borderPaneLayout = BorderPane()
-       // val topVBox = VBox(Menubar(), Toolbar())
-        borderPaneLayout.top = Menubar()
+        val topVBox = VBox(Menubar(), Toolbar())
+        borderPaneLayout.top = topVBox
 
         stage.scene = Scene(borderPaneLayout, 250.0, 150.0)
         stage.isResizable = true
