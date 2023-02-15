@@ -1,15 +1,23 @@
 # CS 346 - Notes Application
 
+## Goal
+An application that stores and organizes user's notes according to their specifications while also providing stylization for note text.
+
 ## Group 203 (GLORy)
-Gillian Johnson
-Lindsay Mark
-Oliver Fenton
-Richard Hua
 Gillian Johnson  
 Lindsay Mark  
 Oliver Fenton  
 Richard Hua
 
+## Quick-start
+Download distZip file and run the executable inside
+
+## Release Notes
+* Toolbar with necessary styling elements included (bold, underline, italicize, etc.)
+* Menu bar with necessary items and keyboard shortcuts
+* Collapsible panel displaying list of existing notes by their title, body preview, and most recent edit timestamp 
+* Note editor that displays current content of selected note with changes stored
+* Application window is resizable
 
 
 Supported gradle tasks:
