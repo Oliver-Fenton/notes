@@ -15,10 +15,8 @@ class Main : Application() {
         val borderPaneLayout = BorderPane()
        // val topVBox = VBox(Menubar(), Toolbar())
 
-        // noteData contains all notes
-        var noteData = NoteData();
         // noteView contains note text box
-        var noteView = NoteView(notesModel)
+        val noteView = NoteView(notesModel)
         // noteList is a VBox displaying all notes
         val noteList = ScrollPane(NoteList(notesModel, noteView)).apply {
             isFitToWidth = true
