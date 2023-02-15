@@ -5,6 +5,7 @@ import javafx.scene.Scene
 import javafx.scene.control.ScrollPane
 import javafx.scene.control.SplitPane
 import javafx.scene.layout.BorderPane
+import javafx.scene.layout.VBox
 import javafx.stage.Stage
 import notes.model.Model
 
@@ -13,7 +14,6 @@ class Main : Application() {
 
     override fun start(stage: Stage) {
         val borderPaneLayout = BorderPane()
-       // val topVBox = VBox(Menubar(), Toolbar())
 
         // noteView contains note text box
         val noteView = NoteView(notesModel)
@@ -24,8 +24,8 @@ class Main : Application() {
 
         notesModel.setActiveNote(notesModel.notes.last().value)
 
-
-        borderPaneLayout.top = Menubar(notesModel)
+        val topVBox = VBox(Menubar(notesModel), Toolbar())
+        borderPaneLayout.top = topVBox
         borderPaneLayout.center = SplitPane(noteList, noteView)
 
         stage.scene = Scene(borderPaneLayout, 250.0, 150.0)
