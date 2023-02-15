@@ -7,9 +7,10 @@ import javafx.scene.control.MenuItem
 import javafx.scene.input.KeyCombination
 import javafx.scene.input.KeyCodeCombination
 import javafx.scene.input.KeyCode
+import notes.model.Model
 import kotlin.system.exitProcess
 
-class Menubar: MenuBar() {
+class Menubar(noteModel: Model): MenuBar() {
     // FILE MENU
     var fileMenu = Menu("File")
     var newNote = MenuItem("New Note")
@@ -33,7 +34,13 @@ class Menubar: MenuBar() {
         // Set action for menu items
 
         // TODO: ADD FUNCTIONALITY WHEN POSSIBLE
-        //newNote.setOnAction {  }
+        newNote.setOnAction {
+            println("User Created New Note")
+            noteModel.createNote()
+            //var newNote = NoteTemplate("")
+           // data.listOfNotes.add(newNote)
+           // data.preview.add("New Note")
+        }
         //newFolder.setOnAction {  }
         quit.setOnAction { Platform.exit() }
         //undo.setOnAction {  }

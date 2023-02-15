@@ -1,22 +1,34 @@
 package notes.application
 
 import javafx.application.Application
-import javafx.application.Platform
 import javafx.scene.Scene
-import javafx.scene.control.Menu
-import javafx.scene.control.MenuBar
-import javafx.scene.control.MenuItem
-import javafx.scene.input.KeyCodeCombination
+import javafx.scene.control.ScrollPane
+import javafx.scene.control.SplitPane
 import javafx.scene.layout.BorderPane
-import javafx.scene.layout.VBox
 import javafx.stage.Stage
-import kotlin.system.exitProcess
+import notes.model.Model
 
 class Main : Application() {
+    private val notesModel = Model()
+
     override fun start(stage: Stage) {
         val borderPaneLayout = BorderPane()
        // val topVBox = VBox(Menubar(), Toolbar())
-        borderPaneLayout.top = Menubar()
+
+        // noteData contains all notes
+        var noteData = NoteData();
+        // noteView contains note text box
+        var noteView = NoteView(notesModel)
+        // noteList is a VBox displaying all notes
+        val noteList = ScrollPane(NoteList(notesModel, noteView)).apply {
+            isFitToWidth = true
+        }
+
+        notesModel.setActiveNote(notesModel.notes.last().value)
+
+
+        borderPaneLayout.top = Menubar(notesModel)
+        borderPaneLayout.center = SplitPane(noteList, noteView)
 
         stage.scene = Scene(borderPaneLayout, 250.0, 150.0)
         stage.isResizable = true
