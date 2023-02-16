@@ -1,5 +1,6 @@
-package notes.application
+package notes.view
 
+import javafx.event.EventHandler
 import javafx.scene.control.Button
 import javafx.scene.control.ColorPicker
 import javafx.scene.control.ToolBar
@@ -16,7 +17,11 @@ class Toolbar : ToolBar() {
     val bulletListImageView = ImageView(Image("Bullet-List-Icon.png"))
 
 
-    val listCollapsable = Button()
+    val listCollapsable = Button().apply {
+        onMouseClicked = EventHandler {
+
+        }
+    }
     val undoButton = Button()
     val redoButton = Button()
     val boldButton = Button()

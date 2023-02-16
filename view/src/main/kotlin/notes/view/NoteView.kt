@@ -1,4 +1,4 @@
-package notes.application
+package notes.view
 
 import javafx.scene.control.TextArea
 import javafx.scene.layout.StackPane

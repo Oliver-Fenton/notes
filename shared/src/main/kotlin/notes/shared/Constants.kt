@@ -1,4 +1,4 @@
-package notes.application
+package notes.shared
 import javafx.scene.input.KeyCodeCombination
 import java.lang.System
 object Constants {
