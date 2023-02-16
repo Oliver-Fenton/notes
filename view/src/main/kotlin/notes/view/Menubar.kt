@@ -1,4 +1,4 @@
-package notes.application
+package notes.view
 
 import javafx.application.Platform
 import javafx.scene.control.Menu
@@ -7,6 +7,7 @@ import javafx.scene.control.MenuItem
 import javafx.scene.input.KeyCodeCombination
 import javafx.scene.input.KeyCode
 import notes.model.Model
+import notes.shared.Constants
 
 class Menubar(noteModel: Model): MenuBar() {
     // FILE MENU

@@ -21,7 +21,6 @@ repositories {
 dependencies {
     implementation(project(":shared"))
     implementation(project(":model"))
-    implementation(project(":view"))
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4")
     testImplementation(kotlin("test"))
     testImplementation("org.junit.jupiter:junit-jupiter:5.8.1")
@@ -33,11 +32,6 @@ tasks.test {
 
 tasks.withType<KotlinCompile> {
     kotlinOptions.jvmTarget = "1.8"
-}
-
-application {
-//    mainModule.set("application")
-    mainClass.set("notes.application.Main")
 }
 
 javafx {

@@ -1,4 +1,4 @@
-package notes.application
+package notes.view
 
 import javafx.collections.ListChangeListener
 import javafx.collections.ObservableList
@@ -13,7 +13,7 @@ import javafx.scene.paint.Color
 import notes.model.Model
 import notes.model.NoteData
 
-class NoteList(val noteModel: Model, noteView: NoteView): VBox() {
+class NoteList(val noteModel: Model): VBox() {
     private inner class NotePreview(noteData: NoteData): VBox() {
         val title = Label( noteData.getTitle() )
         val date = Label( noteData.getDateEdited() ).apply {
@@ -57,7 +57,7 @@ class NoteList(val noteModel: Model, noteView: NoteView): VBox() {
     }
     init {
         minWidth = 200.0
-        maxWidth = 400.0
+        maxWidth = 500.0
 
         refreshList( noteModel.notes )
 
