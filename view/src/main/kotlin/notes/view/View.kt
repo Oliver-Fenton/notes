@@ -1,5 +1,6 @@
 package notes.view
 
+import javafx.beans.value.ChangeListener
 import javafx.scene.Scene
 import javafx.scene.control.ScrollPane
 import javafx.scene.control.SplitPane
@@ -9,7 +10,7 @@ import notes.model.Model
 
 class View(private val noteModel: Model): BorderPane() {
     private val menuBar = Menubar( noteModel )
-    private val toolbar = Toolbar()
+    private val toolbar = Toolbar( noteModel )
     private val topVBox = VBox( menuBar, toolbar )
 
     private val noteView = NoteView( noteModel )
@@ -18,13 +19,28 @@ class View(private val noteModel: Model): BorderPane() {
         minWidth = 200.0
         maxWidth = 500.0
     }
-    private val mainContent = SplitPane( noteList, noteView )
 
     init {
         top = topVBox
-        center = mainContent
+        center = SplitPane( noteList, noteView )
 
         // select most recent note
         noteModel.setActiveNote( noteModel.notes.last() )
+
+        noteModel.isSplitView.addListener { _, _, newValue ->
+            if ( newValue ) { // split view
+                showNoteList()
+            } else { // not split view
+                hideNoteList()
+            }
+        }
+    }
+
+    fun hideNoteList() {
+        center = noteView
+    }
+
+    fun showNoteList() {
+        center = SplitPane( noteList, noteView )
     }
 }
