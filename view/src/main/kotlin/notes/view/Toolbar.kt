@@ -6,8 +6,9 @@ import javafx.scene.control.ColorPicker
 import javafx.scene.control.ToolBar
 import javafx.scene.image.Image
 import javafx.scene.image.ImageView
+import notes.model.Model
 
-class Toolbar : ToolBar() {
+class Toolbar(val noteModel: Model): ToolBar() {
     val listCollapsableImageView = ImageView(Image("Sidebar-Icon.png"))
     val undoImageView = ImageView(Image("Undo-Icon.png"))
     val redoImageView = ImageView(Image("Redo-Icon.png"))
@@ -19,7 +20,11 @@ class Toolbar : ToolBar() {
 
     val listCollapsable = Button().apply {
         onMouseClicked = EventHandler {
-
+            if ( noteModel.isSplitView.value ) { // split view
+                noteModel.isSplitView.set( false )
+            } else { // not split view
+                noteModel.isSplitView.set( true )
+            }
         }
     }
     val undoButton = Button()
