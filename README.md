@@ -29,3 +29,6 @@ Supported gradle tasks:
 | run     | Run the application or console project               |
 | distZip | Create run scripts in application/build/distribution |
 | distTar | Create run scripts in application/build/distribution |
+
+Sources Used:
+* https://stackoverflow.com/questions/10075841/how-to-hide-the-controls-of-htmleditor (Commenter: Tag Howard)
