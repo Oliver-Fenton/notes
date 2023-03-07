@@ -19,7 +19,7 @@ class MainTest {
         for (i in 0..100) {
             model.createNote()
             // Check that the note body is blank
-            assertEquals(model.notes[i + tempSize].getBody(), "")
+            assertEquals(model.notes[i + tempSize].getHTML(), "")
             // Check that the note is active
             assertEquals(model.notes[i + tempSize].isActive, true)
         }

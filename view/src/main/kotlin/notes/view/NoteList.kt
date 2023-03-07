@@ -40,7 +40,7 @@ class NoteList(val noteModel: Model): VBox() {
 
             onMouseClicked = EventHandler {
                 noteModel.setActiveNote(noteData)
-                println("Note named ${noteData.getTitle()} set as active note with body ${noteData.getBody()}")
+                println("Note named ${noteData.getTitle()} set as active note with body ${noteData.getHTML()}")
             }
 
             noteData.addListener { _, _, newValue ->
