@@ -21,6 +21,8 @@ repositories {
 dependencies {
     implementation(project(":shared"))
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4")
+    // https://mvnrepository.com/artifact/org.jsoup/jsoup
+    implementation("org.jsoup:jsoup:1.15.3")
     testImplementation(kotlin("test"))
     testImplementation("org.junit.jupiter:junit-jupiter:5.8.1")
 }
