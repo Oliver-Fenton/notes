@@ -8,10 +8,13 @@ import javafx.scene.control.SplitPane
 import javafx.scene.control.ToolBar
 import javafx.scene.image.Image
 import javafx.scene.image.ImageView
+import javafx.scene.input.KeyCode
+import javafx.scene.input.KeyEvent
 import javafx.scene.layout.BorderPane
 import javafx.scene.layout.VBox
 import javafx.scene.web.HTMLEditor
 import notes.model.Model
+import notes.model.TextChange
 
 
 class View(private val noteModel: Model): BorderPane() {
@@ -55,7 +58,7 @@ class View(private val noteModel: Model): BorderPane() {
     Source: https://stackoverflow.com/questions/10075841/how-to-hide-the-controls-of-htmleditor
     Commenter: Tag Howard
     */
-    fun modifiedHTMLEditorToolbar(editor: HTMLEditor) {
+    fun modifiedHTMLEditorToolbar(editor: HTMLEditor, undoFunction: () -> Unit, redoFunction: () -> Unit, addToUndo: (TextChange) -> Unit) {
 
         editor.isVisible = false
 
@@ -69,23 +72,27 @@ class View(private val noteModel: Model): BorderPane() {
         //toolBar2.items.forEach { e -> println(e) }
 
         nodesToKeepTop.add(editor.lookup(".html-editor-cut"))
+        editor.lookup(".html-editor-cut").addEventHandler(javafx.scene.input.MouseEvent.MOUSE_CLICKED) { addToUndo(TextChange.DELETE) }
         nodesToKeepTop.add(editor.lookup(".html-editor-copy"))
         nodesToKeepTop.add(editor.lookup(".html-editor-paste"))
+        editor.lookup(".html-editor-paste").addEventHandler(javafx.scene.input.MouseEvent.MOUSE_CLICKED) { addToUndo(TextChange.INSERT) }
         nodesToKeepTop.add(editor.lookup(".html-editor-numbers"))
         nodesToKeepTop.add(editor.lookup(".html-editor-bullets"))
+        editor.lookup(".html-editor-bullets").addEventHandler(javafx.scene.input.MouseEvent.MOUSE_CLICKED) { addToUndo(TextChange.LIST) }
         nodesToKeepTop.add(editor.lookup(".html-editor-foreground"))
+        editor.lookup(".html-editor-foreground").addEventHandler(javafx.scene.input.MouseEvent.MOUSE_CLICKED) { addToUndo(TextChange.COLOR) }
         nodesToKeepTop.add(editor.lookup(".html-editor-background"))
 
         nodesToKeepBottom.add(editor.lookup(".font-menu-button"))
         nodesToKeepBottom.add(editor.lookup(".html-editor-bold"))
+        editor.lookup(".html-editor-bold").addEventHandler(javafx.scene.input.MouseEvent.MOUSE_CLICKED) { addToUndo(TextChange.BOLD) }
         nodesToKeepBottom.add(editor.lookup(".html-editor-italic"))
+        editor.lookup(".html-editor-italic").addEventHandler(javafx.scene.input.MouseEvent.MOUSE_CLICKED) { addToUndo(TextChange.ITALICIZE) }
         nodesToKeepBottom.add(editor.lookup(".html-editor-underline"))
-        nodesToKeepBottom.add(editor.lookup(".html-editor-strike"))
-        nodesToKeepBottom.add(editor.lookup(".html-editor-foreground"))
-        nodesToKeepBottom.add(editor.lookup(".html-editor-background"))
+        editor.lookup(".html-editor-underline").addEventHandler(javafx.scene.input.MouseEvent.MOUSE_CLICKED) { addToUndo(TextChange.UNDERLINE) }
 
-        toolBar1.getItems().removeIf { n: Node? -> !nodesToKeepTop.contains(n) }
-        toolBar2.getItems().removeIf { n: Node? -> !nodesToKeepBottom.contains(n) }
+        toolBar1.items.removeIf { n: Node? -> !nodesToKeepTop.contains(n) }
+        toolBar2.items.removeIf { n: Node? -> !nodesToKeepBottom.contains(n) }
 
         // Add all items onto toolBar1
         val toCopy = ArrayList<Node>()
@@ -111,7 +118,9 @@ class View(private val noteModel: Model): BorderPane() {
             }
         }
         val undoButton = Button()
+        undoButton.setOnMouseClicked { undoFunction() }
         val redoButton = Button()
+        redoButton.setOnMouseClicked { redoFunction() }
 
         listCollapsableImageView.fitHeight = 20.0
         listCollapsableImageView.isPreserveRatio = true
@@ -131,6 +140,17 @@ class View(private val noteModel: Model): BorderPane() {
         toolBar1.items.add(0, listCollapsable)
         toolBar1.items.add(1, undoButton)
         toolBar1.items.add(2, redoButton)
+
+        editor.addEventFilter(KeyEvent.KEY_PRESSED) { event ->
+            if (event.isMetaDown && KeyCode.Z == event.code) {
+                event.consume()
+                println("consumed event = $event")
+            }
+            else if (event.code == KeyCode.BACK_SPACE || event.code == KeyCode.DELETE) {
+                event.consume()
+                addToUndo(TextChange.DELETE)
+            }
+        }
 
         editor.isVisible = true
     }

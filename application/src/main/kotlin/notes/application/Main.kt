@@ -4,6 +4,7 @@ import javafx.application.Application
 import javafx.scene.Scene
 import javafx.stage.Stage
 import notes.model.Model
+import notes.model.TextChange
 import notes.view.View
 
 class Main : Application() {
@@ -20,8 +21,13 @@ class Main : Application() {
         stage.title = "Notes"
         stage.show()
 
-        // Modify the toolbar to include only necessary items (can only be done after at least one layout pass
-        noteView.modifiedHTMLEditorToolbar(noteView.noteView.notesArea)
+        // Modify the toolbar to include only necessary items (can only be done after at least one layout pass)
+        noteView.modifiedHTMLEditorToolbar(
+            noteView.noteView.notesArea,
+            { noteModel.activeNote.value?.undo() },
+            { noteModel.activeNote.value?.redo() },
+            {t: TextChange -> noteModel.activeNote.value?.addToUndoStack(t)}
+        )
     }
 
 
