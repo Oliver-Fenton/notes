@@ -14,7 +14,7 @@ import notes.model.Model
 import notes.model.NoteData
 
 class NoteList(val noteModel: Model): VBox() {
-    private inner class NotePreview(noteData: NoteData): VBox() {
+    inner class NotePreview(noteData: NoteData): VBox() {
         val title = Label( noteData.getTitle() )
         val date = Label( noteData.getDateEdited() ).apply {
             // TODO set the min width here to be the size of the text contained by the label so it is not truncated
@@ -49,10 +49,12 @@ class NoteList(val noteModel: Model): VBox() {
             }
         }
     }
-    private fun refreshList(noteList: ObservableList<NoteData>) {
+    fun refreshList(noteList: ObservableList<NoteData>) {
         children.clear()
         for ( noteData in noteList.reversed()) {
-            children.add( NotePreview(noteData) )
+            if(noteData.isDisplay) {
+                children.add(NotePreview(noteData))
+            }
         }
     }
     init {

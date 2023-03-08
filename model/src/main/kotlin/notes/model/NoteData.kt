@@ -5,6 +5,7 @@ import javafx.beans.value.ChangeListener
 import javafx.beans.value.ObservableObjectValue
 import notes.shared.SysInfo
 import org.jsoup.Jsoup
+import java.awt.DisplayMode
 
 class NoteData(private var title: String): ObservableObjectValue<NoteData?> {
     private var changeListeners = mutableListOf<ChangeListener<in NoteData>?>()
@@ -14,6 +15,7 @@ class NoteData(private var title: String): ObservableObjectValue<NoteData?> {
     val dateCreated = SysInfo.curTime
     var dateEdited = SysInfo.curTime
     var isActive = false
+    var isDisplay = true;
 
     constructor(title: String, body: String) : this(title) {
         this.body = body
@@ -51,7 +53,7 @@ class NoteData(private var title: String): ObservableObjectValue<NoteData?> {
 
     fun getHTML(): String { return body }
 
-    private fun getText(): String { return Jsoup.parse( getHTML() ).text() }
+    fun getText(): String { return Jsoup.parse( getHTML() ).text() }
 
     fun getPreview(): String { return getText().take(100) }
 
@@ -71,5 +73,13 @@ class NoteData(private var title: String): ObservableObjectValue<NoteData?> {
 
         invalidationListeners.forEach { it?.invalidated(this) }
         changeListeners.forEach { it?.changed(this, this.value, value) }
+    }
+
+    fun doDisplay() {
+        isDisplay = true
+    }
+
+    fun notDisplay() {
+        isDisplay = false
     }
 }
