@@ -20,7 +20,7 @@ class NoteView(noteModel: Model): StackPane() {
 
     fun displayNote(noteData: NoteData) {
         clearTextArea()
-        setTextArea( noteData.getBody() )
+        setTextArea( noteData.getHTML() )
     }
 
     init {
@@ -42,7 +42,7 @@ class NoteView(noteModel: Model): StackPane() {
 
         notesArea.setOnKeyPressed { e ->
             noteModel.activeNote.value?.setBody(this.notesArea.htmlText + e.text)
-            println("activeNoteData: ${noteModel.activeNote.value?.getBody()}")
+            println("activeNoteData: ${noteModel.activeNote.value?.getHTML()}")
         }
 
         children.add(notesArea)

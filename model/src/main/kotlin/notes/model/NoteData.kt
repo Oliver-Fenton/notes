@@ -4,6 +4,8 @@ import javafx.beans.InvalidationListener
 import javafx.beans.value.ChangeListener
 import javafx.beans.value.ObservableObjectValue
 import notes.shared.SysInfo
+import org.jsoup.Jsoup
+
 class NoteData(private var title: String): ObservableObjectValue<NoteData?> {
     private var changeListeners = mutableListOf<ChangeListener<in NoteData>?>()
     private var invalidationListeners = mutableListOf<InvalidationListener?>()
@@ -47,9 +49,11 @@ class NoteData(private var title: String): ObservableObjectValue<NoteData?> {
         changeListeners.forEach { it?.changed(this, this.value, value) }
     }
 
-    fun getBody(): String { return body }
+    fun getHTML(): String { return body }
 
-    fun getPreview(): String { return body.take(100) }
+    private fun getText(): String { return Jsoup.parse( getHTML() ).text() }
+
+    fun getPreview(): String { return getText().take(100) }
 
     fun getDateCreated(): String { return dateCreated.toString() }
 
