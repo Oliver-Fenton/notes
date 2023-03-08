@@ -2,7 +2,6 @@ package notes.view
 
 
 import javafx.scene.layout.StackPane
-
 import javafx.scene.web.HTMLEditor
 import notes.model.Model
 import notes.model.NoteData

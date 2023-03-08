@@ -1,7 +1,7 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
-    application
+    java
     kotlin("jvm") version "1.6.20"
     id("org.openjfx.javafxplugin") version "0.0.13"
     id("org.beryx.jlink") version "2.25.0"

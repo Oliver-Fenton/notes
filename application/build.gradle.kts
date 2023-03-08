@@ -37,7 +37,7 @@ tasks.withType<KotlinCompile> {
 }
 
 application {
-//    mainModule.set("application")
+    mainModule.set("notes.application")
     mainClass.set("notes.application.Main")
 }
 
