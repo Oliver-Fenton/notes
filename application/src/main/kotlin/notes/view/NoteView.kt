@@ -1,10 +1,12 @@
 package notes.view
 
 
+import javafx.scene.input.KeyCode
 import javafx.scene.layout.StackPane
 import javafx.scene.web.HTMLEditor
 import notes.shared.model.Model
 import notes.shared.model.NoteData
+import notes.shared.model.TextChange
 
 
 class NoteView(noteModel: Model): StackPane() {
@@ -39,8 +41,12 @@ class NoteView(noteModel: Model): StackPane() {
             else clearTextArea()
         }
 
-        notesArea.setOnKeyPressed { e ->
-            noteModel.activeNote.value?.setBody(this.notesArea.htmlText + e.text)
+        notesArea.setOnKeyReleased { e ->
+            if (e.code.isLetterKey || e.code == KeyCode.SPACE || e.code.isDigitKey) {
+                noteModel.activeNote.value?.emptyRedo()
+                noteModel.activeNote.value?.addToUndoStack(TextChange.INSERT)
+            }
+            noteModel.activeNote.value?.setBody(this.notesArea.htmlText)
             println("activeNoteData: ${noteModel.activeNote.value?.getHTML()}")
         }
 
