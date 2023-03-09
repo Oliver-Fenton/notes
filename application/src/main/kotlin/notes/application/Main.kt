@@ -3,7 +3,7 @@ package notes.application
 import javafx.application.Application
 import javafx.scene.Scene
 import javafx.stage.Stage
-import notes.model.Model
+import notes.shared.model.Model
 import notes.view.View
 
 class Main : Application() {
@@ -21,7 +21,7 @@ class Main : Application() {
         stage.show()
 
         // Modify the toolbar to include only necessary items (can only be done after at least one layout pass
-        noteView.modifiedHTMLEditorToolbar(noteView.noteView.notesArea)
+         noteView.modifiedHTMLEditorToolbar(noteView.noteView.notesArea)
     }
 
 

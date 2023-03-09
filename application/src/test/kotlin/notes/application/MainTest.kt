@@ -1,6 +1,6 @@
 package notes.application
 
-import notes.model.Model
+import notes.shared.model.Model
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 

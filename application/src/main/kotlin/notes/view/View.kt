@@ -11,7 +11,7 @@ import javafx.scene.image.ImageView
 import javafx.scene.layout.BorderPane
 import javafx.scene.layout.VBox
 import javafx.scene.web.HTMLEditor
-import notes.model.Model
+import notes.shared.model.Model
 
 
 class View(private val noteModel: Model): BorderPane() {

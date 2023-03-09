@@ -1,6 +1,6 @@
 package notes.shared
 
-import java.sql.Timestamp
+import java.time.LocalDateTime
 
 class SysInfo {
     companion object {
@@ -9,11 +9,15 @@ class SysInfo {
         val hostname = java.net.InetAddress.getLocalHost().hostName
         val hostAddress = java.net.InetAddress.getLocalHost().hostAddress
         val osName = System.getProperty("os.name")
+
+        // shouldn't do this in a library.... handle in the controller class
+        //val OS_KeyCombo = if (osName.contains("mac")) KeyCodeCombination.META_DOWN else KeyCodeCombination.CONTROL_DOWN
+
         val osVersion = System.getProperty("os.version")
         val osArch = System.getProperty("os.arch")
         val processors = Runtime.getRuntime().availableProcessors()
         val freeMemory =  Runtime.getRuntime().freeMemory()
         val totalMemory = Runtime.getRuntime().totalMemory()
-        val curTime = Timestamp(System.currentTimeMillis())
+        val curTime = LocalDateTime.now()
     }
 }

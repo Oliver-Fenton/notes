@@ -4,10 +4,7 @@ import javafx.application.Platform
 import javafx.scene.control.Menu
 import javafx.scene.control.MenuBar
 import javafx.scene.control.MenuItem
-import javafx.scene.input.KeyCodeCombination
-import javafx.scene.input.KeyCode
-import notes.model.Model
-import notes.shared.Constants
+import notes.shared.model.Model
 
 class Menubar(noteModel: Model): MenuBar() {
     // FILE MENU
@@ -50,15 +47,15 @@ class Menubar(noteModel: Model): MenuBar() {
         //selectAll.setOnAction { }
         // TODO: DON'T FORGET TO ADD TEMP FROM VIEW MENU WHEN DECIDED
 
-        newNote.accelerator = KeyCodeCombination(KeyCode.N, Constants.OS_KeyCombo)
-        newFolder.accelerator = KeyCodeCombination(KeyCode.F, Constants.OS_KeyCombo)
-        quit.accelerator = KeyCodeCombination(KeyCode.Q, Constants.OS_KeyCombo)
-        undo.accelerator = KeyCodeCombination(KeyCode.Z, Constants.OS_KeyCombo)
-        redo.accelerator = KeyCodeCombination(KeyCode.R, Constants.OS_KeyCombo) // not able to do 3 keycode combo
-        cut.accelerator = KeyCodeCombination(KeyCode.X, Constants.OS_KeyCombo)
-        copy.accelerator = KeyCodeCombination(KeyCode.C, Constants.OS_KeyCombo)
-        paste.accelerator = KeyCodeCombination(KeyCode.V, Constants.OS_KeyCombo)
-        selectAll.accelerator = KeyCodeCombination(KeyCode.A, Constants.OS_KeyCombo)
+//        newNote.accelerator = KeyCodeCombination(KeyCode.N, SysInfo.OS_KeyCombo)
+//        newFolder.accelerator = KeyCodeCombination(KeyCode.F, SysInfo.OS_KeyCombo)
+//        quit.accelerator = KeyCodeCombination(KeyCode.Q, SysInfo.OS_KeyCombo)
+//        undo.accelerator = KeyCodeCombination(KeyCode.Z, SysInfo.OS_KeyCombo)
+//        redo.accelerator = KeyCodeCombination(KeyCode.R, SysInfo.OS_KeyCombo) // not able to do 3 keycode combo
+//        cut.accelerator = KeyCodeCombination(KeyCode.X, SysInfo.OS_KeyCombo)
+//        copy.accelerator = KeyCodeCombination(KeyCode.C, SysInfo.OS_KeyCombo)
+//        paste.accelerator = KeyCodeCombination(KeyCode.V, SysInfo.OS_KeyCombo)
+//        selectAll.accelerator = KeyCodeCombination(KeyCode.A, SysInfo.OS_KeyCombo)
 
 
         fileMenu.items.addAll(newNote, newFolder, quit)

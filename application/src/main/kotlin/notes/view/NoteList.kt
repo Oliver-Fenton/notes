@@ -10,8 +10,8 @@ import javafx.scene.layout.HBox
 import javafx.scene.layout.Priority
 import javafx.scene.layout.VBox
 import javafx.scene.paint.Color
-import notes.model.Model
-import notes.model.NoteData
+import notes.shared.model.Model
+import notes.shared.model.NoteData
 
 class NoteList(val noteModel: Model): VBox() {
     private inner class NotePreview(noteData: NoteData): VBox() {
