@@ -39,10 +39,17 @@ class NoteView(noteModel: Model): StackPane() {
             else clearTextArea()
         }
 
-        notesArea.setOnKeyPressed { e ->
-            noteModel.activeNote.value?.setBody(this.notesArea.htmlText + e.text)
-            println("activeNoteData: ${noteModel.activeNote.value?.getHTML()}")
+        notesArea.setOnKeyReleased { e ->
+            // noteModel.activeNote.value?.setBody(this.notesArea.htmlText + e.text)
+            noteModel.activeNote.value?.setBody(this.notesArea.htmlText)
+            // println(this.notesArea.htmlText)
+            println("activeNoteDataKeyReleased: ${noteModel.activeNote.value?.getHTML()}")
         }
+        notesArea.setOnMouseClicked{ e ->
+            noteModel.activeNote.value?.setBody(this.notesArea.htmlText)
+            println("activeNoteDataMousePressed: ${noteModel.activeNote.value?.getHTML()}")
+        }
+
 
         children.add(notesArea)
 

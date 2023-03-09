@@ -1,6 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="CompilerConfiguration">
-    <bytecodeTargetLevel target="17" />
+    <bytecodeTargetLevel target="17">
+      <module name="Notes.model" target="17" />
+      <module name="Notes.model.main" target="17" />
+      <module name="Notes.model.test" target="17" />
+      <module name="Notes.view" target="17" />
+      <module name="Notes.view.main" target="17" />
+      <module name="Notes.view.test" target="17" />
+    </bytecodeTargetLevel>
   </component>
 </project>

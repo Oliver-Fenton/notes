@@ -1,12 +1,16 @@
 package notes.view
 
 import javafx.application.Platform
+import javafx.scene.control.Button
 import javafx.scene.control.Menu
 import javafx.scene.control.MenuBar
 import javafx.scene.control.MenuItem
+import javafx.scene.input.KeyCode
+import javafx.scene.input.KeyCodeCombination
+import notes.shared.SysInfo
 import notes.shared.model.Model
 
-class Menubar(noteModel: Model): MenuBar() {
+class Menubar(noteModel: Model, noteView: NoteView): MenuBar() {
     // FILE MENU
     private var fileMenu = Menu("File")
     private var newNote = MenuItem("New Note")
@@ -20,7 +24,6 @@ class Menubar(noteModel: Model): MenuBar() {
     private var cut = MenuItem("Cut")
     private var copy = MenuItem("Copy")
     private var paste = MenuItem("Paste")
-    private var selectAll = MenuItem("Select All")
 
     // VIEW MENU
     private var viewMenu = Menu("View")
@@ -41,25 +44,45 @@ class Menubar(noteModel: Model): MenuBar() {
         quit.setOnAction { Platform.exit() }
         //undo.setOnAction {  }
         //redo.setOnAction {  }
-        //cut.setOnAction {  }
-        //copy.setOnAction {  }
-        //paste.setOnAction {  }
-        //selectAll.setOnAction { }
+        paste.setOnAction {
+            var pasteButton = noteView.notesArea.lookup(".html-editor-paste")
+            if (pasteButton is Button) {
+                pasteButton.fire()
+                noteModel.activeNote.value?.setBody(noteView.notesArea.htmlText)
+                println("activeNoteDataPaste: ${noteModel.activeNote.value?.getHTML()}")
+            }
+        }
+        cut.setOnAction {
+            var cutButton = noteView.notesArea.lookup(".html-editor-cut")
+            if (cutButton is Button) {
+                cutButton.fire()
+                noteModel.activeNote.value?.setBody(noteView.notesArea.htmlText)
+                println("activeNoteDataCut: ${noteModel.activeNote.value?.getHTML()}")
+            }
+        }
+        copy.setOnAction {
+            var copyButton = noteView.notesArea.lookup(".html-editor-copy")
+            if (copyButton is Button) {
+                copyButton.fire()
+            }
+        }
+
+
         // TODO: DON'T FORGET TO ADD TEMP FROM VIEW MENU WHEN DECIDED
 
-//        newNote.accelerator = KeyCodeCombination(KeyCode.N, SysInfo.OS_KeyCombo)
-//        newFolder.accelerator = KeyCodeCombination(KeyCode.F, SysInfo.OS_KeyCombo)
-//        quit.accelerator = KeyCodeCombination(KeyCode.Q, SysInfo.OS_KeyCombo)
-//        undo.accelerator = KeyCodeCombination(KeyCode.Z, SysInfo.OS_KeyCombo)
-//        redo.accelerator = KeyCodeCombination(KeyCode.R, SysInfo.OS_KeyCombo) // not able to do 3 keycode combo
-//        cut.accelerator = KeyCodeCombination(KeyCode.X, SysInfo.OS_KeyCombo)
-//        copy.accelerator = KeyCodeCombination(KeyCode.C, SysInfo.OS_KeyCombo)
-//        paste.accelerator = KeyCodeCombination(KeyCode.V, SysInfo.OS_KeyCombo)
-//        selectAll.accelerator = KeyCodeCombination(KeyCode.A, SysInfo.OS_KeyCombo)
+        val OS_KeyCombo = if (SysInfo.osName.contains("Mac")) KeyCodeCombination.META_DOWN else KeyCodeCombination.CONTROL_DOWN
 
+        newNote.accelerator = KeyCodeCombination(KeyCode.N, OS_KeyCombo)
+        newFolder.accelerator = KeyCodeCombination(KeyCode.F, OS_KeyCombo)
+        quit.accelerator = KeyCodeCombination(KeyCode.Q, OS_KeyCombo)
+        undo.accelerator = KeyCodeCombination(KeyCode.Z, OS_KeyCombo)
+        redo.accelerator = KeyCodeCombination(KeyCode.R, OS_KeyCombo) // not able to do 3 keycode combo
+        cut.accelerator = KeyCodeCombination(KeyCode.X, OS_KeyCombo)
+        copy.accelerator = KeyCodeCombination(KeyCode.C, OS_KeyCombo)
+        paste.accelerator = KeyCodeCombination(KeyCode.V, OS_KeyCombo)
 
         fileMenu.items.addAll(newNote, newFolder, quit)
-        editMenu.items.addAll(undo, redo, cut, copy, paste, selectAll)
+        editMenu.items.addAll(undo, redo, cut, copy, paste)
         viewMenu.items.add(temp)
 
         this.menus.addAll(fileMenu, editMenu, viewMenu)

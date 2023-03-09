@@ -16,10 +16,9 @@ import notes.shared.model.Model
 
 class View(private val noteModel: Model): BorderPane() {
 
-    private val menuBar = Menubar( noteModel )
-    private val topVBox = VBox( menuBar )
-
     val noteView = NoteView( noteModel )
+    private val menuBar = Menubar( noteModel, noteView )
+    private val topVBox = VBox( menuBar )
 
     private val noteList = ScrollPane( NoteList( noteModel ) ).apply {
         isFitToWidth = true

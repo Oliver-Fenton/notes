@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/Notes.iml" filepath="$PROJECT_DIR$/.idea/modules/Notes.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/application/Notes.application.iml" filepath="$PROJECT_DIR$/.idea/modules/application/Notes.application.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/application/Notes.application.main.iml" filepath="$PROJECT_DIR$/.idea/modules/application/Notes.application.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/application/Notes.application.test.iml" filepath="$PROJECT_DIR$/.idea/modules/application/Notes.application.test.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/shared/Notes.shared.iml" filepath="$PROJECT_DIR$/.idea/modules/shared/Notes.shared.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/shared/Notes.shared.main.iml" filepath="$PROJECT_DIR$/.idea/modules/shared/Notes.shared.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/shared/Notes.shared.test.iml" filepath="$PROJECT_DIR$/.idea/modules/shared/Notes.shared.test.iml" />
+    </modules>
+  </component>
+</project>
