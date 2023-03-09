@@ -1,5 +1,11 @@
 package notes.shared
 
-import org.junit.jupiter.api.Assertions.*
+import org.junit.jupiter.api.Test
 
-class SysInfoTest
+class SysInfoTest {
+    @Test
+    fun osTest() {
+        val os = System.getProperty("os.arch")
+        assert(os == SysInfo.osArch)
+    }
+}

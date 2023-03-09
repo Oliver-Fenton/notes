@@ -2,9 +2,10 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
     application
-    kotlin("jvm") version "1.6.20"
+    kotlin("jvm") version "1.8.10"
     id("org.openjfx.javafxplugin") version "0.0.13"
-    id("org.beryx.jlink") version "2.25.0"
+    id("org.javamodularity.moduleplugin") version "1.8.12"
+    id("org.beryx.jlink") version "2.26.0"
 }
 
 group = "notes"
@@ -20,8 +21,6 @@ repositories {
 
 dependencies {
     implementation(project(":shared"))
-    implementation(project(":model"))
-    implementation(project(":view"))
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4")
     implementation("org.jfxcore:javafx-web:18-ea+1")
     testImplementation(kotlin("test"))
@@ -33,7 +32,7 @@ tasks.test {
 }
 
 tasks.withType<KotlinCompile> {
-    kotlinOptions.jvmTarget = "1.8"
+    kotlinOptions.jvmTarget = "17"
 }
 
 application {

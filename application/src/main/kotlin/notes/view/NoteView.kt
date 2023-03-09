@@ -3,8 +3,8 @@ package notes.view
 
 import javafx.scene.layout.StackPane
 import javafx.scene.web.HTMLEditor
-import notes.model.Model
-import notes.model.NoteData
+import notes.shared.model.Model
+import notes.shared.model.NoteData
 
 
 class NoteView(noteModel: Model): StackPane() {

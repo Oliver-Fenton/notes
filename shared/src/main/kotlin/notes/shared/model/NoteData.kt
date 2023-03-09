@@ -1,4 +1,4 @@
-package notes.model
+package notes.shared.model
 
 import javafx.beans.InvalidationListener
 import javafx.beans.value.ChangeListener
