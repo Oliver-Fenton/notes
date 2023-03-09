@@ -1,11 +1,14 @@
 package notes.view
 
 
+import javafx.scene.input.KeyCode
 import javafx.scene.layout.StackPane
 
 import javafx.scene.web.HTMLEditor
 import notes.model.Model
 import notes.model.NoteData
+import notes.model.TextChange
+
 
 
 class NoteView(noteModel: Model): StackPane() {
@@ -16,11 +19,12 @@ class NoteView(noteModel: Model): StackPane() {
     }
 
     fun clearTextArea() { //notesArea.clear()
-        notesArea.htmlText = "" }
+        notesArea.htmlText = ""
+    }
 
     fun displayNote(noteData: NoteData) {
         clearTextArea()
-        setTextArea( noteData.getHTML() )
+        setTextArea(noteData.getHTML())
     }
 
     init {
@@ -36,17 +40,21 @@ class NoteView(noteModel: Model): StackPane() {
 
 
         noteModel.activeNote.addListener { _, _, newActiveNote ->
-            if (newActiveNote != null) displayNote( newActiveNote )
+            if (newActiveNote != null) displayNote(newActiveNote)
             else clearTextArea()
         }
 
-        notesArea.setOnKeyPressed { e ->
-            noteModel.activeNote.value?.setBody(this.notesArea.htmlText + e.text)
+        notesArea.setOnKeyReleased { e ->
+            if (e.code.isLetterKey || e.code == KeyCode.SPACE || e.code.isDigitKey) {
+                noteModel.activeNote.value?.emptyRedo()
+                noteModel.activeNote.value?.addToUndoStack(TextChange.INSERT)
+            }
+            noteModel.activeNote.value?.setBody(this.notesArea.htmlText)
             println("activeNoteData: ${noteModel.activeNote.value?.getHTML()}")
         }
 
         children.add(notesArea)
 
-       // modifiedHTMLEditorToolbar(notesArea)
+        // modifiedHTMLEditorToolbar(notesArea)
     }
 }

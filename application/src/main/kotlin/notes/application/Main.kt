@@ -22,12 +22,7 @@ class Main : Application() {
         stage.show()
 
         // Modify the toolbar to include only necessary items (can only be done after at least one layout pass)
-        noteView.modifiedHTMLEditorToolbar(
-            noteView.noteView.notesArea,
-            { noteModel.activeNote.value?.undo() },
-            { noteModel.activeNote.value?.redo() },
-            {t: TextChange -> noteModel.activeNote.value?.addToUndoStack(t)}
-        )
+        noteView.modifiedHTMLEditorToolbar(noteView.noteView.notesArea)
     }
 
 
