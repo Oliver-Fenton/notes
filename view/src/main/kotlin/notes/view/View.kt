@@ -72,24 +72,45 @@ class View(private val noteModel: Model): BorderPane() {
         //toolBar2.items.forEach { e -> println(e) }
 
         nodesToKeepTop.add(editor.lookup(".html-editor-cut"))
-        editor.lookup(".html-editor-cut").addEventHandler(javafx.scene.input.MouseEvent.MOUSE_CLICKED) { noteModel.activeNote.value?.addToUndoStack(TextChange.DELETE) }
+        editor.lookup(".html-editor-cut").addEventHandler(javafx.scene.input.MouseEvent.MOUSE_CLICKED) {
+            noteModel.activeNote.value?.addToUndoStack(TextChange.DELETE)
+            noteModel.activeNote.value?.setBody(editor.htmlText)
+        }
         nodesToKeepTop.add(editor.lookup(".html-editor-copy"))
         nodesToKeepTop.add(editor.lookup(".html-editor-paste"))
-        editor.lookup(".html-editor-paste").addEventHandler(javafx.scene.input.MouseEvent.MOUSE_CLICKED) { noteModel.activeNote.value?.addToUndoStack(TextChange.INSERT) }
+        editor.lookup(".html-editor-paste").addEventHandler(javafx.scene.input.MouseEvent.MOUSE_CLICKED) {
+            noteModel.activeNote.value?.addToUndoStack(TextChange.INSERT)
+            noteModel.activeNote.value?.setBody(editor.htmlText)
+        }
         nodesToKeepTop.add(editor.lookup(".html-editor-numbers"))
         nodesToKeepTop.add(editor.lookup(".html-editor-bullets"))
-        editor.lookup(".html-editor-bullets").addEventHandler(javafx.scene.input.MouseEvent.MOUSE_CLICKED) { noteModel.activeNote.value?.addToUndoStack(TextChange.LIST) }
+        editor.lookup(".html-editor-bullets").addEventHandler(javafx.scene.input.MouseEvent.MOUSE_CLICKED) {
+            noteModel.activeNote.value?.addToUndoStack(TextChange.LIST)
+            noteModel.activeNote.value?.setBody(editor.htmlText)
+        }
         nodesToKeepTop.add(editor.lookup(".html-editor-foreground"))
-        editor.lookup(".html-editor-foreground").addEventHandler(javafx.scene.input.MouseEvent.MOUSE_CLICKED) { noteModel.activeNote.value?.addToUndoStack(TextChange.COLOR) }
+        editor.lookup(".html-editor-foreground").addEventHandler(javafx.scene.input.MouseEvent.MOUSE_CLICKED) {
+            noteModel.activeNote.value?.addToUndoStack(TextChange.COLOR)
+            noteModel.activeNote.value?.setBody(editor.htmlText)
+        }
         nodesToKeepTop.add(editor.lookup(".html-editor-background"))
 
         nodesToKeepBottom.add(editor.lookup(".font-menu-button"))
         nodesToKeepBottom.add(editor.lookup(".html-editor-bold"))
-        editor.lookup(".html-editor-bold").addEventHandler(javafx.scene.input.MouseEvent.MOUSE_CLICKED) { noteModel.activeNote.value?.addToUndoStack(TextChange.BOLD) }
+        editor.lookup(".html-editor-bold").addEventHandler(javafx.scene.input.MouseEvent.MOUSE_CLICKED) {
+            noteModel.activeNote.value?.addToUndoStack(TextChange.BOLD)
+            noteModel.activeNote.value?.setBody(editor.htmlText)
+        }
         nodesToKeepBottom.add(editor.lookup(".html-editor-italic"))
-        editor.lookup(".html-editor-italic").addEventHandler(javafx.scene.input.MouseEvent.MOUSE_CLICKED) { noteModel.activeNote.value?.addToUndoStack(TextChange.ITALICIZE) }
+        editor.lookup(".html-editor-italic").addEventHandler(javafx.scene.input.MouseEvent.MOUSE_CLICKED) {
+            noteModel.activeNote.value?.addToUndoStack(TextChange.ITALICIZE)
+            noteModel.activeNote.value?.setBody(editor.htmlText)
+        }
         nodesToKeepBottom.add(editor.lookup(".html-editor-underline"))
-        editor.lookup(".html-editor-underline").addEventHandler(javafx.scene.input.MouseEvent.MOUSE_CLICKED) { noteModel.activeNote.value?.addToUndoStack(TextChange.UNDERLINE) }
+        editor.lookup(".html-editor-underline").addEventHandler(javafx.scene.input.MouseEvent.MOUSE_CLICKED) {
+            noteModel.activeNote.value?.addToUndoStack(TextChange.UNDERLINE)
+            noteModel.activeNote.value?.setBody(editor.htmlText)
+        }
 
         toolBar1.items.removeIf { n: Node? -> !nodesToKeepTop.contains(n) }
         toolBar2.items.removeIf { n: Node? -> !nodesToKeepBottom.contains(n) }
@@ -147,15 +168,19 @@ class View(private val noteModel: Model): BorderPane() {
         toolBar1.items.add(1, undoButton)
         toolBar1.items.add(2, redoButton)
 
-        editor.addEventFilter(KeyEvent.KEY_PRESSED) { event ->
+        editor.addEventFilter(KeyEvent.KEY_RELEASED) { event ->
             if (event.isMetaDown && KeyCode.Z == event.code) {
+                editor.htmlText = noteModel.activeNote.value?.undo()
                 event.consume()
-                println("consumed event = $event")
+            }
+            else if (event.isMetaDown && KeyCode.R == event.code) {
+                editor.htmlText = noteModel.activeNote.value?.redo()
+                event.consume()
             }
             else if (event.code == KeyCode.BACK_SPACE || event.code == KeyCode.DELETE) {
-                event.consume()
                 noteModel.activeNote.value?.emptyRedo()
                 noteModel.activeNote.value?.addToUndoStack(TextChange.DELETE)
+                event.consume()
             }
         }
 

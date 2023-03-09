@@ -92,10 +92,8 @@ class NoteData(private var title: String): ObservableObjectValue<NoteData?> {
     }
 
     fun undo(): String? {
-        println("IN UNDO FUNCTION")
         if (undoStack.isNotEmpty()) {
             val action = undoStack.last()
-            println("action: (" + action.first + ", " + action.second + ")")
             undoStack.removeLast()
 
             when (action.first) {
@@ -154,16 +152,12 @@ class NoteData(private var title: String): ObservableObjectValue<NoteData?> {
     }
 
     fun addToUndoStack(type: TextChange) {
-        println("IN ADD TO UNDO STACK")
         undoStack.add(Pair(type, getHTML()))
-        println("undoStack.size: " + undoStack.size)
     }
 
     fun redo(): String? {
-        println("IN REDO FUNCTION")
         if (redoStack.isNotEmpty()) {
             val action = redoStack.last()
-            println("action: (" + action.first + ", " + action.second + ")")
             redoStack.removeLast()
 
             when (action.first) {
