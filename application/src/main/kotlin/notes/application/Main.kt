@@ -3,8 +3,7 @@ package notes.application
 import javafx.application.Application
 import javafx.scene.Scene
 import javafx.stage.Stage
-import notes.model.Model
-import notes.model.TextChange
+import notes.shared.model.Model
 import notes.view.View
 
 class Main : Application() {

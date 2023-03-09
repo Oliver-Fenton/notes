@@ -42,8 +42,15 @@ class Menubar(noteModel: Model, noteView: NoteView): MenuBar() {
         }
         //newFolder.setOnAction {  }
         quit.setOnAction { Platform.exit() }
-        //undo.setOnAction {  }
-        //redo.setOnAction {  }
+
+        undo.setOnAction {
+            noteView.notesArea.htmlText = noteModel.activeNote.value?.undo()
+        }
+
+        redo.setOnAction {
+            noteView.notesArea.htmlText = noteModel.activeNote.value?.redo()
+        }
+
         paste.setOnAction {
             var pasteButton = noteView.notesArea.lookup(".html-editor-paste")
             if (pasteButton is Button) {

@@ -179,6 +179,16 @@ class View(private val noteModel: Model): BorderPane() {
                 noteModel.activeNote.value?.addToUndoStack(TextChange.DELETE)
                 event.consume()
             }
+            else if (event.isMetaDown && KeyCode.X == event.code) {
+                noteModel.activeNote.value?.addToUndoStack(TextChange.DELETE)
+                noteModel.activeNote.value?.setBody(editor.htmlText)
+                event.consume()
+            }
+            else if (event.isMetaDown && KeyCode.V == event.code) {
+                noteModel.activeNote.value?.addToUndoStack(TextChange.INSERT)
+                noteModel.activeNote.value?.setBody(editor.htmlText)
+                event.consume()
+            }
         }
 
         editor.isVisible = true
