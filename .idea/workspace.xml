@@ -5,35 +5,18 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="f64ccd7b-51f8-4d31-aacd-543723ae3de1" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/application/build.gradle.kts" beforeDir="false" afterPath="$PROJECT_DIR$/application/build.gradle.kts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/application/src/main/java/module-info.java" beforeDir="false" afterPath="$PROJECT_DIR$/application/src/main/java/module-info.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/application/src/main/kotlin/notes/application/Main.kt" beforeDir="false" afterPath="$PROJECT_DIR$/application/src/main/kotlin/notes/application/Main.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/application/src/test/kotlin/notes/application/MainTest.kt" beforeDir="false" afterPath="$PROJECT_DIR$/application/src/test/kotlin/notes/application/MainTest.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/model/build.gradle.kts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/model/src/main/java/module-info.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/model/src/main/kotlin/notes/model/Model.kt" beforeDir="false" afterPath="$PROJECT_DIR$/shared/src/main/kotlin/notes/shared/model/Model.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/model/src/main/kotlin/notes/model/NoteData.kt" beforeDir="false" afterPath="$PROJECT_DIR$/shared/src/main/kotlin/notes/shared/model/NoteData.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/model/src/test/kotlin/notes/model/ModelTest.kt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/settings.gradle.kts" beforeDir="false" afterPath="$PROJECT_DIR$/settings.gradle.kts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/shared/build.gradle.kts" beforeDir="false" afterPath="$PROJECT_DIR$/shared/build.gradle.kts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/shared/src/main/java/module-info.java" beforeDir="false" afterPath="$PROJECT_DIR$/shared/src/main/java/module-info.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/modules/application/Notes.application.test.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/modules/shared/Notes.shared.test.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.name" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/gradle.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/gradle.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/application/src/main/kotlin/notes/view/Menubar.kt" beforeDir="false" afterPath="$PROJECT_DIR$/application/src/main/kotlin/notes/view/Menubar.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/application/src/main/kotlin/notes/view/NoteView.kt" beforeDir="false" afterPath="$PROJECT_DIR$/application/src/main/kotlin/notes/view/NoteView.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/application/src/main/kotlin/notes/view/View.kt" beforeDir="false" afterPath="$PROJECT_DIR$/application/src/main/kotlin/notes/view/View.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/shared/src/main/kotlin/notes/shared/SysInfo.kt" beforeDir="false" afterPath="$PROJECT_DIR$/shared/src/main/kotlin/notes/shared/SysInfo.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/shared/src/test/kotlin/notes/shared/SysInfoTest.kt" beforeDir="false" afterPath="$PROJECT_DIR$/shared/src/test/kotlin/notes/shared/SysInfoTest.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/view/build.gradle.kts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/view/src/main/java/module-info.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/view/src/main/kotlin/notes/view/Menubar.kt" beforeDir="false" afterPath="$PROJECT_DIR$/application/src/main/kotlin/notes/view/Menubar.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/view/src/main/kotlin/notes/view/NoteList.kt" beforeDir="false" afterPath="$PROJECT_DIR$/application/src/main/kotlin/notes/view/NoteList.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/view/src/main/kotlin/notes/view/NoteView.kt" beforeDir="false" afterPath="$PROJECT_DIR$/application/src/main/kotlin/notes/view/NoteView.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/view/src/main/kotlin/notes/view/View.kt" beforeDir="false" afterPath="$PROJECT_DIR$/application/src/main/kotlin/notes/view/View.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/view/src/main/resources/Bold-Icon.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/view/src/main/resources/Bullet-List-Icon.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/view/src/main/resources/Italicize-Icon.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/view/src/main/resources/Redo-Icon.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/view/src/main/resources/Sidebar-Icon.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/view/src/main/resources/Underline-Icon.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/view/src/main/resources/Undo-Icon.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/view/src/test/kotlin/notes/view/ViewTest.kt" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -91,6 +74,11 @@
     </system>
   </component>
   <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="main" />
+      </map>
+    </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="ProjectId" id="2Mmc1szAcUATohTtuC1iogNMIpJ" />
@@ -105,6 +93,11 @@
   "keyToString": {
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
     "project.structure.last.edited": "Project",
     "project.structure.proportion": "0.15",
     "project.structure.side.proportion": "0.2",
@@ -143,6 +136,27 @@
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
+    </configuration>
+    <configuration name="glory:application [buildDependents]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$/application" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value="buildDependents" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <ExternalSystemDebugServerProcess>true</ExternalSystemDebugServerProcess>
+      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+      <DebugAllEnabled>false</DebugAllEnabled>
+      <method v="2" />
     </configuration>
     <configuration name="glory:application [build]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
@@ -210,8 +224,9 @@
     <recent_temporary>
       <list>
         <item itemvalue="Gradle.glory:application [run]" />
-        <item itemvalue="Gradle.glory:application [clean]" />
         <item itemvalue="Gradle.glory:application [build]" />
+        <item itemvalue="Gradle.glory:application [clean]" />
+        <item itemvalue="Gradle.glory:application [buildDependents]" />
       </list>
     </recent_temporary>
   </component>

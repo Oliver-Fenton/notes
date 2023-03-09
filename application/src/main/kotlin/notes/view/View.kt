@@ -18,10 +18,9 @@ import notes.shared.model.TextChange
 
 class View(private val noteModel: Model): BorderPane() {
 
-    private val menuBar = Menubar( noteModel )
-    private val topVBox = VBox( menuBar )
-
     val noteView = NoteView( noteModel )
+    private val menuBar = Menubar( noteModel, noteView )
+    private val topVBox = VBox( menuBar )
 
     private val noteList = ScrollPane( NoteList( noteModel ) ).apply {
         isFitToWidth = true
@@ -178,6 +177,16 @@ class View(private val noteModel: Model): BorderPane() {
             else if (event.code == KeyCode.BACK_SPACE || event.code == KeyCode.DELETE) {
                 noteModel.activeNote.value?.emptyRedo()
                 noteModel.activeNote.value?.addToUndoStack(TextChange.DELETE)
+                event.consume()
+            }
+            else if (event.isMetaDown && KeyCode.X == event.code) {
+                noteModel.activeNote.value?.addToUndoStack(TextChange.DELETE)
+                noteModel.activeNote.value?.setBody(editor.htmlText)
+                event.consume()
+            }
+            else if (event.isMetaDown && KeyCode.V == event.code) {
+                noteModel.activeNote.value?.addToUndoStack(TextChange.INSERT)
+                noteModel.activeNote.value?.setBody(editor.htmlText)
                 event.consume()
             }
         }

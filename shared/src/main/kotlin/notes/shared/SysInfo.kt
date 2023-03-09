@@ -9,10 +9,6 @@ class SysInfo {
         val hostname = java.net.InetAddress.getLocalHost().hostName
         val hostAddress = java.net.InetAddress.getLocalHost().hostAddress
         val osName = System.getProperty("os.name")
-
-        // shouldn't do this in a library.... handle in the controller class
-        //val OS_KeyCombo = if (osName.contains("mac")) KeyCodeCombination.META_DOWN else KeyCodeCombination.CONTROL_DOWN
-
         val osVersion = System.getProperty("os.version")
         val osArch = System.getProperty("os.arch")
         val processors = Runtime.getRuntime().availableProcessors()
