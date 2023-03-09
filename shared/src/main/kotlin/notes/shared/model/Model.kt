@@ -9,16 +9,7 @@ class Model {
     var isSplitView = SimpleBooleanProperty( true )
     val activeNote = SimpleObjectProperty<NoteData?>(null)
     var notes: ObservableList<NoteData> = FXCollections.observableArrayList(
-        NoteData("note #1", "blah blah blah"),
-        NoteData("note #2", "blah blah blah, blah blah blah"),
-        NoteData("note #3", "blah blah blah, blah blah blah, blah blah blah"),
-        NoteData("note #4", "blah blah blah, blah blah blah, blah blah blah, blah blah blah"),
-        NoteData("note #5", "blah blah blah, blah blah blah, blah blah blah, blah blah blah, blah blah blah"),
-        NoteData("note #6", "blah blah blah, blah blah blah, blah blah blah, blah blah blah, blah blah blah, blah blah blah"),
-        NoteData("note #7", "blah blah blah, blah blah blah, blah blah blah, blah blah blah, blah blah blah, blah blah blah, blah blah blah"),
-        NoteData("note #8", "blah blah blah, blah blah blah, blah blah blah, blah blah blah, blah blah blah, blah blah blah, blah blah blah, blah blah blah"),
-        NoteData("note #9", "blah blah blah, blah blah blah, blah blah blah, blah blah blah, blah blah blah, blah blah blah, blah blah blah, blah blah blah, blah blah blah"),
-        NoteData("note #10", "blah blah blah, blah blah blah, blah blah blah, blah blah blah, blah blah blah, blah blah blah, blah blah blah, blah blah blah, blah blah blah, blah blah blah")
+        NoteData("note #1", "<html dir=\"ltr\"><head></head><body contenteditable=\"true\"></body></html>"),
     )
 
     fun setActiveNote(noteData: NoteData?) {

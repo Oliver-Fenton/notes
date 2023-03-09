@@ -6,6 +6,21 @@ import javafx.beans.value.ObservableObjectValue
 import notes.shared.SysInfo
 import org.jsoup.Jsoup
 
+enum class TextChange {
+    INSERT,
+    DELETE,
+    ITALICIZE,
+    UNITALICIZE,
+    UNDERLINE,
+    UNUNDERLINE,
+    BOLD,
+    UNBOLD,
+    LIST,
+    UNLIST,
+    COLOR,
+    UNCOLOR
+}
+
 class NoteData(private var title: String): ObservableObjectValue<NoteData?> {
     private var changeListeners = mutableListOf<ChangeListener<in NoteData>?>()
     private var invalidationListeners = mutableListOf<InvalidationListener?>()
@@ -14,6 +29,9 @@ class NoteData(private var title: String): ObservableObjectValue<NoteData?> {
     val dateCreated = SysInfo.curTime
     var dateEdited = SysInfo.curTime
     var isActive = false
+
+    var undoStack = ArrayList<Pair<TextChange, String>>()
+    var redoStack = ArrayList<Pair<TextChange, String>>()
 
     constructor(title: String, body: String) : this(title) {
         this.body = body
@@ -71,5 +89,139 @@ class NoteData(private var title: String): ObservableObjectValue<NoteData?> {
 
         invalidationListeners.forEach { it?.invalidated(this) }
         changeListeners.forEach { it?.changed(this, this.value, value) }
+    }
+
+    fun undo(): String? {
+        println("IN UNDO FUNCTION")
+        if (undoStack.isNotEmpty()) {
+            val action = undoStack.last()
+            println("action: (" + action.first + ", " + action.second + ")")
+            undoStack.removeLast()
+
+            when (action.first) {
+                TextChange.INSERT -> {
+                    redoStack.add(Pair(TextChange.DELETE, getHTML()))
+                }
+
+                TextChange.DELETE -> {
+                    redoStack.add(Pair(TextChange.INSERT, getHTML()))
+                }
+
+                TextChange.ITALICIZE -> {
+                    redoStack.add(Pair(TextChange.UNITALICIZE, getHTML()))
+                }
+
+                TextChange.UNITALICIZE -> {
+                    redoStack.add(Pair(TextChange.ITALICIZE, getHTML()))
+                }
+
+                TextChange.BOLD -> {
+                    redoStack.add(Pair(TextChange.UNBOLD, getHTML()))
+                }
+
+                TextChange.UNBOLD -> {
+                    redoStack.add(Pair(TextChange.BOLD, getHTML()))
+                }
+
+                TextChange.UNDERLINE -> {
+                    redoStack.add(Pair(TextChange.UNUNDERLINE, getHTML()))
+                }
+
+                TextChange.UNUNDERLINE -> {
+                    redoStack.add(Pair(TextChange.UNDERLINE, getHTML()))
+                }
+
+                TextChange.LIST -> {
+                    redoStack.add(Pair(TextChange.UNLIST, getHTML()))
+                }
+
+                TextChange.UNLIST -> {
+                    redoStack.add(Pair(TextChange.LIST, getHTML()))
+                }
+
+                TextChange.COLOR -> {
+                    redoStack.add(Pair(TextChange.UNCOLOR, getHTML()))
+                }
+
+                TextChange.UNCOLOR -> {
+                    redoStack.add(Pair(TextChange.COLOR, getHTML()))
+                }
+            }
+            setBody(action.second)
+            return action.second
+        }
+        return null
+    }
+
+    fun addToUndoStack(type: TextChange) {
+        println("IN ADD TO UNDO STACK")
+        undoStack.add(Pair(type, getHTML()))
+        println("undoStack.size: " + undoStack.size)
+    }
+
+    fun redo(): String? {
+        println("IN REDO FUNCTION")
+        if (redoStack.isNotEmpty()) {
+            val action = redoStack.last()
+            println("action: (" + action.first + ", " + action.second + ")")
+            redoStack.removeLast()
+
+            when (action.first) {
+                TextChange.INSERT -> {
+                    undoStack.add(Pair(TextChange.DELETE, getHTML()))
+                }
+
+                TextChange.DELETE -> {
+                    undoStack.add(Pair(TextChange.INSERT, getHTML()))
+                }
+
+                TextChange.ITALICIZE -> {
+                    undoStack.add(Pair(TextChange.UNITALICIZE, getHTML()))
+                }
+
+                TextChange.UNITALICIZE -> {
+                    undoStack.add(Pair(TextChange.ITALICIZE, getHTML()))
+                }
+
+                TextChange.BOLD -> {
+                    undoStack.add(Pair(TextChange.UNBOLD, getHTML()))
+                }
+
+                TextChange.UNBOLD -> {
+                    undoStack.add(Pair(TextChange.BOLD, getHTML()))
+                }
+
+                TextChange.UNDERLINE -> {
+                    undoStack.add(Pair(TextChange.UNUNDERLINE, getHTML()))
+                }
+
+                TextChange.UNUNDERLINE -> {
+                    undoStack.add(Pair(TextChange.UNDERLINE, getHTML()))
+                }
+
+                TextChange.LIST -> {
+                    undoStack.add(Pair(TextChange.UNLIST, getHTML()))
+                }
+
+                TextChange.UNLIST -> {
+                    undoStack.add(Pair(TextChange.LIST, getHTML()))
+                }
+
+                TextChange.COLOR -> {
+                    undoStack.add(Pair(TextChange.UNCOLOR, getHTML()))
+                }
+
+                TextChange.UNCOLOR -> {
+                    undoStack.add(Pair(TextChange.COLOR, getHTML()))
+                }
+            }
+            setBody(action.second)
+            return action.second
+        }
+        return null
+    }
+
+    fun emptyRedo() {
+        redoStack.clear()
     }
 }
