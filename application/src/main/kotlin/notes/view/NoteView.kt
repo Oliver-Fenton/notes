@@ -46,7 +46,7 @@ class NoteView(noteModel: Model): StackPane() {
                 noteModel.activeNote.value?.emptyRedo()
                 noteModel.activeNote.value?.addToUndoStack(TextChange.INSERT)
             }
-            noteModel.activeNote.value?.setBody(this.notesArea.htmlText)
+            noteModel.activeNote.value?.setNoteBody(this.notesArea.htmlText)
             println("activeNoteData: ${noteModel.activeNote.value?.getHTML()}")
         }
 

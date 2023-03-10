@@ -15,7 +15,7 @@ import notes.shared.model.NoteData
 
 class NoteList(val noteModel: Model): VBox() {
     inner class NotePreview(noteData: NoteData): VBox() {
-        val title = Label( noteData.getTitle() )
+        val title = Label( noteData.title )
         val date = Label( noteData.getDateEdited() ).apply {
             // TODO set the min width here to be the size of the text contained by the label so it is not truncated
             minWidth = this.layoutBounds.width
@@ -25,7 +25,7 @@ class NoteList(val noteModel: Model): VBox() {
             HBox.setHgrow(this, Priority.NEVER)
         }
         fun refresh(noteData: NoteData) {
-            title.text = noteData.getTitle()
+            title.text = noteData.title
             date.text = noteData.getDateEdited()
             preview.text = noteData.getPreview()
             background = if (noteData.isActive) Background.fill(Color.AQUA)
@@ -40,11 +40,11 @@ class NoteList(val noteModel: Model): VBox() {
 
             onMouseClicked = EventHandler {
                 noteModel.setActiveNote(noteData)
-                println("Note named ${noteData.getTitle()} set as active note with body ${noteData.getHTML()}")
+                println("Note named ${noteData.title} set as active note with body ${noteData.getHTML()}")
             }
 
             noteData.addListener { _, _, newValue ->
-                println("detected a change in note ${newValue?.getTitle()}")
+                println("detected a change in note ${newValue?.title}")
                 if (newValue != null) refresh(newValue)
             }
         }
