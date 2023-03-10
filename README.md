@@ -12,7 +12,14 @@ Richard Hua
 ## Quick-start
 Download distZip file and run the executable inside
 
-## Release Notes
+## Release Notes 1.2.0
+* Save and restore window size and position
+* Undo and redo text inputs and styles (cut, copy, paste, bold, italics, underline, colour, bullet list, etc.)
+* Search note body
+* Save and restore note data
+* HTML rich text compatible
+
+## Release Notes 1.1.0
 * Toolbar with necessary styling elements included (bold, underline, italicize, etc.)
 * Menu bar with necessary items and keyboard shortcuts
 * Collapsible panel displaying list of existing notes by their title, body preview, and most recent edit timestamp 
