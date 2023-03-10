@@ -45,4 +45,12 @@ class Model {
         // save new note to database
         noteDatabase.insertNote( newNote )
     }
+
+    fun saveWindowPosition(x: Double, y: Double, width: Double, height: Double) {
+        noteDatabase.saveWindowPosition( x, y, width, height )
+    }
+
+    fun getWindowPosition(): Pair< Pair<Double,Double>, Pair<Double,Double> > {
+        return noteDatabase.getWindowPosition()
+    }
 }

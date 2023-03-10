@@ -46,6 +46,14 @@ class NoteDatabase {
         database.deleteNote( note )
     }
 
+    fun saveWindowPosition( x: Double, y: Double, width: Double, height: Double ) {
+        database.saveWindowPos( x, y, width, height )
+    }
+
+    fun getWindowPosition(): Pair< Pair<Double,Double>, Pair<Double,Double> > {
+        return database.getWindowPosition()
+    }
+
     private val database = Database()
 
     private class Database {
@@ -65,7 +73,9 @@ class NoteDatabase {
         }
 
         private fun createTableIfNotExists() {
-            val createTableIfNoteExistsSQL = "CREATE TABLE IF NOT EXISTS note_data ( id INTEGER PRIMARY KEY, title TEXT, body TEXT, dateCreated TEXT, dateEdited TEXT );"
+            val createNoteDataTableIfNotExistsSQL = "CREATE TABLE IF NOT EXISTS note_data ( id INTEGER PRIMARY KEY, title TEXT, body TEXT, dateCreated TEXT, dateEdited TEXT );"
+            val createPreferencesTableIfNotExistsSQL = "CREATE TABLE IF NOT EXISTS preferences ( id INTEGER PRIMARY KEY, x REAL, y REAL, width REAL, height REAL);"
+            val setDefaultPreferencesIfTableEmptySQL = "INSERT INTO preferences (x, y, width, height) VALUES (0.0, 0.0, 600.0, 400.0) WHERE NOT EXISTS (SELECT 1 FROM preferences);"
 
             val conn = connect()
             if ( conn == null ) {
@@ -74,10 +84,15 @@ class NoteDatabase {
             }
 
             try {
-                val preparedStatement = conn.prepareStatement( createTableIfNoteExistsSQL )
-                val rs: ResultSet = preparedStatement.executeQuery()
-                rs.close()
-                preparedStatement.close()
+                val createNoteDataTable = conn.prepareStatement( createNoteDataTableIfNotExistsSQL )
+                createNoteDataTable.executeQuery()
+                createNoteDataTable.close()
+                val createPreferencesTable = conn.prepareStatement( createPreferencesTableIfNotExistsSQL )
+                createPreferencesTable.executeQuery()
+                createPreferencesTable.close()
+                val insertDefaultPreferences = conn.prepareStatement( setDefaultPreferencesIfTableEmptySQL )
+                insertDefaultPreferences.executeQuery()
+                insertDefaultPreferences.close()
             } catch ( e: SQLException ) {
                 println( e.message )
             }
@@ -114,7 +129,7 @@ class NoteDatabase {
 
         fun getMaxId(): Int {
             val getMaxIdSQL = "SELECT MAX(id) FROM note_data;"
-            var maxId: Int = 0
+            var maxId = 0
 
             val conn = connect()
             if ( conn == null ) {
@@ -169,11 +184,57 @@ class NoteDatabase {
             } catch ( e: SQLException ) {
                 println( e.message )
             }
-
         }
 
         fun deleteNote( note: NoteData ) {
             // TODO
+        }
+
+        fun saveWindowPos( x: Double, y: Double, width: Double, height: Double ) {
+            val saveWindowPosSQL = "UPDATE preferences SET x = $x, y = $y, width = $width, height = $height WHERE id = 1;"
+
+            val conn = connect()
+            if ( conn == null ) {
+                println("Error: could not establish connection to note database.")
+                return
+            }
+
+            try {
+                val preparedStatement = conn.prepareStatement( saveWindowPosSQL )
+                preparedStatement.executeUpdate()
+            } catch ( e: SQLException ) {
+                println( e.message )
+            }
+        }
+
+        fun getWindowPosition(): Pair< Pair<Double,Double>, Pair<Double,Double> > {
+            val getWindowPosSQL = "SELECT * FROM preferences"
+            var coordinates = Pair(0.0, 0.0)
+            var dimensions = Pair(600.0, 400.0)
+
+            val conn = connect()
+            if ( conn == null ) {
+                println("Error: could not establish connection to note database.")
+                return Pair( coordinates, dimensions )
+            }
+
+            try {
+                val preparedStatement = conn.prepareStatement( getWindowPosSQL )
+                val rs: ResultSet = preparedStatement.executeQuery()
+                if ( rs.next() ) {
+                    val x = rs.getDouble("x")
+                    val y = rs.getDouble("y")
+                    val width = rs.getDouble("width")
+                    val height = rs.getDouble("height")
+                    coordinates = Pair( x, y )
+                    dimensions = Pair( width, height )
+                }
+                rs.close()
+                preparedStatement.close()
+            } catch ( e: SQLException ) {
+                println( e.message )
+            }
+            return Pair( coordinates, dimensions )
         }
     }
 
