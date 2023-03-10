@@ -14,6 +14,7 @@ class Menubar(noteModel: Model, noteView: NoteView): MenuBar() {
     // FILE MENU
     private var fileMenu = Menu("File")
     private var newNote = MenuItem("New Note")
+    private var deleteNote = MenuItem("Delete Note")
     private var newFolder = MenuItem("New Folder")
     private val quit = MenuItem("Quit")
 
@@ -39,6 +40,10 @@ class Menubar(noteModel: Model, noteView: NoteView): MenuBar() {
             //var newNote = NoteTemplate("")
             // data.listOfNotes.add(newNote)
             // data.preview.add("New Note")
+        }
+        deleteNote.setOnAction {
+            println("User Deleted Note")
+            noteModel.deleteNote()
         }
         //newFolder.setOnAction {  }
         quit.setOnAction { Platform.exit() }
@@ -80,6 +85,7 @@ class Menubar(noteModel: Model, noteView: NoteView): MenuBar() {
         val OS_KeyCombo = if (SysInfo.osName.contains("Mac")) KeyCodeCombination.META_DOWN else KeyCodeCombination.CONTROL_DOWN
 
         newNote.accelerator = KeyCodeCombination(KeyCode.N, OS_KeyCombo)
+        deleteNote.accelerator = KeyCodeCombination(KeyCode.D, OS_KeyCombo)
         newFolder.accelerator = KeyCodeCombination(KeyCode.F, OS_KeyCombo)
         quit.accelerator = KeyCodeCombination(KeyCode.Q, OS_KeyCombo)
         undo.accelerator = KeyCodeCombination(KeyCode.Z, OS_KeyCombo)
@@ -88,7 +94,7 @@ class Menubar(noteModel: Model, noteView: NoteView): MenuBar() {
         copy.accelerator = KeyCodeCombination(KeyCode.C, OS_KeyCombo)
         paste.accelerator = KeyCodeCombination(KeyCode.V, OS_KeyCombo)
 
-        fileMenu.items.addAll(newNote, newFolder, quit)
+        fileMenu.items.addAll(newNote, deleteNote, newFolder, quit)
         editMenu.items.addAll(undo, redo, cut, copy, paste)
         viewMenu.items.add(temp)
 

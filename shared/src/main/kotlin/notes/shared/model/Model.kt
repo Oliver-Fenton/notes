@@ -38,7 +38,7 @@ class Model {
 
     fun createNote() {
         idCounter++
-        val newNote = NoteData(idCounter, "New Note")
+        val newNote = NoteData(idCounter, "New Note $idCounter")
         notes.add( newNote )
         setActiveNote( newNote )
 
@@ -46,8 +46,22 @@ class Model {
         noteDatabase.insertNote( newNote )
     }
 
+    fun deleteNote() {
+        val currIndex = notes.indexOf(activeNote.value)
+        println(currIndex)
+        notes.remove(activeNote.value)
+
+        activeNote.value?.let { noteDatabase.deleteNote(it) }
+        if (activeNote.value != null && notes.size > 1) {
+           // setActiveNote(notes[currIndex])
+            setActiveNote(notes[0])
+        }
+
+    }
+
     fun saveWindowPosition(x: Double, y: Double, width: Double, height: Double) {
         noteDatabase.saveWindowPosition( x, y, width, height )
+        activeNote.value?.let { noteDatabase.updateNote(it) } // update last note on exit
     }
 
     fun getWindowPosition(): Pair< Pair<Double,Double>, Pair<Double,Double> > {
