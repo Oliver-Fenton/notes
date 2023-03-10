@@ -55,7 +55,7 @@ class Menubar(noteModel: Model, noteView: NoteView): MenuBar() {
             var pasteButton = noteView.notesArea.lookup(".html-editor-paste")
             if (pasteButton is Button) {
                 pasteButton.fire()
-                noteModel.activeNote.value?.setBody(noteView.notesArea.htmlText)
+                noteModel.activeNote.value?.setNoteBody(noteView.notesArea.htmlText)
                 println("activeNoteDataPaste: ${noteModel.activeNote.value?.getHTML()}")
             }
         }
@@ -63,7 +63,7 @@ class Menubar(noteModel: Model, noteView: NoteView): MenuBar() {
             var cutButton = noteView.notesArea.lookup(".html-editor-cut")
             if (cutButton is Button) {
                 cutButton.fire()
-                noteModel.activeNote.value?.setBody(noteView.notesArea.htmlText)
+                noteModel.activeNote.value?.setNoteBody(noteView.notesArea.htmlText)
                 println("activeNoteDataCut: ${noteModel.activeNote.value?.getHTML()}")
             }
         }

@@ -38,7 +38,7 @@ class View(private val noteModel: Model): BorderPane() {
         center = SplitPane( noteList, noteView)
 
         // select most recent note
-        noteModel.setActiveNote( noteModel.notes.last() )
+        if ( noteModel.notes.isNotEmpty() ) noteModel.setActiveNote( noteModel.notes.last() )
 
         noteModel.isSplitView.addListener { _, _, newValue ->
             if ( newValue ) { // split view
@@ -77,24 +77,24 @@ class View(private val noteModel: Model): BorderPane() {
         nodesToKeepTop.add(editor.lookup(".html-editor-cut"))
         editor.lookup(".html-editor-cut").addEventHandler(javafx.scene.input.MouseEvent.MOUSE_CLICKED) {
             noteModel.activeNote.value?.addToUndoStack(TextChange.DELETE)
-            noteModel.activeNote.value?.setBody(editor.htmlText)
+            noteModel.activeNote.value?.setNoteBody(editor.htmlText)
         }
         nodesToKeepTop.add(editor.lookup(".html-editor-copy"))
         nodesToKeepTop.add(editor.lookup(".html-editor-paste"))
         editor.lookup(".html-editor-paste").addEventHandler(javafx.scene.input.MouseEvent.MOUSE_CLICKED) {
             noteModel.activeNote.value?.addToUndoStack(TextChange.INSERT)
-            noteModel.activeNote.value?.setBody(editor.htmlText)
+            noteModel.activeNote.value?.setNoteBody(editor.htmlText)
         }
 //        nodesToKeepTop.add(editor.lookup(".html-editor-numbers"))
         nodesToKeepTop.add(editor.lookup(".html-editor-bullets"))
         editor.lookup(".html-editor-bullets").addEventHandler(javafx.scene.input.MouseEvent.MOUSE_CLICKED) {
             noteModel.activeNote.value?.addToUndoStack(TextChange.LIST)
-            noteModel.activeNote.value?.setBody(editor.htmlText)
+            noteModel.activeNote.value?.setNoteBody(editor.htmlText)
         }
         nodesToKeepTop.add(editor.lookup(".html-editor-foreground"))
         editor.lookup(".html-editor-foreground").addEventHandler(javafx.scene.input.MouseEvent.MOUSE_CLICKED) {
             noteModel.activeNote.value?.addToUndoStack(TextChange.COLOR)
-            noteModel.activeNote.value?.setBody(editor.htmlText)
+            noteModel.activeNote.value?.setNoteBody(editor.htmlText)
         }
 //        nodesToKeepTop.add(editor.lookup(".html-editor-background"))
 
@@ -102,17 +102,17 @@ class View(private val noteModel: Model): BorderPane() {
         nodesToKeepBottom.add(editor.lookup(".html-editor-bold"))
         editor.lookup(".html-editor-bold").addEventHandler(javafx.scene.input.MouseEvent.MOUSE_CLICKED) {
             noteModel.activeNote.value?.addToUndoStack(TextChange.BOLD)
-            noteModel.activeNote.value?.setBody(editor.htmlText)
+            noteModel.activeNote.value?.setNoteBody(editor.htmlText)
         }
         nodesToKeepBottom.add(editor.lookup(".html-editor-italic"))
         editor.lookup(".html-editor-italic").addEventHandler(javafx.scene.input.MouseEvent.MOUSE_CLICKED) {
             noteModel.activeNote.value?.addToUndoStack(TextChange.ITALICIZE)
-            noteModel.activeNote.value?.setBody(editor.htmlText)
+            noteModel.activeNote.value?.setNoteBody(editor.htmlText)
         }
         nodesToKeepBottom.add(editor.lookup(".html-editor-underline"))
         editor.lookup(".html-editor-underline").addEventHandler(javafx.scene.input.MouseEvent.MOUSE_CLICKED) {
             noteModel.activeNote.value?.addToUndoStack(TextChange.UNDERLINE)
-            noteModel.activeNote.value?.setBody(editor.htmlText)
+            noteModel.activeNote.value?.setNoteBody(editor.htmlText)
         }
 
         toolBar1.items.removeIf { n: Node? -> !nodesToKeepTop.contains(n) }
@@ -186,12 +186,12 @@ class View(private val noteModel: Model): BorderPane() {
             }
             else if (event.isMetaDown && KeyCode.X == event.code) {
                 noteModel.activeNote.value?.addToUndoStack(TextChange.DELETE)
-                noteModel.activeNote.value?.setBody(editor.htmlText)
+                noteModel.activeNote.value?.setNoteBody(editor.htmlText)
                 event.consume()
             }
             else if (event.isMetaDown && KeyCode.V == event.code) {
                 noteModel.activeNote.value?.addToUndoStack(TextChange.INSERT)
-                noteModel.activeNote.value?.setBody(editor.htmlText)
+                noteModel.activeNote.value?.setNoteBody(editor.htmlText)
                 event.consume()
             }
         }

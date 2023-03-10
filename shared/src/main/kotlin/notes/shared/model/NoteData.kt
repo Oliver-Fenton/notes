@@ -5,6 +5,7 @@ import javafx.beans.value.ChangeListener
 import javafx.beans.value.ObservableObjectValue
 import notes.shared.SysInfo
 import org.jsoup.Jsoup
+import java.time.LocalDateTime
 
 enum class TextChange {
     INSERT,
@@ -21,12 +22,12 @@ enum class TextChange {
     UNCOLOR
 }
 
-class NoteData(private var title: String): ObservableObjectValue<NoteData?> {
+class NoteData(val id: Int, var title: String): ObservableObjectValue<NoteData?> {
     private var changeListeners = mutableListOf<ChangeListener<in NoteData>?>()
     private var invalidationListeners = mutableListOf<InvalidationListener?>()
 
-    private var body = ""
-    val dateCreated = SysInfo.curTime
+    var body = ""
+    var dateCreated = SysInfo.curTime
     var dateEdited = SysInfo.curTime
     var isActive = false
     var isDisplay = true
@@ -34,8 +35,10 @@ class NoteData(private var title: String): ObservableObjectValue<NoteData?> {
     var undoStack = ArrayList<Pair<TextChange, String>>()
     var redoStack = ArrayList<Pair<TextChange, String>>()
 
-    constructor(title: String, body: String) : this(title) {
+    constructor( id: Int, title: String, body: String, dateCreated: String, dateEdited: String ) : this( id, title ) {
         this.body = body
+        this.dateCreated = LocalDateTime.parse( dateCreated )
+        this.dateEdited = LocalDateTime.parse( dateEdited )
     }
 
     override fun addListener(listener: ChangeListener<in NoteData?>?) { changeListeners.add(listener) }
@@ -50,7 +53,7 @@ class NoteData(private var title: String): ObservableObjectValue<NoteData?> {
 
     override fun get(): NoteData { return this }
 
-    fun setTitle(newTitle: String) {
+    fun setNoteTitle(newTitle: String) {
         title = newTitle
         dateEdited = SysInfo.curTime
 
@@ -58,9 +61,7 @@ class NoteData(private var title: String): ObservableObjectValue<NoteData?> {
         changeListeners.forEach { it?.changed(this, this.value, value) }
     }
 
-    fun getTitle(): String { return title }
-
-    fun setBody(newBody: String) {
+    fun setNoteBody(newBody: String) {
         this.body = newBody
         dateEdited = SysInfo.curTime
 
@@ -154,7 +155,7 @@ class NoteData(private var title: String): ObservableObjectValue<NoteData?> {
                     redoStack.add(Pair(TextChange.COLOR, getHTML()))
                 }
             }
-            setBody(action.second)
+            setNoteBody(action.second)
             return action.second
         }
         return null
@@ -218,7 +219,7 @@ class NoteData(private var title: String): ObservableObjectValue<NoteData?> {
                     undoStack.add(Pair(TextChange.COLOR, getHTML()))
                 }
             }
-            setBody(action.second)
+            setNoteBody(action.second)
             return action.second
         }
         return null
