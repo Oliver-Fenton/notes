@@ -8,8 +8,8 @@ import javafx.scene.layout.HBox
 import javafx.scene.layout.Priority
 import javafx.scene.layout.StackPane
 import javafx.scene.text.Text
-import notes.model.Model
-import notes.model.NoteData
+import notes.shared.model.Model
+import notes.shared.model.NoteData
 
 class SearchBar(noteModel: Model, nList: NoteList) : StackPane(){
     private val searchBar = TextField()
@@ -37,7 +37,7 @@ class SearchBar(noteModel: Model, nList: NoteList) : StackPane(){
     }
 
     init {
-        searchBar.setPromptText("search")
+        searchBar.promptText = "search"
         HBox.setHgrow(searchBar, Priority.ALWAYS)
         this.labelContainer.children.add(searchLabel)
         children.add(searchContainer)

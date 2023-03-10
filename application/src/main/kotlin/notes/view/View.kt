@@ -22,7 +22,12 @@ class View(private val noteModel: Model): BorderPane() {
     private val menuBar = Menubar( noteModel, noteView )
     private val topVBox = VBox( menuBar )
 
-    private val noteList = ScrollPane( NoteList( noteModel ) ).apply {
+    val noteListView = NoteList(noteModel)
+
+    private val searchBar = SearchBar(noteModel, noteListView)
+    private val searchListVBox = VBox(searchBar, noteListView)
+
+    private val noteList = ScrollPane(searchListVBox).apply {
         isFitToWidth = true
         minWidth = 200.0
         maxWidth = 500.0

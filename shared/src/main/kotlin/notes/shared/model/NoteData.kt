@@ -29,6 +29,7 @@ class NoteData(private var title: String): ObservableObjectValue<NoteData?> {
     val dateCreated = SysInfo.curTime
     var dateEdited = SysInfo.curTime
     var isActive = false
+    var isDisplay = true
 
     var undoStack = ArrayList<Pair<TextChange, String>>()
     var redoStack = ArrayList<Pair<TextChange, String>>()
@@ -69,7 +70,7 @@ class NoteData(private var title: String): ObservableObjectValue<NoteData?> {
 
     fun getHTML(): String { return body }
 
-    private fun getText(): String { return Jsoup.parse( getHTML() ).text() }
+    fun getText(): String { return Jsoup.parse( getHTML() ).text() }
 
     fun getPreview(): String { return getText().take(100) }
 
@@ -89,6 +90,14 @@ class NoteData(private var title: String): ObservableObjectValue<NoteData?> {
 
         invalidationListeners.forEach { it?.invalidated(this) }
         changeListeners.forEach { it?.changed(this, this.value, value) }
+    }
+
+    fun doDisplay() {
+        isDisplay = true
+    }
+
+    fun notDisplay() {
+        isDisplay = false
     }
 
     fun undo(): String? {
