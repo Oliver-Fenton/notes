@@ -4,13 +4,15 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="08c095c2-afa8-497b-a552-7acddc573cb2" name="Changes" comment="deleted old model folder, added meeting notes">
-      <change afterPath="$PROJECT_DIR$/.idea/dataSources.xml" afterDir="false" />
+    <list default="true" id="08c095c2-afa8-497b-a552-7acddc573cb2" name="Changes" comment="Save window coordinates/dimensions to database on close and restore on start.">
+      <change afterPath="$PROJECT_DIR$/application/NoteDatabase.db" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/model/src/main/kotlin/notes/model/Model.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/model/src/main/kotlin/notes/model/NoteData.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/application/NoteDatabase.db" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/application/src/main/kotlin/notes/application/Main.kt" beforeDir="false" afterPath="$PROJECT_DIR$/application/src/main/kotlin/notes/application/Main.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/application/src/main/kotlin/notes/view/Menubar.kt" beforeDir="false" afterPath="$PROJECT_DIR$/application/src/main/kotlin/notes/view/Menubar.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/model/src/main/kotlin/notes/model/Model.kt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/model/src/main/kotlin/notes/model/NoteData.kt" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/shared/src/main/kotlin/notes/shared/database/NoteDatabase.kt" beforeDir="false" afterPath="$PROJECT_DIR$/shared/src/main/kotlin/notes/shared/database/NoteDatabase.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/shared/src/main/kotlin/notes/shared/model/Model.kt" beforeDir="false" afterPath="$PROJECT_DIR$/shared/src/main/kotlin/notes/shared/model/Model.kt" afterDir="false" />
     </list>
@@ -57,12 +59,6 @@
                 <item name="Tasks" type="e4a08cd1:TasksNode" />
                 <item name="build" type="c8890929:TasksNode$1" />
               </path>
-              <path>
-                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
-                <item name="Notes" type="f1a62948:ProjectNode" />
-                <item name="Tasks" type="e4a08cd1:TasksNode" />
-                <item name="distribution" type="c8890929:TasksNode$1" />
-              </path>
             </expand>
             <select />
           </tree_state>
@@ -86,25 +82,21 @@
     <option name="showModules" value="false" />
     <option name="showScratchesAndConsoles" value="false" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Git.Branch.Popup.ShowAllRemotes": "true",
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "WebServerToolWindowFactoryState": "false",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "project.structure.last.edited": "Project",
-    "project.structure.proportion": "0.15",
-    "project.structure.side.proportion": "0.2",
-    "settings.editor.selected.configurable": "configurable.group.appearance",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Project&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;configurable.group.appearance&quot;
   }
-}]]></component>
+}</component>
   <component name="RunManager" selected="Gradle.glory [run]">
     <configuration default="true" type="AZURE_FUNCTION_SUPPORT" factoryName="Run Functions">
       <option name="appName" />
@@ -138,27 +130,6 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="glory [build]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
-      <ExternalSystemSettings>
-        <option name="executionName" />
-        <option name="externalProjectPath" value="$PROJECT_DIR$" />
-        <option name="externalSystemIdString" value="GRADLE" />
-        <option name="scriptParameters" />
-        <option name="taskDescriptions">
-          <list />
-        </option>
-        <option name="taskNames">
-          <list>
-            <option value="build" />
-          </list>
-        </option>
-        <option name="vmOptions" />
-      </ExternalSystemSettings>
-      <ExternalSystemDebugServerProcess>true</ExternalSystemDebugServerProcess>
-      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
-      <DebugAllEnabled>false</DebugAllEnabled>
-      <method v="2" />
-    </configuration>
     <configuration name="glory [clean]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
@@ -180,27 +151,6 @@
       <DebugAllEnabled>false</DebugAllEnabled>
       <method v="2" />
     </configuration>
-    <configuration name="glory [distZip]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
-      <ExternalSystemSettings>
-        <option name="executionName" />
-        <option name="externalProjectPath" value="$PROJECT_DIR$" />
-        <option name="externalSystemIdString" value="GRADLE" />
-        <option name="scriptParameters" />
-        <option name="taskDescriptions">
-          <list />
-        </option>
-        <option name="taskNames">
-          <list>
-            <option value="distZip" />
-          </list>
-        </option>
-        <option name="vmOptions" />
-      </ExternalSystemSettings>
-      <ExternalSystemDebugServerProcess>true</ExternalSystemDebugServerProcess>
-      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
-      <DebugAllEnabled>false</DebugAllEnabled>
-      <method v="2" />
-    </configuration>
     <configuration name="glory [run]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
@@ -213,6 +163,48 @@
         <option name="taskNames">
           <list>
             <option value="run" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <ExternalSystemDebugServerProcess>true</ExternalSystemDebugServerProcess>
+      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+      <DebugAllEnabled>false</DebugAllEnabled>
+      <method v="2" />
+    </configuration>
+    <configuration name="glory:application [build]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$/application" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value="build" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <ExternalSystemDebugServerProcess>true</ExternalSystemDebugServerProcess>
+      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+      <DebugAllEnabled>false</DebugAllEnabled>
+      <method v="2" />
+    </configuration>
+    <configuration name="glory:application [clean]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$/application" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value="clean" />
           </list>
         </option>
         <option name="vmOptions" />
@@ -246,23 +238,21 @@
     <recent_temporary>
       <list>
         <item itemvalue="Gradle.glory [run]" />
-        <item itemvalue="Gradle.glory [build]" />
         <item itemvalue="Gradle.glory [clean]" />
-        <item itemvalue="Gradle.glory [distZip]" />
         <item itemvalue="Gradle.glory:application [run]" />
+        <item itemvalue="Gradle.glory:application [build]" />
+        <item itemvalue="Gradle.glory:application [clean]" />
       </list>
     </recent_temporary>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="08c095c2-afa8-497b-a552-7acddc573cb2" name="Changes" comment="deleted old model folder, added meeting notes" />
+      <changelist id="f64ccd7b-51f8-4d31-aacd-543723ae3de1" name="Changes" comment="" />
       <created>1678375986572</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1678375986572</updated>
-      <workItem from="1678466454610" duration="51000" />
-      <workItem from="1678466511617" duration="777000" />
     </task>
     <task id="LOCAL-00001" summary="Fixed rebase with main conflicts">
       <created>1678406974795</created>
@@ -280,5 +270,29 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Fixed rebase with main conflicts" />
     <option name="LAST_COMMIT_MESSAGE" value="Fixed rebase with main conflicts" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint type="kotlin-field">
+          <url>file://$PROJECT_DIR$/application/src/main/kotlin/notes/application/Main.kt</url>
+          <line>9</line>
+          <properties myFieldName="noteModel" myClassName="notes.application.Main" />
+          <option name="timeStamp" value="3" />
+        </line-breakpoint>
+        <line-breakpoint type="kotlin-field">
+          <url>file://$PROJECT_DIR$/application/src/main/kotlin/notes/view/NoteView.kt</url>
+          <line>10</line>
+          <properties myFieldName="notesArea" myClassName="notes.view.NoteView" />
+          <option name="timeStamp" value="4" />
+        </line-breakpoint>
+        <line-breakpoint type="kotlin-field">
+          <url>file://$PROJECT_DIR$/application/src/main/kotlin/notes/application/Main.kt</url>
+          <line>10</line>
+          <properties myFieldName="noteView" myClassName="notes.application.Main" />
+          <option name="timeStamp" value="5" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>

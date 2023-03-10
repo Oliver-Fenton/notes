@@ -58,16 +58,12 @@ class NoteDatabase {
 
     private class Database {
         init {
-            println("init")
             createTableIfNotExists()
         }
         private fun connect(): Connection? {
-            println("connect")
             var conn: Connection? = null
             try {
                 val url = "jdbc:sqlite:./NoteDatabase.db"
-               // val url = "jdbc:sqlite:/Users/lindsaymark/IdeaProjects/glory/application/NoteDatabase.db"
-                //val url = "jdbc:sqlite:../../../../../application/NoteDatabase.db"
                 conn = DriverManager.getConnection( url )
                 println( "Connection to SQLite has been established.")
             } catch ( e: SQLException ) {
@@ -77,7 +73,6 @@ class NoteDatabase {
         }
 
         private fun createTableIfNotExists() {
-            println("createTableIfNotExists")
             val createNoteDataTableIfNotExistsSQL = "CREATE TABLE IF NOT EXISTS note_data ( id INTEGER PRIMARY KEY, title TEXT, body TEXT, dateCreated TEXT, dateEdited TEXT );"
             val createPreferencesTableIfNotExistsSQL = "CREATE TABLE IF NOT EXISTS preferences ( id INTEGER PRIMARY KEY, x REAL, y REAL, width REAL, height REAL);"
             val setDefaultPreferencesIfTableEmptySQL = "INSERT INTO preferences (x, y, width, height) VALUES (0.0, 0.0, 600.0, 400.0) WHERE NOT EXISTS (SELECT 1 FROM preferences);"
@@ -104,7 +99,6 @@ class NoteDatabase {
         }
 
         fun getNotes(): List<NoteData> {
-            println("getNotes")
             val getNotesSQL = "SELECT * FROM note_data;"
             val list = mutableListOf<NoteData>()
 
@@ -134,7 +128,6 @@ class NoteDatabase {
         }
 
         fun getMaxId(): Int {
-            println("getMaxID")
             val getMaxIdSQL = "SELECT MAX(id) FROM note_data;"
             var maxId = 0
 
@@ -157,7 +150,6 @@ class NoteDatabase {
         }
 
         fun insertNote( note: NoteData ) {
-            println("insertNote")
             val insertNoteSQL = "INSERT INTO note_data (id, title, body, dateCreated, dateEdited) VALUES ('${note.id}', '${note.title}', '${note.body}', '${note.dateCreated}', '${note.dateEdited}');"
 
             val conn = connect()
@@ -177,7 +169,6 @@ class NoteDatabase {
         }
 
         fun updateNote( note: NoteData ) {
-            println("updateNotes")
             val updateNoteSQL = "UPDATE note_data SET title = '${note.title}', body = '${note.body}', dateEdited = '${note.dateEdited}' WHERE id = ${note.id};"
 
             val conn = connect()
@@ -189,34 +180,17 @@ class NoteDatabase {
             try {
                 val preparedStatement = conn.prepareStatement( updateNoteSQL )
                 preparedStatement.executeUpdate()
-                println("Updated note titled ${note.title} in database.")
+                println("Updated note titled ${note.title}} in database.")
             } catch ( e: SQLException ) {
                 println( e.message )
             }
         }
 
         fun deleteNote( note: NoteData ) {
-            println("deleteNote")
-            val deleteNoteSQL = "DELETE FROM note_data WHERE id = ${note.id};"
-
-            val conn = connect()
-            if ( conn == null ) {
-                println("Error: could not establish connection to note database.")
-                return
-            }
-
-            try {
-                val preparedStatement = conn.prepareStatement( deleteNoteSQL )
-                preparedStatement.executeUpdate()
-                println("Deleted note titled ${note.title} in database.")
-            } catch ( e: SQLException ) {
-                println( e.message )
-            }
-
+            // TODO
         }
 
         fun saveWindowPos( x: Double, y: Double, width: Double, height: Double ) {
-            println("saveWindowPos")
             val saveWindowPosSQL = "UPDATE preferences SET x = $x, y = $y, width = $width, height = $height WHERE id = 1;"
 
             val conn = connect()
@@ -234,7 +208,6 @@ class NoteDatabase {
         }
 
         fun getWindowPosition(): Pair< Pair<Double,Double>, Pair<Double,Double> > {
-            println("getWindowPos")
             val getWindowPosSQL = "SELECT * FROM preferences"
             var coordinates = Pair(0.0, 0.0)
             var dimensions = Pair(600.0, 400.0)
