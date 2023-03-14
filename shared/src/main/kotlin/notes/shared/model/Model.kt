@@ -46,6 +46,16 @@ class Model {
         noteDatabase.insertNote( newNote )
     }
 
+    fun deleteNote() {
+        if ( activeNote.value != null ) {
+            println("Deleting active note titled '${activeNote.value!!.title}'")
+            var curIndex = notes.indexOf( activeNote.value!! )
+            if ( curIndex > 0 ) curIndex -= 1
+            notes.remove( activeNote.value!! )
+            setActiveNote( notes[curIndex] )
+        }
+    }
+
     fun saveWindowPosition(x: Double, y: Double, width: Double, height: Double) {
         noteDatabase.saveWindowPosition( x, y, width, height )
     }

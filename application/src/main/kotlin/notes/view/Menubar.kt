@@ -15,6 +15,7 @@ class Menubar(noteModel: Model, noteView: NoteView): MenuBar() {
     private var fileMenu = Menu("File")
     private var newNote = MenuItem("New Note")
     private var newFolder = MenuItem("New Folder")
+    private var deleteNote = MenuItem("Delete Note")
     private val quit = MenuItem("Quit")
 
     // EDIT MENU
@@ -40,6 +41,10 @@ class Menubar(noteModel: Model, noteView: NoteView): MenuBar() {
             // data.listOfNotes.add(newNote)
             // data.preview.add("New Note")
         }
+        deleteNote.setOnAction {
+            println("User Deleted Active Note")
+            noteModel.deleteNote()
+        }
         //newFolder.setOnAction {  }
         quit.setOnAction { Platform.exit() }
 
@@ -52,7 +57,7 @@ class Menubar(noteModel: Model, noteView: NoteView): MenuBar() {
         }
 
         paste.setOnAction {
-            var pasteButton = noteView.notesArea.lookup(".html-editor-paste")
+            val pasteButton = noteView.notesArea.lookup(".html-editor-paste")
             if (pasteButton is Button) {
                 pasteButton.fire()
                 noteModel.activeNote.value?.setNoteBody(noteView.notesArea.htmlText)
@@ -60,7 +65,7 @@ class Menubar(noteModel: Model, noteView: NoteView): MenuBar() {
             }
         }
         cut.setOnAction {
-            var cutButton = noteView.notesArea.lookup(".html-editor-cut")
+            val cutButton = noteView.notesArea.lookup(".html-editor-cut")
             if (cutButton is Button) {
                 cutButton.fire()
                 noteModel.activeNote.value?.setNoteBody(noteView.notesArea.htmlText)
@@ -68,7 +73,7 @@ class Menubar(noteModel: Model, noteView: NoteView): MenuBar() {
             }
         }
         copy.setOnAction {
-            var copyButton = noteView.notesArea.lookup(".html-editor-copy")
+            val copyButton = noteView.notesArea.lookup(".html-editor-copy")
             if (copyButton is Button) {
                 copyButton.fire()
             }
@@ -80,6 +85,7 @@ class Menubar(noteModel: Model, noteView: NoteView): MenuBar() {
         val OS_KeyCombo = if (SysInfo.osName.contains("Mac")) KeyCodeCombination.META_DOWN else KeyCodeCombination.CONTROL_DOWN
 
         newNote.accelerator = KeyCodeCombination(KeyCode.N, OS_KeyCombo)
+        deleteNote.accelerator = KeyCodeCombination(KeyCode.D, OS_KeyCombo)
         newFolder.accelerator = KeyCodeCombination(KeyCode.F, OS_KeyCombo)
         quit.accelerator = KeyCodeCombination(KeyCode.Q, OS_KeyCombo)
         undo.accelerator = KeyCodeCombination(KeyCode.Z, OS_KeyCombo)
@@ -88,7 +94,7 @@ class Menubar(noteModel: Model, noteView: NoteView): MenuBar() {
         copy.accelerator = KeyCodeCombination(KeyCode.C, OS_KeyCombo)
         paste.accelerator = KeyCodeCombination(KeyCode.V, OS_KeyCombo)
 
-        fileMenu.items.addAll(newNote, newFolder, quit)
+        fileMenu.items.addAll(newNote, deleteNote, newFolder, quit)
         editMenu.items.addAll(undo, redo, cut, copy, paste)
         viewMenu.items.add(temp)
 
