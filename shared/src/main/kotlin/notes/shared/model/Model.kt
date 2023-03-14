@@ -47,12 +47,14 @@ class Model {
     }
 
     fun deleteNote() {
-        if ( activeNote.value != null ) {
-            println("Deleting active note titled '${activeNote.value!!.title}'")
-            var curIndex = notes.indexOf( activeNote.value!! )
+        activeNote.value?.let {
+            println("Deleting active note titled '${it.title}'")
+            var curIndex = notes.indexOf( it.value )
             if ( curIndex > 0 ) curIndex -= 1
-            notes.remove( activeNote.value!! )
-            setActiveNote( notes[curIndex] )
+            notes.remove( it )
+            noteDatabase.deleteNote( it )
+            if ( notes.isNotEmpty() ) setActiveNote( notes[curIndex] )
+            else setActiveNote( null )
         }
     }
 

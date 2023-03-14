@@ -75,7 +75,7 @@ class NoteDatabase {
         private fun createTableIfNotExists() {
             val createNoteDataTableIfNotExistsSQL = "CREATE TABLE IF NOT EXISTS note_data ( id INTEGER PRIMARY KEY, title TEXT, body TEXT, dateCreated TEXT, dateEdited TEXT );"
             val createPreferencesTableIfNotExistsSQL = "CREATE TABLE IF NOT EXISTS preferences ( id INTEGER PRIMARY KEY, x REAL, y REAL, width REAL, height REAL);"
-            val setDefaultPreferencesIfTableEmptySQL = "INSERT INTO preferences (x, y, width, height) VALUES (0.0, 0.0, 600.0, 400.0) WHERE NOT EXISTS (SELECT 1 FROM preferences);"
+            val setDefaultPreferencesIfTableEmptySQL = "INSERT INTO preferences (x, y, width, height) SELECT 0.0, 0.0, 600.0, 400.0 WHERE NOT EXISTS (SELECT 1 FROM preferences);"
 
             val conn = connect()
             if ( conn == null ) {
@@ -187,7 +187,21 @@ class NoteDatabase {
         }
 
         fun deleteNote( note: NoteData ) {
-            // TODO
+            val deleteNoteSQL = "DELETE FROM note_data WHERE id = ${note.id};"
+
+            val conn = connect()
+            if ( conn == null ) {
+                println("Error: could not establish connection to note database.")
+                return
+            }
+
+            try {
+                val preparedStatement = conn.prepareStatement( deleteNoteSQL )
+                preparedStatement.executeUpdate()
+                println("Deleted note titled ${note.title}} in database.")
+            } catch ( e: SQLException ) {
+                println( e.message )
+            }
         }
 
         fun saveWindowPos( x: Double, y: Double, width: Double, height: Double ) {

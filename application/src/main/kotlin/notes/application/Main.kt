@@ -27,7 +27,7 @@ class Main : Application() {
 
         stage.setOnCloseRequest { _ ->
             noteModel.saveWindowPosition( stage.x, stage.y, stage.width, stage.height )
-            noteModel.saveNoteToDatabase( noteModel.activeNote.value!! )
+            noteModel.activeNote.value?.let { noteModel.saveNoteToDatabase( it ) }
         }
 
         stage.show()
