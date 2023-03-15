@@ -31,6 +31,8 @@ class Menubar(noteModel: Model, noteView: NoteView, noteList: NoteList): MenuBar
     // VIEW MENU
     private var viewMenu = Menu("View")
     private var sortSubMenu = SortMenu(noteModel, noteList)
+    private var darkTheme = MenuItem("Dark Theme")
+    private var lightTheme = MenuItem("Light Theme")
 
     init {
         // Set action for menu items
@@ -81,6 +83,23 @@ class Menubar(noteModel: Model, noteView: NoteView, noteList: NoteList): MenuBar
             }
         }
 
+        darkTheme.setOnAction {
+            println("DARK THEME CLICKED")
+            scene.root.style = "-fx-base:black"
+            val newHtml = noteModel.activeNote.value?.changeBodyBackgroundColor("silver")
+            if (newHtml != null) {
+                noteModel.activeNote.value?.setNoteBody(newHtml)
+            }
+        }
+        lightTheme.setOnAction {
+            println("LIGHT THEME CLICKED")
+            scene.root.style = ""
+            val newHtml = noteModel.activeNote.value?.changeBodyBackgroundColor("white")
+            if (newHtml != null) {
+                noteModel.activeNote.value?.setNoteBody(newHtml)
+            }
+        }
+
 
         // TODO: DON'T FORGET TO ADD TEMP FROM VIEW MENU WHEN DECIDED
 
@@ -98,6 +117,7 @@ class Menubar(noteModel: Model, noteView: NoteView, noteList: NoteList): MenuBar
 
         fileMenu.items.addAll(newNote, deleteNote, newFolder, quit)
         editMenu.items.addAll(undo, redo, cut, copy, paste)
+        viewMenu.items.addAll(darkTheme, lightTheme)
 
         viewMenu.items.add(sortSubMenu)
         this.menus.addAll(fileMenu, editMenu, viewMenu)

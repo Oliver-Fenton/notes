@@ -31,7 +31,7 @@ class NoteData(val id: Int, var title: String): ObservableObjectValue<NoteData?>
     private var changeListeners = mutableListOf<ChangeListener<in NoteData>?>()
     private var invalidationListeners = mutableListOf<InvalidationListener?>()
 
-    var body = ""
+    var body = "<html dir=\"ltr\"><head></head><body contenteditable=\"true\"></body></html>\n"
     var dateCreated = LocalDateTime.now()
     var dateEdited = LocalDateTime.now()
     var isActive = false
@@ -137,6 +137,23 @@ class NoteData(val id: Int, var title: String): ObservableObjectValue<NoteData?>
             println("html editor date cleared")
         }
 
+    }
+
+    fun changeBodyBackgroundColor(backgroundColor: String) : String {
+        val beginningStyleIndex = this.body.indexOf("<body style=")
+        val endingStyleIndex = this.body.indexOf("contenteditable=")
+
+        if (beginningStyleIndex == -1) { // no style set yet
+            var bodyTagIndex = this.body.indexOf("<body")
+            var beginningSubstring = this.body.substring(0, bodyTagIndex + 5)
+            var endingSubstring = this.body.substring(bodyTagIndex + 5)
+            return "$beginningSubstring style='background-color: $backgroundColor;'$endingSubstring"
+        }
+        else { // has style already
+            var beginningSubstring = this.body.substring(0, beginningStyleIndex + 5)
+            var endingSubstring = this.body.substring(endingStyleIndex)
+            return "$beginningSubstring 'background-color: $backgroundColor;'$endingSubstring"
+        }
     }
 
     fun getHTML(): String { return body }
