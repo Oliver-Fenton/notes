@@ -1,6 +1,7 @@
 package notes.shared.database
 
 import notes.shared.model.NoteData
+import notes.shared.preferences.Preferences
 import java.sql.Connection
 import java.sql.DriverManager
 import java.sql.ResultSet
@@ -46,11 +47,11 @@ class NoteDatabase {
         database.deleteNote( note )
     }
 
-    fun saveWindowPosition( x: Double, y: Double, width: Double, height: Double ) {
-        database.saveWindowPos( x, y, width, height )
+    fun saveWindowPosition( x: Double, y: Double, width: Double, height: Double, dividerPos: Double, isListCollapsed: Boolean ) {
+        database.saveWindowPos( x, y, width, height, dividerPos, if (isListCollapsed) 1 else 0 )
     }
 
-    fun getWindowPosition(): Pair< Pair<Double,Double>, Pair<Double,Double> > {
+    fun getWindowPosition(): Preferences {
         return database.getWindowPosition()
     }
 
@@ -74,8 +75,8 @@ class NoteDatabase {
 
         private fun createTableIfNotExists() {
             val createNoteDataTableIfNotExistsSQL = "CREATE TABLE IF NOT EXISTS note_data ( id INTEGER PRIMARY KEY, title TEXT, body TEXT, dateCreated TEXT, dateEdited TEXT );"
-            val createPreferencesTableIfNotExistsSQL = "CREATE TABLE IF NOT EXISTS preferences ( id INTEGER PRIMARY KEY, x REAL, y REAL, width REAL, height REAL);"
-            val setDefaultPreferencesIfTableEmptySQL = "INSERT INTO preferences (x, y, width, height) VALUES (0.0, 0.0, 600.0, 400.0) WHERE NOT EXISTS (SELECT 1 FROM preferences);"
+            val createPreferencesTableIfNotExistsSQL = "CREATE TABLE IF NOT EXISTS preferences ( id INTEGER PRIMARY KEY, x REAL, y REAL, width REAL, height REAL, dividerPos REAL, isListCollapsed INTEGER );"
+            val setDefaultPreferencesIfTableEmptySQL = "INSERT INTO preferences (x, y, width, height, dividerPos, isListCollapsed ) SELECT 0.0, 0.0, 600.0, 400.0, 200.0, 0 WHERE NOT EXISTS (SELECT 1 FROM preferences);"
 
             val conn = connect()
             if ( conn == null ) {
@@ -187,11 +188,25 @@ class NoteDatabase {
         }
 
         fun deleteNote( note: NoteData ) {
-            // TODO
+            val deleteNoteSQL = "DELETE FROM note_data WHERE id = ${note.id};"
+
+            val conn = connect()
+            if ( conn == null ) {
+                println("Error: could not establish connection to note database.")
+                return
+            }
+
+            try {
+                val preparedStatement = conn.prepareStatement( deleteNoteSQL )
+                preparedStatement.executeUpdate()
+                println("Deleted note titled ${note.title}} in database.")
+            } catch ( e: SQLException ) {
+                println( e.message )
+            }
         }
 
-        fun saveWindowPos( x: Double, y: Double, width: Double, height: Double ) {
-            val saveWindowPosSQL = "UPDATE preferences SET x = $x, y = $y, width = $width, height = $height WHERE id = 1;"
+        fun saveWindowPos( x: Double, y: Double, width: Double, height: Double, dividerPos: Double, isListCollapsed: Int ) {
+            val saveWindowPosSQL = "UPDATE preferences SET x = $x, y = $y, width = $width, height = $height, dividerPos = $dividerPos, isListCollapsed = $isListCollapsed WHERE id = 1;"
 
             val conn = connect()
             if ( conn == null ) {
@@ -207,34 +222,38 @@ class NoteDatabase {
             }
         }
 
-        fun getWindowPosition(): Pair< Pair<Double,Double>, Pair<Double,Double> > {
+        fun getWindowPosition(): Preferences {
             val getWindowPosSQL = "SELECT * FROM preferences"
-            var coordinates = Pair(0.0, 0.0)
-            var dimensions = Pair(600.0, 400.0)
+            var x = 0.0
+            var y = 0.0
+            var width = 0.0
+            var height = 0.0
+            var dividerPos = 0.0
+            var isListCollapsed = 0
 
             val conn = connect()
             if ( conn == null ) {
                 println("Error: could not establish connection to note database.")
-                return Pair( coordinates, dimensions )
+                return Preferences( 0.0, 0.0, 600.0, 400.0, 200.0, false )
             }
 
             try {
                 val preparedStatement = conn.prepareStatement( getWindowPosSQL )
                 val rs: ResultSet = preparedStatement.executeQuery()
                 if ( rs.next() ) {
-                    val x = rs.getDouble("x")
-                    val y = rs.getDouble("y")
-                    val width = rs.getDouble("width")
-                    val height = rs.getDouble("height")
-                    coordinates = Pair( x, y )
-                    dimensions = Pair( width, height )
+                    x = rs.getDouble("x")
+                    y = rs.getDouble("y")
+                    width = rs.getDouble("width")
+                    height = rs.getDouble("height")
+                    dividerPos = rs.getDouble("dividerPos")
+                    isListCollapsed = rs.getInt("isListCollapsed")  // 0 = false, 1 = true
                 }
                 rs.close()
                 preparedStatement.close()
             } catch ( e: SQLException ) {
                 println( e.message )
             }
-            return Pair( coordinates, dimensions )
+            return Preferences( x, y, width, height, dividerPos, isListCollapsed != 0 )
         }
     }
 

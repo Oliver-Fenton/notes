@@ -5,6 +5,7 @@ import javafx.beans.property.SimpleObjectProperty
 import javafx.collections.FXCollections
 import javafx.collections.ObservableList
 import notes.shared.database.NoteDatabase
+import notes.shared.preferences.Preferences
 
 class Model {
     val noteDatabase = NoteDatabase()
@@ -46,11 +47,23 @@ class Model {
         noteDatabase.insertNote( newNote )
     }
 
-    fun saveWindowPosition(x: Double, y: Double, width: Double, height: Double) {
-        noteDatabase.saveWindowPosition( x, y, width, height )
+    fun deleteNote() {
+        activeNote.value?.let {
+            println("Deleting active note titled '${it.title}'")
+            var curIndex = notes.indexOf( it.value )
+            if ( curIndex > 0 ) curIndex -= 1
+            notes.remove( it )
+            noteDatabase.deleteNote( it )
+            if ( notes.isNotEmpty() ) setActiveNote( notes[curIndex] )
+            else setActiveNote( null )
+        }
     }
 
-    fun getWindowPosition(): Pair< Pair<Double,Double>, Pair<Double,Double> > {
+    fun saveWindowPosition(x: Double, y: Double, width: Double, height: Double, dividerPos: Double, isListCollapsed: Boolean ) {
+        noteDatabase.saveWindowPosition( x, y, width, height, dividerPos, isListCollapsed )
+    }
+
+    fun getWindowPosition(): Preferences {
         return noteDatabase.getWindowPosition()
     }
 
