@@ -12,21 +12,22 @@ class Main : Application() {
 
 
     override fun start(stage: Stage) {
-        val windowPos = noteModel.getWindowPosition()
-        println("window position fetched from db: $windowPos")
+        val preferences = noteModel.getWindowPosition()
+        println("preferences fetched from db: $preferences")
+
         stage.scene = Scene(noteView, 250.0, 150.0)
         stage.isResizable = true
-        stage.x = windowPos.first.first
-        stage.y = windowPos.first.second
+        stage.x = preferences.x
+        stage.y = preferences.y
         stage.minWidth = 600.0
         stage.minHeight = 400.0
-        stage.width = windowPos.second.first
-        stage.height = windowPos.second.second
+        stage.width = preferences.width
+        stage.height = preferences.height
         stage.isResizable = true
         stage.title = "Notes"
 
         stage.setOnCloseRequest { _ ->
-            noteModel.saveWindowPosition( stage.x, stage.y, stage.width, stage.height )
+            noteModel.saveWindowPosition( stage.x, stage.y, stage.width, stage.height, noteView.getDividerPos(), noteView.isListCollapsed() )
             noteModel.activeNote.value?.let { noteModel.saveNoteToDatabase( it ) }
         }
 
@@ -34,6 +35,9 @@ class Main : Application() {
 
         // Modify the toolbar to include only necessary items (can only be done after at least one layout pass)
         noteView.modifiedHTMLEditorToolbar(noteView.noteView.notesArea)
+
+        // ! important ! this also has to be done after stage.show()
+        noteView.loadPreferences( preferences )
     }
 
 

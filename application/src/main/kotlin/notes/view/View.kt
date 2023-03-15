@@ -14,6 +14,7 @@ import javafx.scene.layout.VBox
 import javafx.scene.web.HTMLEditor
 import notes.shared.model.Model
 import notes.shared.model.TextChange
+import notes.shared.preferences.Preferences
 
 
 class View(private val noteModel: Model): BorderPane() {
@@ -33,9 +34,12 @@ class View(private val noteModel: Model): BorderPane() {
         maxWidth = 500.0
     }
 
+    private var splitView = SplitPane( noteList, noteView )
+    var curDividerPos = splitView.dividerPositions.first()
+
     init {
         top = topVBox
-        center = SplitPane( noteList, noteView)
+        center = splitView
 
         // select most recent note
         if ( noteModel.notes.isNotEmpty() ) noteModel.setActiveNote( noteModel.notes.last() )
@@ -49,12 +53,14 @@ class View(private val noteModel: Model): BorderPane() {
         }
     }
 
-    fun hideNoteList() {
-        center = noteView
+    private fun hideNoteList() {
+        curDividerPos = splitView.dividerPositions.first()
+        splitView.items.removeAt(0)
     }
 
-    fun showNoteList() {
-        center = SplitPane( noteList, noteView )
+    private fun showNoteList() {
+        splitView.items.add(0, noteList)
+        setDividerPos( curDividerPos )
     }
 
     /* Function below is adapted from:
@@ -197,5 +203,29 @@ class View(private val noteModel: Model): BorderPane() {
         }
 
         editor.isVisible = true
+    }
+
+    fun getDividerPos(): Double {
+        return if ( splitView.dividerPositions.isNotEmpty() ) splitView.dividerPositions.first()
+        else curDividerPos
+    }
+
+    fun setDividerPos( pos: Double ) {
+        if ( splitView.dividerPositions.isNotEmpty() ) splitView.dividers.first().position = pos
+    }
+
+    fun isListCollapsed(): Boolean {
+        return splitView.items.size == 1
+    }
+
+    /*
+     * for now loadPreferences just sets the divider position
+     */
+    fun loadPreferences( preferences: Preferences ) {
+        if ( preferences.isListCollapsed ) {
+            noteModel.isSplitView.set( false )
+        } else {
+            setDividerPos( preferences.dividerPos )
+        }
     }
 }

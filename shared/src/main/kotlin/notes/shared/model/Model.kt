@@ -5,6 +5,7 @@ import javafx.beans.property.SimpleObjectProperty
 import javafx.collections.FXCollections
 import javafx.collections.ObservableList
 import notes.shared.database.NoteDatabase
+import notes.shared.preferences.Preferences
 
 class Model {
     val noteDatabase = NoteDatabase()
@@ -58,11 +59,11 @@ class Model {
         }
     }
 
-    fun saveWindowPosition(x: Double, y: Double, width: Double, height: Double) {
-        noteDatabase.saveWindowPosition( x, y, width, height )
+    fun saveWindowPosition(x: Double, y: Double, width: Double, height: Double, dividerPos: Double, isListCollapsed: Boolean ) {
+        noteDatabase.saveWindowPosition( x, y, width, height, dividerPos, isListCollapsed )
     }
 
-    fun getWindowPosition(): Pair< Pair<Double,Double>, Pair<Double,Double> > {
+    fun getWindowPosition(): Preferences {
         return noteDatabase.getWindowPosition()
     }
 

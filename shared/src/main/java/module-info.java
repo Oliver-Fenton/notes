@@ -5,4 +5,5 @@ module notes.shared {
     requires java.sql;
     exports notes.shared;
     exports notes.shared.model;
+    exports notes.shared.preferences;
 }
