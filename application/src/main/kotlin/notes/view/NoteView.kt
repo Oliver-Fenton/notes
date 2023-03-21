@@ -6,8 +6,8 @@ import javafx.scene.control.TextField
 import javafx.scene.control.ToolBar
 import javafx.scene.input.KeyCode
 import javafx.scene.layout.StackPane
-import javafx.scene.web.HTMLEditor
 import notes.shared.Constants
+import javafx.scene.web.HTMLEditor
 import notes.shared.model.Model
 import notes.shared.model.NoteData
 import notes.shared.model.TextChange
@@ -20,7 +20,7 @@ class NoteView(noteModel: Model): StackPane() {
         Constants.notesArea.htmlText = newText
     }
 
-    fun clearTextArea() {
+    fun clearTextArea() { //notesArea.clear()
         Constants.notesArea.htmlText = "" }
 
     fun displayNote(noteData: NoteData) {
@@ -46,6 +46,7 @@ class NoteView(noteModel: Model): StackPane() {
             println("activeNoteData: ${noteModel.activeNote.value?.getHTML()}")
         }
 
+        children.add(Constants.notesArea)
         children.add(Constants.notesArea)
     }
 }

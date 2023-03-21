@@ -35,7 +35,6 @@ class Menubar(noteModel: Model, noteView: NoteView, noteList: NoteList): MenuBar
     private var lightTheme = MenuItem("Light Theme")
 
     init {
-        // Set action for menu items
 
         // TODO: ADD FUNCTIONALITY WHEN POSSIBLE
         newNote.setOnAction {
@@ -85,19 +84,11 @@ class Menubar(noteModel: Model, noteView: NoteView, noteList: NoteList): MenuBar
 
         darkTheme.setOnAction {
             println("DARK THEME CLICKED")
-            scene.root.style = "-fx-base:black"
-            val newHtml = noteModel.activeNote.value?.changeBodyBackgroundColor("silver")
-            if (newHtml != null) {
-                noteModel.activeNote.value?.setNoteBody(newHtml)
-            }
+            setDarkTheme(noteModel, noteView)
         }
         lightTheme.setOnAction {
             println("LIGHT THEME CLICKED")
-            scene.root.style = ""
-            val newHtml = noteModel.activeNote.value?.changeBodyBackgroundColor("white")
-            if (newHtml != null) {
-                noteModel.activeNote.value?.setNoteBody(newHtml)
-            }
+            setLightTheme(noteModel, noteView)
         }
 
 
@@ -121,5 +112,27 @@ class Menubar(noteModel: Model, noteView: NoteView, noteList: NoteList): MenuBar
 
         viewMenu.items.add(sortSubMenu)
         this.menus.addAll(fileMenu, editMenu, viewMenu)
+    }
+
+    fun setDarkTheme(noteModel: Model, noteView: NoteView) {
+        println("SET DARK THEME")
+        scene.root.style = "-fx-base:black"
+        Constants.theme = "dark"
+        val newHtml = noteModel.activeNote.value?.changeBodyBackgroundColor(Constants.DarkHTMLEditorColor)
+        if (newHtml != null) {
+            noteModel.activeNote.value?.setNoteBody(newHtml)
+            noteView.setTextArea(newHtml)
+        }
+    }
+
+    fun setLightTheme(noteModel: Model, noteView: NoteView) {
+        println("SET LIGHT THEME")
+        scene.root.style = ""
+        Constants.theme = "light"
+        val newHtml = noteModel.activeNote.value?.changeBodyBackgroundColor(Constants.LightHTMLEditorColor)
+        if (newHtml != null) {
+            noteModel.activeNote.value?.setNoteBody(newHtml)
+            noteView.setTextArea(newHtml)
+        }
     }
 }

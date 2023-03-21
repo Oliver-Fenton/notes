@@ -34,7 +34,7 @@ class Main : Application() {
         stage.show()
 
         // Modify the toolbar to include only necessary items (can only be done after at least one layout pass)
-        noteView.modifiedHTMLEditorToolbar(Constants.notesArea)
+        noteView.modifiedHTMLEditorToolbar()
 
         // ! important ! this also has to be done after stage.show()
         noteView.loadPreferences( preferences )

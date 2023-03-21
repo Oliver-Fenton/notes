@@ -84,6 +84,10 @@ class NoteData(val id: Int, var title: String): ObservableObjectValue<NoteData?>
         this.body = newBody
         dateEdited = LocalDateTime.now()
         setDateHTMLEditor()
+        this.body = changeBodyBackgroundColor(if (Constants.theme == "light") Constants.LightHTMLEditorColor else Constants.DarkHTMLEditorColor)
+
+        dateEdited = SysInfo.curTime
+
         invalidationListeners.forEach { it?.invalidated(this) }
         changeListeners.forEach { it?.changed(this, this.value, value) }
     }
@@ -147,12 +151,12 @@ class NoteData(val id: Int, var title: String): ObservableObjectValue<NoteData?>
             var bodyTagIndex = this.body.indexOf("<body")
             var beginningSubstring = this.body.substring(0, bodyTagIndex + 5)
             var endingSubstring = this.body.substring(bodyTagIndex + 5)
-            return "$beginningSubstring style='background-color: $backgroundColor;'$endingSubstring"
+            return "$beginningSubstring style='background-color: $backgroundColor;' $endingSubstring"
         }
         else { // has style already
-            var beginningSubstring = this.body.substring(0, beginningStyleIndex + 5)
+            var beginningSubstring = this.body.substring(0, beginningStyleIndex + 12)
             var endingSubstring = this.body.substring(endingStyleIndex)
-            return "$beginningSubstring 'background-color: $backgroundColor;'$endingSubstring"
+            return "$beginningSubstring'background-color: $backgroundColor;' $endingSubstring"
         }
     }
 
@@ -174,6 +178,8 @@ class NoteData(val id: Int, var title: String): ObservableObjectValue<NoteData?>
 
     fun setActive() {
         isActive = true
+        setNoteBody(getHTML())
+        Constants.notesArea.htmlText = getHTML()
 
         invalidationListeners.forEach { it?.invalidated(this) }
         changeListeners.forEach { it?.changed(this, this.value, value) }

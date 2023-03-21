@@ -11,6 +11,7 @@ import javafx.scene.layout.HBox
 import javafx.scene.layout.Priority
 import javafx.scene.layout.VBox
 import javafx.scene.paint.Color
+import notes.shared.Constants
 import notes.shared.SysInfo
 import notes.shared.model.Model
 import notes.shared.model.NoteData
@@ -78,13 +79,14 @@ class NoteList(val noteModel: Model): VBox() {
         }
 
         fun setToActiveColor() {
+            val activeBackgroundColor = if (Constants.theme == "light") Constants.LightHTMLEditorColor else Constants.DarkHTMLEditorColor
             style = "-fx-outline: 10;" +
                     "-fx-outline-offset: -20;"+
                     "-fx-border-style: solid inside;" +
                     "-fx-border-width: 5;" +
                     "-fx-border-insets: 2;" +
                     "-fx-border-radius: 5;" +
-                    "-fx-border-color: #BEBEBE;" +
+                    "-fx-border-color: $activeBackgroundColor;" +
                     "-fx-background-origin: padding-box;"
             titleHBox.apply {
                 style = "-fx-background-color: #BEBEBE"
@@ -115,13 +117,14 @@ class NoteList(val noteModel: Model): VBox() {
                 println("detected a change in note ${newValue?.title}")
                 if (newValue != null) refresh(newValue)
             }
+            val activeBackgroundColor = if (Constants.theme == "light") Constants.LightHTMLEditorColor else Constants.DarkHTMLEditorColor
             style = "-fx-outline: 10;" +
                     "-fx-outline-offset: -20;"+
                     "-fx-border-style: solid inside;" +
                     "-fx-border-width: 5;" +
                     "-fx-border-insets: 2;" +
                     "-fx-border-radius: 5;" +
-                    "-fx-border-color: #EBECF0;"
+                    "-fx-border-color: $activeBackgroundColor;"
         }
     }
     fun refreshList(noteList: ObservableList<NoteData>) {
