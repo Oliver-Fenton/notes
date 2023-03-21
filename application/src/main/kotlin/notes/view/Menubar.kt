@@ -7,6 +7,7 @@ import javafx.scene.control.MenuBar
 import javafx.scene.control.MenuItem
 import javafx.scene.input.KeyCode
 import javafx.scene.input.KeyCodeCombination
+import notes.shared.Constants
 import notes.shared.SysInfo
 import notes.shared.model.Model
 
@@ -49,31 +50,31 @@ class Menubar(noteModel: Model, noteView: NoteView): MenuBar() {
         quit.setOnAction { Platform.exit() }
 
         undo.setOnAction {
-            noteView.notesArea.htmlText = noteModel.activeNote.value?.undo()
+            Constants.notesArea.htmlText = noteModel.activeNote.value?.undo()
         }
 
         redo.setOnAction {
-            noteView.notesArea.htmlText = noteModel.activeNote.value?.redo()
+            Constants.notesArea.htmlText = noteModel.activeNote.value?.redo()
         }
 
         paste.setOnAction {
-            val pasteButton = noteView.notesArea.lookup(".html-editor-paste")
+            val pasteButton = Constants.notesArea.lookup(".html-editor-paste")
             if (pasteButton is Button) {
                 pasteButton.fire()
-                noteModel.activeNote.value?.setNoteBody(noteView.notesArea.htmlText)
+                noteModel.activeNote.value?.setNoteBody(Constants.notesArea.htmlText)
                 println("activeNoteDataPaste: ${noteModel.activeNote.value?.getHTML()}")
             }
         }
         cut.setOnAction {
-            val cutButton = noteView.notesArea.lookup(".html-editor-cut")
+            val cutButton = Constants.notesArea.lookup(".html-editor-cut")
             if (cutButton is Button) {
                 cutButton.fire()
-                noteModel.activeNote.value?.setNoteBody(noteView.notesArea.htmlText)
+                noteModel.activeNote.value?.setNoteBody(Constants.notesArea.htmlText)
                 println("activeNoteDataCut: ${noteModel.activeNote.value?.getHTML()}")
             }
         }
         copy.setOnAction {
-            val copyButton = noteView.notesArea.lookup(".html-editor-copy")
+            val copyButton = Constants.notesArea.lookup(".html-editor-copy")
             if (copyButton is Button) {
                 copyButton.fire()
             }
