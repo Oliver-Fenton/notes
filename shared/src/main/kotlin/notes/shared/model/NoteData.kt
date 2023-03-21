@@ -3,9 +3,14 @@ package notes.shared.model
 import javafx.beans.InvalidationListener
 import javafx.beans.value.ChangeListener
 import javafx.beans.value.ObservableObjectValue
+import javafx.scene.control.Label
+import javafx.scene.control.TextField
+import javafx.scene.control.ToolBar
+import notes.shared.Constants
 import notes.shared.SysInfo
 import org.jsoup.Jsoup
 import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 
 enum class TextChange {
     INSERT,
@@ -27,8 +32,8 @@ class NoteData(val id: Int, var title: String): ObservableObjectValue<NoteData?>
     private var invalidationListeners = mutableListOf<InvalidationListener?>()
 
     var body = ""
-    var dateCreated = SysInfo.curTime
-    var dateEdited = SysInfo.curTime
+    var dateCreated = LocalDateTime.now()
+    var dateEdited = LocalDateTime.now()
     var isActive = false
     var isDisplay = true
 
@@ -54,19 +59,84 @@ class NoteData(val id: Int, var title: String): ObservableObjectValue<NoteData?>
     override fun get(): NoteData { return this }
 
     fun setNoteTitle(newTitle: String) {
+        if (newTitle == "") {
+            title = "New Note"
+
+        } else {
+            title = newTitle
+        }
+        dateEdited = LocalDateTime.now()
+
+
+        invalidationListeners.forEach { it?.invalidated(this) }
+        changeListeners.forEach { it?.changed(this, this.value, value) }
+    }
+    fun changeNoteTitle(newTitle: String) {
         title = newTitle
-        dateEdited = SysInfo.curTime
 
         invalidationListeners.forEach { it?.invalidated(this) }
         changeListeners.forEach { it?.changed(this, this.value, value) }
     }
 
+    fun getNoteTitle(): String { return title }
+
     fun setNoteBody(newBody: String) {
         this.body = newBody
-        dateEdited = SysInfo.curTime
+        dateEdited = LocalDateTime.now()
+        setDateHTMLEditor()
+        invalidationListeners.forEach { it?.invalidated(this) }
+        changeListeners.forEach { it?.changed(this, this.value, value) }
+    }
+
+    fun changeNoteBody(newBody: String) {
+        this.body = newBody
 
         invalidationListeners.forEach { it?.invalidated(this) }
         changeListeners.forEach { it?.changed(this, this.value, value) }
+    }
+
+    fun setDateHTMLEditor() {
+        val toolBar2: ToolBar = Constants.notesArea.lookup(".bottom-toolbar") as ToolBar
+
+        toolBar2.items.forEach { e -> println(e) }
+
+        val date = toolBar2.lookup(".label")
+        if(date is Label) {
+            if (this.isActive) {
+                date.text = this.getDateEdited()
+                println("html editor date updated")
+            }
+        }
+
+
+    }
+
+    fun setTitleHTMLEditor() {
+        val toolBar2: ToolBar = Constants.notesArea.lookup(".bottom-toolbar") as ToolBar
+        val title = toolBar2.lookup(".text-field")
+        if(title is TextField) {
+            if (this.isActive) {
+                title.text = this.getNoteTitle()
+                println("html editor title updated")
+            }
+        }
+    }
+
+    fun clearTitleAndDateHTMLEditor() {
+        val toolBar2: ToolBar = Constants.notesArea.lookup(".bottom-toolbar") as ToolBar
+
+        // must set title first, then date due to the listener on title (that updates date when title changes)
+        val title = toolBar2.lookup(".text-field")
+        if(title is TextField) {
+            title.text = ""
+            println("html editor title cleared")
+        }
+        val date = toolBar2.lookup(".label")
+        if(date is Label) {
+            date.text = ""
+            println("html editor date cleared")
+        }
+
     }
 
     fun getHTML(): String { return body }
@@ -75,9 +145,15 @@ class NoteData(val id: Int, var title: String): ObservableObjectValue<NoteData?>
 
     fun getPreview(): String { return getText().take(100) }
 
-    fun getDateCreated(): String { return dateCreated.toString() }
+    fun getDateCreated(): String {
+        val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
+        return dateCreated.format(formatter)
+    }
 
-    fun getDateEdited(): String { return dateEdited.toString() }
+    fun getDateEdited(): String {
+        val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
+        return dateEdited.format(formatter)
+    }
 
     fun setActive() {
         isActive = true
@@ -156,6 +232,7 @@ class NoteData(val id: Int, var title: String): ObservableObjectValue<NoteData?>
                 }
             }
             setNoteBody(action.second)
+            print("UNDO")
             return action.second
         }
         return null
@@ -220,6 +297,7 @@ class NoteData(val id: Int, var title: String): ObservableObjectValue<NoteData?>
                 }
             }
             setNoteBody(action.second)
+            print("REDO")
             return action.second
         }
         return null
