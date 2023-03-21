@@ -1,16 +1,17 @@
 package notes.view
 
 import javafx.application.Platform
-import javafx.scene.control.Button
-import javafx.scene.control.Menu
-import javafx.scene.control.MenuBar
-import javafx.scene.control.MenuItem
+import javafx.beans.value.ObservableValueBase
+import javafx.collections.FXCollections
+import javafx.event.EventHandler
+import javafx.scene.control.*
 import javafx.scene.input.KeyCode
 import javafx.scene.input.KeyCodeCombination
+import javafx.scene.input.MouseEvent
 import notes.shared.SysInfo
 import notes.shared.model.Model
 
-class Menubar(noteModel: Model, noteView: NoteView): MenuBar() {
+class Menubar(noteModel: Model, noteView: NoteView, noteList: NoteList): MenuBar() {
     // FILE MENU
     private var fileMenu = Menu("File")
     private var newNote = MenuItem("New Note")
@@ -28,7 +29,7 @@ class Menubar(noteModel: Model, noteView: NoteView): MenuBar() {
 
     // VIEW MENU
     private var viewMenu = Menu("View")
-    private var temp = MenuItem("Temp") // TODO: update when decided
+    private var sortSubMenu = SortMenu(noteModel, noteList)
 
     init {
         // Set action for menu items
@@ -96,8 +97,9 @@ class Menubar(noteModel: Model, noteView: NoteView): MenuBar() {
 
         fileMenu.items.addAll(newNote, deleteNote, newFolder, quit)
         editMenu.items.addAll(undo, redo, cut, copy, paste)
-        viewMenu.items.add(temp)
 
+        viewMenu.items.addAll(sortSubMenu)
         this.menus.addAll(fileMenu, editMenu, viewMenu)
+
     }
 }
