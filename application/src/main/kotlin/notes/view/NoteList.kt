@@ -2,9 +2,9 @@ package notes.view
 
 import javafx.collections.ListChangeListener
 import javafx.collections.ObservableList
-import javafx.event.EventHandler
 import javafx.geometry.Insets
 import javafx.scene.control.Label
+import javafx.scene.input.MouseButton
 import javafx.scene.layout.Background
 import javafx.scene.layout.HBox
 import javafx.scene.layout.Priority
@@ -12,6 +12,7 @@ import javafx.scene.layout.VBox
 import javafx.scene.paint.Color
 import notes.shared.model.Model
 import notes.shared.model.NoteData
+
 
 class NoteList(val noteModel: Model): VBox() {
     inner class NotePreview(noteData: NoteData): VBox() {
@@ -38,9 +39,13 @@ class NoteList(val noteModel: Model): VBox() {
             children.addAll( title, dateAndPreview )
             prefHeight = 50.0
 
-            onMouseClicked = EventHandler {
-                noteModel.setActiveNote(noteData)
-                println("Note named ${noteData.title} set as active note with body ${noteData.getHTML()}")
+            this.setOnMouseClicked{e ->
+                if (e.getButton() == MouseButton.PRIMARY) {
+                    noteModel.setActiveNote(noteData)
+                    println("Note named ${noteData.title} set as active note with body ${noteData.getHTML()}")
+                } else if (e.getButton() == MouseButton.SECONDARY) {
+
+                }
             }
 
             noteData.addListener { _, _, newValue ->
@@ -51,7 +56,7 @@ class NoteList(val noteModel: Model): VBox() {
     }
     fun refreshList(noteList: ObservableList<NoteData>) {
         children.clear()
-        for ( noteData in noteList.reversed()) {
+        for (noteData in noteList) {
             if(noteData.isDisplay) {
                 children.add(NotePreview(noteData))
             }

@@ -10,7 +10,6 @@ class Main : Application() {
     private val noteModel = Model()
     private val noteView = View( noteModel )
 
-
     override fun start(stage: Stage) {
         val preferences = noteModel.getWindowPosition()
         println("preferences fetched from db: $preferences")

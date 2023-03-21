@@ -9,6 +9,7 @@ import javafx.scene.control.ToolBar
 import javafx.scene.image.Image
 import javafx.scene.image.ImageView
 import javafx.scene.input.KeyCode
+import javafx.scene.input.MouseButton
 import javafx.scene.layout.BorderPane
 import javafx.scene.layout.VBox
 import javafx.scene.web.HTMLEditor
@@ -19,11 +20,10 @@ import notes.shared.preferences.Preferences
 
 class View(private val noteModel: Model): BorderPane() {
 
-    val noteView = NoteView( noteModel )
-    private val menuBar = Menubar( noteModel, noteView )
-    private val topVBox = VBox( menuBar )
-
     val noteListView = NoteList(noteModel)
+    val noteView = NoteView( noteModel)
+    private val menuBar = Menubar( noteModel, noteView, noteListView)
+    private val topVBox = VBox( menuBar )
 
     private val searchBar = SearchBar(noteModel, noteListView)
     private val searchListVBox = VBox(searchBar, noteListView)
@@ -36,6 +36,7 @@ class View(private val noteModel: Model): BorderPane() {
 
     private var splitView = SplitPane( noteList, noteView )
     var curDividerPos = splitView.dividerPositions.first()
+    val contextMenuSort = SortMenuContext(SortMenu(noteModel, noteListView))
 
     init {
         top = topVBox
@@ -49,6 +50,11 @@ class View(private val noteModel: Model): BorderPane() {
                 showNoteList()
             } else { // not split view
                 hideNoteList()
+            }
+        }
+        noteList.setOnMouseClicked{e ->
+            if (e.getButton() == MouseButton.SECONDARY) {
+                noteList.contextMenu = this.contextMenuSort
             }
         }
     }

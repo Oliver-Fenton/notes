@@ -16,7 +16,7 @@ class SearchBar(noteModel: Model, nList: NoteList) : StackPane(){
     private val labelContainer = StackPane()
     private val searchLabel = Text("search")
 
-    private val searchButton = Button("Go")
+    private val searchButton = Button("Clear")
     private val searchContainer = HBox(searchBar, searchButton)
 
     private fun getSearchValue(): String {
@@ -43,6 +43,11 @@ class SearchBar(noteModel: Model, nList: NoteList) : StackPane(){
         children.add(searchContainer)
 
         this.searchButton.onMouseClicked = EventHandler {
+            stringMatch(noteModel.notes, "")
+            this.searchBar.text = ""
+            nList.refreshList(noteModel.notes)
+        }
+        this.searchBar.onKeyReleased = EventHandler {
             val comp = this.getSearchValue()
             stringMatch(noteModel.notes, comp)
             nList.refreshList(noteModel.notes)

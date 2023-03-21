@@ -70,4 +70,31 @@ class Model {
     fun saveNoteToDatabase( note: NoteData ) {
         noteDatabase.updateNote( note )
     }
+
+
+    fun sortAlpha(reverseOrder: Boolean) {
+        println("Sort Alphabetically")
+        var sortedNotes = notes.sortedWith(compareBy{ it.getText() })
+        if (reverseOrder) {
+            sortedNotes = sortedNotes.reversed()
+        }
+        notes.clear()
+        sortedNotes.forEach {element ->
+            notes.add(element)
+        }
+    }
+
+    fun sortDate(reverseOrder: Boolean) {
+        println("Sort Date")
+        var sortedNotes = notes.sortedWith(compareBy{ it.getDateCreated()})
+        if (reverseOrder) {
+            sortedNotes = sortedNotes.reversed()
+        }
+        notes.clear()
+        sortedNotes.forEach {element ->
+            notes.add(element)
+        }
+    }
+
+
 }
