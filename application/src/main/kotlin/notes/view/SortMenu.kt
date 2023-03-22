@@ -110,7 +110,7 @@ class SortMenu(noteModel: Model, noteList: NoteList): Menu("Sort") {
         }
 
         this.sortAlphaTitle.setOnAction {
-            this.setAllSelectedFalse(this.sortDateEdited)
+            this.setAllSelectedFalse(this.sortAlphaTitle)
             this.sortAscending.text = this.getMessage(true, "Alphabetical")
             this.sortDescending.text = this.getMessage(false, "Alphabetical")
             println("Sort Note Title")
