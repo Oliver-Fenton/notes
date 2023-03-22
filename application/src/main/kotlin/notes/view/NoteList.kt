@@ -125,7 +125,7 @@ class NoteList(val noteModel: Model): VBox() {
     }
     fun refreshList(noteList: ObservableList<NoteData>) {
         children.clear()
-        for (noteData in noteList) {
+        for (noteData in noteList.reversed()) {
             if(noteData.isDisplay) {
                 children.add(NotePreview(noteData))
             }
