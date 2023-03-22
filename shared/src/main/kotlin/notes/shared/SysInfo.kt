@@ -14,6 +14,6 @@ class SysInfo {
         val processors = Runtime.getRuntime().availableProcessors()
         val freeMemory =  Runtime.getRuntime().freeMemory()
         val totalMemory = Runtime.getRuntime().totalMemory()
-        val curTime = LocalDateTime.now()
+        //val curTime = LocalDateTime.now()
     }
 }

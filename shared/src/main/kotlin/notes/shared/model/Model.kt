@@ -4,6 +4,11 @@ import javafx.beans.property.SimpleBooleanProperty
 import javafx.beans.property.SimpleObjectProperty
 import javafx.collections.FXCollections
 import javafx.collections.ObservableList
+import javafx.scene.control.Label
+import javafx.scene.control.TextField
+import javafx.scene.control.ToolBar
+import javafx.scene.web.HTMLEditor
+import notes.shared.Constants
 import notes.shared.database.NoteDatabase
 import notes.shared.preferences.Preferences
 
@@ -27,7 +32,9 @@ class Model {
 
     fun setActiveNote( note: NoteData? ) {
         // save changes to old note in database
-        if ( activeNote.value != null ) noteDatabase.updateNote( activeNote.value!! )
+        if ( activeNote.value != null ) {
+            noteDatabase.updateNote( activeNote.value!! )
+        }
 
         // deactivate old note
         activeNote.value?.setInactive()
@@ -35,6 +42,9 @@ class Model {
         // activate new note
         activeNote.set( note )
         note?.setActive()
+
+        activeNote.value?.setDateHTMLEditor()
+        activeNote.value?.setTitleHTMLEditor()
     }
 
     fun createNote() {
@@ -54,8 +64,13 @@ class Model {
             if ( curIndex > 0 ) curIndex -= 1
             notes.remove( it )
             noteDatabase.deleteNote( it )
-            if ( notes.isNotEmpty() ) setActiveNote( notes[curIndex] )
-            else setActiveNote( null )
+            if ( notes.isNotEmpty() ) { setActiveNote( notes[curIndex] ) }
+            else {
+                activeNote.value?.clearTitleAndDateHTMLEditor()
+                setActiveNote( null )
+               // activeNote.value?.clearTitleAndDateHTMLEditor()
+                // no active notes left, so clear the title and date visible on htmleditor
+            }
         }
     }
 
