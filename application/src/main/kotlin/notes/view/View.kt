@@ -180,12 +180,16 @@ class View(private val noteModel: Model): BorderPane() {
                 }
             }
         }
+        listCollapsable.id = "list-collapsable"
+
         val undoButton = Button()
+        undoButton.id = "undo-button"
         undoButton.setOnMouseClicked {
             Constants.notesArea.htmlText = noteModel.activeNote.value?.undo()
         }
 
         val redoButton = Button()
+        redoButton.id = "redo-button"
         redoButton.setOnMouseClicked {
             Constants.notesArea.htmlText = noteModel.activeNote.value?.redo()
         }
