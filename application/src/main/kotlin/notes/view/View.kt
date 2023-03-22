@@ -19,7 +19,8 @@ import notes.shared.preferences.Preferences
 class View(private val noteModel: Model): BorderPane() {
 
     val noteListView = NoteList(noteModel).apply {
-        style = "-fx-background-color: white;"
+        val noteListBackground = if (Constants.theme == "light") Constants.LightNoteListBackgroundColor else Constants.DarkNoteListBackgroundColor
+        style = "-fx-background-color: $noteListBackground;" // change to be theme background color
     }
     val noteView = NoteView( noteModel)
     private val menuBar = Menubar( noteModel, noteView, noteListView)
@@ -53,7 +54,7 @@ class View(private val noteModel: Model): BorderPane() {
             }
         }
         noteList.setOnMouseClicked{e ->
-            if (e.getButton() == MouseButton.SECONDARY) {
+            if (e.button == MouseButton.SECONDARY) {
                 noteList.contextMenu = this.contextMenuSort
             }
         }
@@ -158,17 +159,17 @@ class View(private val noteModel: Model): BorderPane() {
             }
         }
 
-            toolBar2.isVisible = true // everything from toolBar2 in now in toolBar1
-            toolBar2.isManaged = true
-            toolBar2.items.addAll(title, date)
-            toolBar2.apply {
-                style = "-fx-background-color: white;"
-            }
+        toolBar2.isVisible = true // everything from toolBar2 in now in toolBar1
+        toolBar2.isManaged = true
+        toolBar2.items.addAll(title, date)
+        toolBar2.apply {
+            style = "-fx-background-color: white;"
+        }
 
-            // Now add custom buttons
-            val listCollapsableImageView = ImageView(Image("Sidebar-Icon.png"))
-            val undoImageView = ImageView(Image("Undo-Icon.png"))
-            val redoImageView = ImageView(Image("Redo-Icon.png"))
+        // Now add custom buttons
+        val listCollapsableImageView = ImageView(Image("Sidebar-Icon.png"))
+        val undoImageView = ImageView(Image("Undo-Icon.png"))
+        val redoImageView = ImageView(Image("Redo-Icon.png"))
 
         val listCollapsable = Button().apply {
             onMouseClicked = EventHandler {
@@ -189,24 +190,24 @@ class View(private val noteModel: Model): BorderPane() {
             Constants.notesArea.htmlText = noteModel.activeNote.value?.redo()
         }
 
-            listCollapsableImageView.fitHeight = 20.0
-            listCollapsableImageView.isPreserveRatio = true
-            listCollapsable.setPrefSize(20.0, 20.0)
-            listCollapsable.graphic = listCollapsableImageView
+        listCollapsableImageView.fitHeight = 20.0
+        listCollapsableImageView.isPreserveRatio = true
+        listCollapsable.setPrefSize(20.0, 20.0)
+        listCollapsable.graphic = listCollapsableImageView
 
-            undoImageView.fitHeight = 20.0
-            undoImageView.isPreserveRatio = true
-            undoButton.setPrefSize(20.0, 20.0)
-            undoButton.graphic = undoImageView
+        undoImageView.fitHeight = 20.0
+        undoImageView.isPreserveRatio = true
+        undoButton.setPrefSize(20.0, 20.0)
+        undoButton.graphic = undoImageView
 
-            redoImageView.fitHeight = 20.0
-            redoImageView.isPreserveRatio = true
-            redoButton.setPrefSize(20.0, 20.0)
-            redoButton.graphic = redoImageView
+        redoImageView.fitHeight = 20.0
+        redoImageView.isPreserveRatio = true
+        redoButton.setPrefSize(20.0, 20.0)
+        redoButton.graphic = redoImageView
 
-            toolBar1.items.add(0, listCollapsable)
-            toolBar1.items.add(1, undoButton)
-            toolBar1.items.add(2, redoButton)
+        toolBar1.items.add(0, listCollapsable)
+        toolBar1.items.add(1, undoButton)
+        toolBar1.items.add(2, redoButton)
 
         Constants.notesArea.addEventFilter(javafx.scene.input.KeyEvent.KEY_RELEASED) { event ->
             if (event.isMetaDown && KeyCode.Z == event.code) {
@@ -262,10 +263,10 @@ class View(private val noteModel: Model): BorderPane() {
 
         // NEED TO LOAD THIS FROM DATABASE PREFERENCES
         if (Constants.theme == "light") {
-            menuBar.setLightTheme(noteModel, noteView)
+            menuBar.setLightTheme()
         }
         else {
-            menuBar.setDarkTheme(noteModel, noteView)
+            menuBar.setDarkTheme()
         }
     }
 }

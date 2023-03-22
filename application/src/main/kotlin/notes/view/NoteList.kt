@@ -5,17 +5,12 @@ import javafx.collections.ObservableList
 import javafx.geometry.Insets
 import javafx.scene.control.Label
 import javafx.scene.input.MouseButton
-import javafx.scene.input.KeyCode
-import javafx.scene.layout.Background
 import javafx.scene.layout.HBox
 import javafx.scene.layout.Priority
 import javafx.scene.layout.VBox
-import javafx.scene.paint.Color
 import notes.shared.Constants
-import notes.shared.SysInfo
 import notes.shared.model.Model
 import notes.shared.model.NoteData
-import notes.shared.model.TextChange
 
 class NoteList(val noteModel: Model): VBox() {
 
@@ -59,27 +54,28 @@ class NoteList(val noteModel: Model): VBox() {
         }
 
         fun setToInactiveColor() {
+            val inactiveBackgroundColor = if (Constants.theme == "light") Constants.LightInactiveNoteColor else Constants.DarkInactiveNoteColor
             style = "-fx-outline: 10;" +
                     "-fx-outline-offset: -20;"+
                     "-fx-border-style: solid inside;" +
                     "-fx-border-width: 5;" +
                     "-fx-border-insets: 2;" +
                     "-fx-border-radius: 5;" +
-                    "-fx-border-color: #EBECF0;" +
+                    "-fx-border-color: $inactiveBackgroundColor;" +
                     "-fx-background-origin: padding-box;"
             titleHBox.apply {
-                style = "-fx-background-color: #EBECF0;"
+                style = "-fx-background-color: $inactiveBackgroundColor;"
             }
             dateAndPreview.apply {
-                style = "-fx-background-color: #EBECF0;"
+                style = "-fx-background-color: $inactiveBackgroundColor;"
             }
             tagsHBox.apply {
-                style = "-fx-background-color: #EBECF0;"
+                style = "-fx-background-color: $inactiveBackgroundColor;"
             }
         }
 
         fun setToActiveColor() {
-            val activeBackgroundColor = if (Constants.theme == "light") Constants.LightHTMLEditorColor else Constants.DarkHTMLEditorColor
+            val activeBackgroundColor = if (Constants.theme == "light") Constants.LightActiveNoteColor else Constants.DarkActiveNoteColor
             style = "-fx-outline: 10;" +
                     "-fx-outline-offset: -20;"+
                     "-fx-border-style: solid inside;" +
@@ -89,13 +85,13 @@ class NoteList(val noteModel: Model): VBox() {
                     "-fx-border-color: $activeBackgroundColor;" +
                     "-fx-background-origin: padding-box;"
             titleHBox.apply {
-                style = "-fx-background-color: #BEBEBE"
+                style = "-fx-background-color: $activeBackgroundColor"
             }
             dateAndPreview.apply {
-                style = "-fx-background-color: #BEBEBE"
+                style = "-fx-background-color: $activeBackgroundColor"
             }
             tagsHBox.apply {
-                style = "-fx-background-color: #BEBEBE"
+                style = "-fx-background-color: $activeBackgroundColor"
             }
         }
         init {
@@ -105,10 +101,10 @@ class NoteList(val noteModel: Model): VBox() {
             prefHeight = 55.0 // needs to be set to fit all children so no whitespace shows betwee border
 
             this.setOnMouseClicked{e ->
-                if (e.getButton() == MouseButton.PRIMARY) {
+                if (e.button == MouseButton.PRIMARY) {
                     noteModel.setActiveNote(noteData)
                     println("Note named ${noteData.title} set as active note with body ${noteData.getHTML()}")
-                } else if (e.getButton() == MouseButton.SECONDARY) {
+                } else if (e.button == MouseButton.SECONDARY) {
 
                 }
             }
@@ -117,14 +113,6 @@ class NoteList(val noteModel: Model): VBox() {
                 println("detected a change in note ${newValue?.title}")
                 if (newValue != null) refresh(newValue)
             }
-            val activeBackgroundColor = if (Constants.theme == "light") Constants.LightHTMLEditorColor else Constants.DarkHTMLEditorColor
-            style = "-fx-outline: 10;" +
-                    "-fx-outline-offset: -20;"+
-                    "-fx-border-style: solid inside;" +
-                    "-fx-border-width: 5;" +
-                    "-fx-border-insets: 2;" +
-                    "-fx-border-radius: 5;" +
-                    "-fx-border-color: $activeBackgroundColor;"
         }
     }
     fun refreshList(noteList: ObservableList<NoteData>) {

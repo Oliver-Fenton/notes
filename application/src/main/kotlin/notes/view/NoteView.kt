@@ -1,13 +1,9 @@
 package notes.view
 
 
-import javafx.scene.control.Label
-import javafx.scene.control.TextField
-import javafx.scene.control.ToolBar
 import javafx.scene.input.KeyCode
 import javafx.scene.layout.StackPane
 import notes.shared.Constants
-import javafx.scene.web.HTMLEditor
 import notes.shared.model.Model
 import notes.shared.model.NoteData
 import notes.shared.model.TextChange
@@ -46,7 +42,6 @@ class NoteView(noteModel: Model): StackPane() {
             println("activeNoteData: ${noteModel.activeNote.value?.getHTML()}")
         }
 
-        children.add(Constants.notesArea)
         children.add(Constants.notesArea)
     }
 }

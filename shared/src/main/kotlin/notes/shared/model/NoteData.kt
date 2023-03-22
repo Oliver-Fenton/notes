@@ -7,7 +7,6 @@ import javafx.scene.control.Label
 import javafx.scene.control.TextField
 import javafx.scene.control.ToolBar
 import notes.shared.Constants
-import notes.shared.SysInfo
 import org.jsoup.Jsoup
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
@@ -80,19 +79,16 @@ class NoteData(val id: Int, var title: String): ObservableObjectValue<NoteData?>
 
     fun getNoteTitle(): String { return title }
 
-    fun setNoteBody(newBody: String) {
+    fun setNoteBody(newBody: String) { // Update Note Body for front end changes
         this.body = newBody
         dateEdited = LocalDateTime.now()
         setDateHTMLEditor()
-        this.body = changeBodyBackgroundColor(if (Constants.theme == "light") Constants.LightHTMLEditorColor else Constants.DarkHTMLEditorColor)
-
-        dateEdited = SysInfo.curTime
 
         invalidationListeners.forEach { it?.invalidated(this) }
         changeListeners.forEach { it?.changed(this, this.value, value) }
     }
 
-    fun changeNoteBody(newBody: String) {
+    fun changeNoteBody(newBody: String) { // Update Note Body but not front end changes
         this.body = newBody
 
         invalidationListeners.forEach { it?.invalidated(this) }
@@ -101,8 +97,6 @@ class NoteData(val id: Int, var title: String): ObservableObjectValue<NoteData?>
 
     fun setDateHTMLEditor() {
         val toolBar2: ToolBar = Constants.notesArea.lookup(".bottom-toolbar") as ToolBar
-
-        toolBar2.items.forEach { e -> println(e) }
 
         val date = toolBar2.lookup(".label")
         if(date is Label) {
@@ -178,7 +172,8 @@ class NoteData(val id: Int, var title: String): ObservableObjectValue<NoteData?>
 
     fun setActive() {
         isActive = true
-        setNoteBody(getHTML())
+        val updatedBackgroundHTML = changeBodyBackgroundColor(if (Constants.theme == "light") Constants.LightHTMLEditorColor else Constants.DarkHTMLEditorColor)
+        changeNoteBody(updatedBackgroundHTML)
         Constants.notesArea.htmlText = getHTML()
 
         invalidationListeners.forEach { it?.invalidated(this) }

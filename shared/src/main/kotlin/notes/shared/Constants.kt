@@ -1,6 +1,5 @@
 package notes.shared
 
-import javafx.scene.paint.Color
 import javafx.scene.web.HTMLEditor
 
 
@@ -11,11 +10,17 @@ object Constants {
     var theme = "light"
 
     // Dark Theme Colors
-    val DarkActiveNoteColor = Color.DARKGRAY
+    val DarkActiveNoteColor = "#4F4F4F"
+    val DarkInactiveNoteColor = "#929292"
     val DarkHTMLEditorColor = "gray"
+    val DarkNoteListBackgroundColor = "black"
+    val DarkToolbarColor = "#4E4E4E"
 
     // Light Theme Colors
-    val LightActiveNoteColor = Color.AQUAMARINE
+    val LightActiveNoteColor = "#67E1CB"
+    val LightInactiveNoteColor = "#EBECF0"
     val LightHTMLEditorColor = "white"
+    val LightNoteListBackgroundColor = "white"
+    val LightToolbarColor = "#86ECDA"
 
 }

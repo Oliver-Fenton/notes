@@ -12,7 +12,7 @@ import notes.shared.Constants
 import notes.shared.SysInfo
 import notes.shared.model.Model
 
-class Menubar(noteModel: Model, noteView: NoteView, noteList: NoteList): MenuBar() {
+class Menubar(val noteModel: Model, val noteView: NoteView, val noteList: NoteList): MenuBar() {
     // FILE MENU
     private var fileMenu = Menu("File")
     private var newNote = MenuItem("New Note")
@@ -84,11 +84,11 @@ class Menubar(noteModel: Model, noteView: NoteView, noteList: NoteList): MenuBar
 
         darkTheme.setOnAction {
             println("DARK THEME CLICKED")
-            setDarkTheme(noteModel, noteView)
+            setDarkTheme()
         }
         lightTheme.setOnAction {
             println("LIGHT THEME CLICKED")
-            setLightTheme(noteModel, noteView)
+            setLightTheme()
         }
 
 
@@ -108,30 +108,38 @@ class Menubar(noteModel: Model, noteView: NoteView, noteList: NoteList): MenuBar
 
         fileMenu.items.addAll(newNote, deleteNote, newFolder, quit)
         editMenu.items.addAll(undo, redo, cut, copy, paste)
-        viewMenu.items.addAll(darkTheme, lightTheme)
+        viewMenu.items.addAll(darkTheme, lightTheme, sortSubMenu)
 
         viewMenu.items.add(sortSubMenu)
         this.menus.addAll(fileMenu, editMenu, viewMenu)
     }
 
-    fun setDarkTheme(noteModel: Model, noteView: NoteView) {
+    fun setDarkTheme() {
         println("SET DARK THEME")
         scene.root.style = "-fx-base:black"
         Constants.theme = "dark"
+        noteList.refreshList(noteModel.notes)
+        noteList.apply {
+            style = "-fx-background-color: ${Constants.LightNoteListBackgroundColor};" // change to be theme background color
+        }
         val newHtml = noteModel.activeNote.value?.changeBodyBackgroundColor(Constants.DarkHTMLEditorColor)
         if (newHtml != null) {
-            noteModel.activeNote.value?.setNoteBody(newHtml)
+            noteModel.activeNote.value?.changeNoteBody(newHtml)
             noteView.setTextArea(newHtml)
         }
     }
 
-    fun setLightTheme(noteModel: Model, noteView: NoteView) {
+    fun setLightTheme() {
         println("SET LIGHT THEME")
         scene.root.style = ""
         Constants.theme = "light"
+        noteList.refreshList(noteModel.notes)
+        noteList.apply {
+            style = "-fx-background-color: ${Constants.DarkNoteListBackgroundColor};" // change to be theme background color
+        }
         val newHtml = noteModel.activeNote.value?.changeBodyBackgroundColor(Constants.LightHTMLEditorColor)
         if (newHtml != null) {
-            noteModel.activeNote.value?.setNoteBody(newHtml)
+            noteModel.activeNote.value?.changeNoteBody(newHtml)
             noteView.setTextArea(newHtml)
         }
     }
