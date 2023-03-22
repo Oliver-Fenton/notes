@@ -2,8 +2,25 @@ package notes.shared
 
 import javafx.scene.web.HTMLEditor
 
+
 object Constants {
-   // val OS = System.getProperty("os.name").lowercase()
-    //val OS_KeyCombo = if (osName.contains("mac")) KeyCodeCombination.META_DOWN else KeyCodeCombination.CONTROL_DOWN
+
     val notesArea = HTMLEditor()
+
+    var theme = "light"
+
+    // Dark Theme Colors
+    val DarkActiveNoteColor = "#4F4F4F"
+    val DarkInactiveNoteColor = "#929292"
+    val DarkHTMLEditorColor = "gray"
+    val DarkNoteListBackgroundColor = "black"
+    val DarkToolbarColor = "#4E4E4E"
+
+    // Light Theme Colors
+    val LightActiveNoteColor = "#67E1CB"
+    val LightInactiveNoteColor = "#EBECF0"
+    val LightHTMLEditorColor = "white"
+    val LightNoteListBackgroundColor = "white"
+    val LightToolbarColor = "#86ECDA"
+
 }

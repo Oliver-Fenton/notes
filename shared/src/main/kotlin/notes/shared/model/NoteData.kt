@@ -7,7 +7,6 @@ import javafx.scene.control.Label
 import javafx.scene.control.TextField
 import javafx.scene.control.ToolBar
 import notes.shared.Constants
-import notes.shared.SysInfo
 import org.jsoup.Jsoup
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
@@ -31,7 +30,7 @@ class NoteData(val id: Int, var title: String): ObservableObjectValue<NoteData?>
     private var changeListeners = mutableListOf<ChangeListener<in NoteData>?>()
     private var invalidationListeners = mutableListOf<InvalidationListener?>()
 
-    var body = ""
+    var body = "<html dir=\"ltr\"><head></head><body contenteditable=\"true\"></body></html>\n"
     var dateCreated = LocalDateTime.now()
     var dateEdited = LocalDateTime.now()
     var isActive = false
@@ -80,15 +79,16 @@ class NoteData(val id: Int, var title: String): ObservableObjectValue<NoteData?>
 
     fun getNoteTitle(): String { return title }
 
-    fun setNoteBody(newBody: String) {
+    fun setNoteBody(newBody: String) { // Update Note Body for front end changes
         this.body = newBody
         dateEdited = LocalDateTime.now()
         setDateHTMLEditor()
+
         invalidationListeners.forEach { it?.invalidated(this) }
         changeListeners.forEach { it?.changed(this, this.value, value) }
     }
 
-    fun changeNoteBody(newBody: String) {
+    fun changeNoteBody(newBody: String) { // Update Note Body but not front end changes
         this.body = newBody
 
         invalidationListeners.forEach { it?.invalidated(this) }
@@ -97,8 +97,6 @@ class NoteData(val id: Int, var title: String): ObservableObjectValue<NoteData?>
 
     fun setDateHTMLEditor() {
         val toolBar2: ToolBar = Constants.notesArea.lookup(".bottom-toolbar") as ToolBar
-
-        toolBar2.items.forEach { e -> println(e) }
 
         val date = toolBar2.lookup(".label")
         if(date is Label) {
@@ -139,6 +137,23 @@ class NoteData(val id: Int, var title: String): ObservableObjectValue<NoteData?>
 
     }
 
+    fun changeBodyBackgroundColor(backgroundColor: String) : String {
+        val beginningStyleIndex = this.body.indexOf("<body style=")
+        val endingStyleIndex = this.body.indexOf("contenteditable=")
+
+        if (beginningStyleIndex == -1) { // no style set yet
+            var bodyTagIndex = this.body.indexOf("<body")
+            var beginningSubstring = this.body.substring(0, bodyTagIndex + 5)
+            var endingSubstring = this.body.substring(bodyTagIndex + 5)
+            return "$beginningSubstring style='background-color: $backgroundColor;' $endingSubstring"
+        }
+        else { // has style already
+            var beginningSubstring = this.body.substring(0, beginningStyleIndex + 12)
+            var endingSubstring = this.body.substring(endingStyleIndex)
+            return "$beginningSubstring'background-color: $backgroundColor;' $endingSubstring"
+        }
+    }
+
     fun getHTML(): String { return body }
 
     fun getText(): String { return Jsoup.parse( getHTML() ).text() }
@@ -157,6 +172,9 @@ class NoteData(val id: Int, var title: String): ObservableObjectValue<NoteData?>
 
     fun setActive() {
         isActive = true
+        val updatedBackgroundHTML = changeBodyBackgroundColor(if (Constants.theme == "light") Constants.LightHTMLEditorColor else Constants.DarkHTMLEditorColor)
+        changeNoteBody(updatedBackgroundHTML)
+        Constants.notesArea.htmlText = getHTML()
 
         invalidationListeners.forEach { it?.invalidated(this) }
         changeListeners.forEach { it?.changed(this, this.value, value) }

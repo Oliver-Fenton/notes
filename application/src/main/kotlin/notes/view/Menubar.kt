@@ -1,18 +1,16 @@
 package notes.view
 
 import javafx.application.Platform
-import javafx.beans.value.ObservableValueBase
-import javafx.collections.FXCollections
-import javafx.event.EventHandler
 import javafx.scene.control.*
+import javafx.scene.image.Image
+import javafx.scene.image.ImageView
 import javafx.scene.input.KeyCode
 import javafx.scene.input.KeyCodeCombination
-import javafx.scene.input.MouseEvent
 import notes.shared.Constants
 import notes.shared.SysInfo
 import notes.shared.model.Model
 
-class Menubar(noteModel: Model, noteView: NoteView, noteList: NoteList): MenuBar() {
+class Menubar(val noteModel: Model, val noteView: NoteView, val noteList: NoteList): MenuBar() {
     // FILE MENU
     private var fileMenu = Menu("File")
     private var newNote = MenuItem("New Note")
@@ -31,9 +29,10 @@ class Menubar(noteModel: Model, noteView: NoteView, noteList: NoteList): MenuBar
     // VIEW MENU
     private var viewMenu = Menu("View")
     private var sortSubMenu = SortMenu(noteModel, noteList)
+    private var darkTheme = MenuItem("Dark Theme")
+    private var lightTheme = MenuItem("Light Theme")
 
     init {
-        // Set action for menu items
 
         // TODO: ADD FUNCTIONALITY WHEN POSSIBLE
         newNote.setOnAction {
@@ -81,6 +80,13 @@ class Menubar(noteModel: Model, noteView: NoteView, noteList: NoteList): MenuBar
             }
         }
 
+        darkTheme.setOnAction {
+            setDarkTheme()
+        }
+        lightTheme.setOnAction {
+            setLightTheme()
+        }
+
 
         // TODO: DON'T FORGET TO ADD TEMP FROM VIEW MENU WHEN DECIDED
 
@@ -98,8 +104,98 @@ class Menubar(noteModel: Model, noteView: NoteView, noteList: NoteList): MenuBar
 
         fileMenu.items.addAll(newNote, deleteNote, newFolder, quit)
         editMenu.items.addAll(undo, redo, cut, copy, paste)
+        viewMenu.items.addAll(darkTheme, lightTheme, sortSubMenu)
 
-        viewMenu.items.add(sortSubMenu)
         this.menus.addAll(fileMenu, editMenu, viewMenu)
+    }
+
+    fun setDarkTheme() {
+        scene.root.style = "-fx-base:black"
+        Constants.theme = "dark"
+        noteList.refreshList(noteModel.notes)
+        noteList.apply {
+            style = "-fx-background-color: ${Constants.DarkNoteListBackgroundColor};" // change to be theme background color
+        }
+        val newHtml = noteModel.activeNote.value?.changeBodyBackgroundColor(Constants.DarkHTMLEditorColor)
+        if (newHtml != null) {
+            noteModel.activeNote.value?.changeNoteBody(newHtml)
+            noteView.setTextArea(newHtml)
+        }
+
+        val toolBar2: ToolBar = Constants.notesArea.lookup(".bottom-toolbar") as ToolBar
+        toolBar2.apply {
+            style = "-fx-background-color: ${Constants.DarkToolbarColor};"
+        }
+
+        val toolBar1: ToolBar = Constants.notesArea.lookup(".top-toolbar") as ToolBar
+        for (node in toolBar1.lookupAll(".button")) {
+            if (node is Button) {
+                if (node.id == "undo-button") {
+                    val undoImageView = ImageView(Image("Dark-Undo-Icon.png"))
+                    undoImageView.fitHeight = 20.0
+                    undoImageView.isPreserveRatio = true
+                    node.graphic = undoImageView
+                }
+                else if (node.id == "redo-button") {
+                    val redoImageView = ImageView(Image("Dark-Redo-Icon.png"))
+                    redoImageView.fitHeight = 20.0
+                    redoImageView.isPreserveRatio = true
+                    node.setPrefSize(20.0, 20.0)
+                    node.graphic = redoImageView
+                }
+                else if (node.id == "list-collapsable") {
+                    val listCollapsableImageView = ImageView(Image("Dark-Sidebar-Icon.png"))
+                    listCollapsableImageView.fitHeight = 20.0
+                    listCollapsableImageView.isPreserveRatio = true
+                    node.setPrefSize(20.0, 20.0)
+                    node.graphic = listCollapsableImageView
+                }
+            }
+        }
+    }
+
+    fun setLightTheme() {
+        scene.root.style = ""
+        Constants.theme = "light"
+        noteList.refreshList(noteModel.notes)
+        noteList.apply {
+            style = "-fx-background-color: ${Constants.LightNoteListBackgroundColor};" // change to be theme background color
+        }
+        val newHtml = noteModel.activeNote.value?.changeBodyBackgroundColor(Constants.LightHTMLEditorColor)
+        if (newHtml != null) {
+            noteModel.activeNote.value?.changeNoteBody(newHtml)
+            noteView.setTextArea(newHtml)
+        }
+
+        val toolBar2: ToolBar = Constants.notesArea.lookup(".bottom-toolbar") as ToolBar
+        toolBar2.apply {
+            style = "-fx-background-color: ${Constants.LightToolbarColor};"
+        }
+
+        val toolBar1: ToolBar = Constants.notesArea.lookup(".top-toolbar") as ToolBar
+        for (node in toolBar1.lookupAll(".button")) {
+            if (node is Button) {
+                if (node.id == "undo-button") {
+                    val undoImageView = ImageView(Image("Undo-Icon.png"))
+                    undoImageView.fitHeight = 20.0
+                    undoImageView.isPreserveRatio = true
+                    node.graphic = undoImageView
+                }
+                else if (node.id == "redo-button") {
+                    val redoImageView = ImageView(Image("Redo-Icon.png"))
+                    redoImageView.fitHeight = 20.0
+                    redoImageView.isPreserveRatio = true
+                    node.setPrefSize(20.0, 20.0)
+                    node.graphic = redoImageView
+                }
+                else if (node.id == "list-collapsable") {
+                    val listCollapsableImageView = ImageView(Image("Sidebar-Icon.png"))
+                    listCollapsableImageView.fitHeight = 20.0
+                    listCollapsableImageView.isPreserveRatio = true
+                    node.setPrefSize(20.0, 20.0)
+                    node.graphic = listCollapsableImageView
+                }
+            }
+        }
     }
 }
