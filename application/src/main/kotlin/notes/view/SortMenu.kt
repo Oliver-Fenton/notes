@@ -9,7 +9,8 @@ import notes.shared.model.Model
 class SortMenu(noteModel: Model, noteList: NoteList): Menu("Sort") {
     private var sortDateCreated = CheckMenuItem("Date Created")
     private var sortDateEdited = CheckMenuItem("Date Edited")
-    private var sortAlpha = CheckMenuItem("Alphabetical")
+    private var sortAlphaBody = CheckMenuItem("Note Body")
+    private var sortAlphaTitle = CheckMenuItem("Note Title")
     private var sortSubMenuDivider = SeparatorMenuItem()
     var reverseOrder = false
     private var temp = MenuItem("Temp") // TODO: update when decided
@@ -38,8 +39,17 @@ class SortMenu(noteModel: Model, noteList: NoteList): Menu("Sort") {
         }
         return ""
     }
+
+    private fun setAllSelectedFalse(param: CheckMenuItem) {
+        this.sortDateCreated.isSelected = false
+        this.sortAlphaBody.isSelected = false
+        this.sortDateEdited.isSelected = false
+        this.sortAlphaTitle.isSelected = false
+        param.isSelected = true
+    }
+
     init {
-        this.items.addAll(sortDateCreated, sortDateEdited, sortAlpha, sortSubMenuDivider, sortAscending, sortDescending)
+        this.items.addAll(sortDateCreated, sortDateEdited, sortAlphaTitle, sortAlphaBody, sortSubMenuDivider, sortAscending, sortDescending)
         this.sortAscending.isSelected = true
         this.sortDateCreated.isSelected = true
 
@@ -51,7 +61,7 @@ class SortMenu(noteModel: Model, noteList: NoteList): Menu("Sort") {
             }
             noteModel.sortAlpha(reverseOrder)
             noteList.refreshList(noteModel.notes)
-            if (this.sortAlpha.isSelected) {
+            if (this.sortAlphaBody.isSelected) {
                 noteModel.sortAlpha(reverseOrder)
             } else {
                 noteModel.sortDate(reverseOrder)
@@ -64,7 +74,7 @@ class SortMenu(noteModel: Model, noteList: NoteList): Menu("Sort") {
                 this.sortAscending.isSelected = false
                 this.reverseOrder = true
             }
-            if (this.sortAlpha.isSelected) {
+            if (this.sortAlphaBody.isSelected) {
                 noteModel.sortAlpha(reverseOrder)
             } else {
                 noteModel.sortDate(reverseOrder)
@@ -72,9 +82,8 @@ class SortMenu(noteModel: Model, noteList: NoteList): Menu("Sort") {
             noteList.refreshList(noteModel.notes)
         }
 
-        this.sortAlpha.setOnAction {
-            this.sortAlpha.isSelected = true
-            this.sortDateCreated.isSelected = false
+        this.sortAlphaBody.setOnAction {
+            this.setAllSelectedFalse(this.sortAlphaBody)
             this.sortAscending.text = this.getMessage(true, "Alphabetical")
             this.sortDescending.text = this.getMessage(false, "Alphabetical")
             println("Sort Alphabetical Menu")
@@ -83,12 +92,29 @@ class SortMenu(noteModel: Model, noteList: NoteList): Menu("Sort") {
         }
 
         this.sortDateCreated.setOnAction {
-            this.sortDateCreated.isSelected = true
-            this.sortAlpha.isSelected = false
+            this.setAllSelectedFalse(this.sortDateCreated)
             this.sortAscending.text = this.getMessage(true, "Date")
             this.sortDescending.text = this.getMessage(false, "Date")
             println("Sort Date Menu")
             noteModel.sortDate(reverseOrder)
+            noteList.refreshList(noteModel.notes)
+        }
+
+        this.sortDateEdited.setOnAction {
+            this.setAllSelectedFalse(this.sortDateEdited)
+            this.sortAscending.text = this.getMessage(true, "Date")
+            this.sortDescending.text = this.getMessage(false, "Date")
+            println("Sort Date Edited Menu")
+            noteModel.sortDateEdited(reverseOrder)
+            noteList.refreshList(noteModel.notes)
+        }
+
+        this.sortAlphaTitle.setOnAction {
+            this.setAllSelectedFalse(this.sortDateEdited)
+            this.sortAscending.text = this.getMessage(true, "Alphabetical")
+            this.sortDescending.text = this.getMessage(false, "Alphabetical")
+            println("Sort Note Title")
+            noteModel.sortAlphaTitle(reverseOrder)
             noteList.refreshList(noteModel.notes)
         }
 

@@ -111,5 +111,29 @@ class Model {
         }
     }
 
+    fun sortDateEdited(reverseOrder: Boolean) {
+        println("Sort Date Edited")
+        var sortedNotes = notes.sortedWith(compareBy{ it.getDateEdited()})
+        if (reverseOrder) {
+            sortedNotes = sortedNotes.reversed()
+        }
+        notes.clear()
+        sortedNotes.forEach {element ->
+            notes.add(element)
+        }
+    }
+
+    fun sortAlphaTitle(reverseOrder: Boolean) {
+        println("Sort Note Title")
+        var sortedNotes = notes.sortedWith(compareBy{ it.getNoteTitle()})
+        if (reverseOrder) {
+            sortedNotes = sortedNotes.reversed()
+        }
+        notes.clear()
+        sortedNotes.forEach {element ->
+            notes.add(element)
+        }
+    }
+
 
 }
