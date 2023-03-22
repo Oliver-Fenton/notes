@@ -17,6 +17,7 @@ import notes.shared.model.NoteData
 import notes.shared.model.TextChange
 
 class NoteList(val noteModel: Model): VBox() {
+
     inner class NotePreview(noteData: NoteData): VBox() {
 
         val title = Label( noteData.title ).apply {

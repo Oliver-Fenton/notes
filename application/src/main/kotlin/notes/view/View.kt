@@ -69,7 +69,6 @@ class View(private val noteModel: Model): BorderPane() {
         setDividerPos(curDividerPos)
     }
 
-
     /* Function below is adapted from:
     Source: https://stackoverflow.com/questions/10075841/how-to-hide-the-controls-of-htmleditor
     Commenter: Tag Howard
