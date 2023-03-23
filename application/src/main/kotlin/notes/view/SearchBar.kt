@@ -16,7 +16,7 @@ class SearchBar(noteModel: Model, nList: NoteList) : StackPane(){
     private val labelContainer = StackPane()
     private val searchLabel = Text("search")
 
-    private val searchButton = Button("Clear")
+    private val searchButton = Button("x")
     private val searchContainer = HBox(searchBar, searchButton)
 
     private fun getSearchValue(): String {

@@ -172,12 +172,16 @@ class NoteData(val id: Int, var title: String): ObservableObjectValue<NoteData?>
     fun getPreview(): String { return getText().take(100) }
 
     fun getDateCreated(): String {
-        val formatter = DateTimeFormatter.ofPattern("MMMM d, yyyy '@' h:mm a")
+       // val formatter = DateTimeFormatter.ofPattern("MMMM d, yyyy '@' h:mm a")
+        val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:MM:SS")
+
         return dateCreated.format(formatter)
     }
 
     fun getDateEdited(): String {
-        val formatter = DateTimeFormatter.ofPattern("MMMM d, yyyy '@' h:mm a")
+       // val formatter = DateTimeFormatter.ofPattern("MMMM d, yyyy '@' h:mm a")
+        val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:MM:SS")
+
         return dateEdited.format(formatter)
     }
 

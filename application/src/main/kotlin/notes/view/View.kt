@@ -34,7 +34,7 @@ class View(private val noteModel: Model): BorderPane() {
         VBox.setVgrow(noteView, Priority.ALWAYS)
     }
 
-    private val menuBar = Menubar( noteModel, noteView, noteListView)
+    private val menuBar = Menubar( noteModel, noteView, noteListView, tagsBar)
     private val topVBox = VBox( menuBar )
 
     private val searchBar = SearchBar(noteModel, noteListView)

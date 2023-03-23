@@ -11,16 +11,18 @@ import javafx.scene.control.TextField
 import javafx.scene.layout.Priority
 import notes.shared.model.Model
 import notes.shared.model.NoteData
+import notes.shared.Constants
 
 class TagsBar(noteModel: Model, noteList: NoteList) : HBox() {
     var tagsBar = this
 
     inner class TagButton(activeNote: SimpleObjectProperty<NoteData?>, tag: String, noteList: NoteList, noteModel: Model) : HBox() {
-        val tagImageView = ImageView(Image("Tag-Close-Icon.png"))
-        val tagText = Label(tag).apply {
+        var tagImageView = ImageView(Image("Close-Icon.png"))
+        var tagText = Label(tag).apply {
             style = "-fx-background: white;"
         }
         init {
+            this.id = "TagButton"
             tagImageView.maxHeight(10.0)
             tagImageView.maxWidth(10.0)
             tagImageView.isPreserveRatio = true
@@ -30,7 +32,6 @@ class TagsBar(noteModel: Model, noteList: NoteList) : HBox() {
                         "-fx-border-color: #BEBEBE;" +
                         "-fx-border-radius: 4;" +
                         "-fx-background-color: white;"
-                      //  "-fx-border-insets: 5;"
             this.prefHeight = 10.0
             this.children.addAll(tagText, tagImageView)
 
@@ -46,10 +47,11 @@ class TagsBar(noteModel: Model, noteList: NoteList) : HBox() {
     }
 
     inner class AddTagTextField(activeNote: SimpleObjectProperty<NoteData?>, noteList: NoteList, noteModel: Model) : HBox() {
-        val confirmImageView = ImageView(Image("Tag-Add-Icon.png"))
-        val confirmButton = Button()
-        val tagInput = TextField()
+        var confirmImageView = ImageView(Image("Checkmark-Icon.png"))
+        var confirmButton = Button()
+        var tagInput = TextField()
         init {
+            this.id = "TagTextField"
             tagInput.promptText = "add tag"
             confirmImageView.fitHeight = 10.0
             confirmImageView.isPreserveRatio = true
@@ -78,6 +80,51 @@ class TagsBar(noteModel: Model, noteList: NoteList) : HBox() {
                         noteList.refreshList(noteModel.notes)
                         tagInput.text = ""
                     }
+                }
+            }
+        }
+    }
+
+    fun setTagsBarColors() {
+
+        for (node in this.children) {
+            if (node.id == "TagTextField") {
+                if (node is AddTagTextField && Constants.theme == "light") {
+                    node.confirmImageView = ImageView(Image("Checkmark-Icon.png"))
+                    node.confirmImageView.fitHeight = 10.0
+                    node.confirmImageView.isPreserveRatio = true
+                    node.confirmButton.graphic = node.confirmImageView
+                    node.confirmButton.style = "-fx-background: white;"
+                } else if (node is AddTagTextField && Constants.theme == "dark") {
+                    node.confirmImageView = ImageView(Image("Dark-Checkmark-Icon.png"))
+                    node.confirmImageView.fitHeight = 10.0
+                    node.confirmImageView.isPreserveRatio = true
+                    node.confirmButton.graphic = node.confirmImageView
+                    node.confirmButton.style = "-fx-background: black;"
+                }
+
+            } else if (node.id == "TagButton") {
+                if (node is TagButton && Constants.theme == "light") {
+
+                    node.tagImageView = ImageView(Image("Close-Icon.png"))
+                    node.tagText.apply { style = "-fx-background: white;" }
+                    node.style =
+                        "-fx-padding: 3;" +
+                                "-fx-border-width: 1;" +
+                                "-fx-border-color: #BEBEBE;" +
+                                "-fx-border-radius: 4;" +
+                                "-fx-background-color: white;"
+                } else if (node is TagButton && Constants.theme == "dark") {
+
+                    node.tagImageView = ImageView(Image("Dark-Close-Icon.png"))
+                    node.tagText.apply { style = "-fx-background: black;" }
+                    node.style =
+                        "-fx-padding: 3;" +
+                                "-fx-border-width: 1;" +
+                                "-fx-border-color: #5A5A5A;" +
+                                "-fx-border-radius: 4;" +
+                                "-fx-background-color: black;"
+
                 }
             }
         }
