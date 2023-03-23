@@ -6,6 +6,7 @@ import javafx.scene.image.ImageView
 import javafx.scene.layout.HBox
 import javafx.scene.control.Button
 import javafx.scene.control.Label
+import javafx.scene.input.KeyCode
 import javafx.scene.control.TextField
 import javafx.scene.layout.Priority
 import notes.shared.model.Model
@@ -69,6 +70,16 @@ class TagsBar(noteModel: Model, noteList: NoteList) : HBox() {
                     tagInput.text = ""
                 }
             }
+            this.setOnKeyReleased { event ->
+                if (event.code == KeyCode.ENTER) {
+                    if (tagInput.text != "") {
+                        tagsBar.TagButton(activeNote, tagInput.text, noteList, noteModel)
+                        activeNote.value?.addTag(tagInput.text)
+                        noteList.refreshList(noteModel.notes)
+                        tagInput.text = ""
+                    }
+                }
+            }
         }
     }
 
@@ -78,7 +89,7 @@ class TagsBar(noteModel: Model, noteList: NoteList) : HBox() {
         this.spacing = 10.0
 
         this.AddTagTextField(noteModel.activeNote, noteList, noteModel).prefHeightProperty().bind(this.heightProperty())
-        tagsBar.apply{
+        this.apply{
             HBox.setHgrow(this.AddTagTextField(noteModel.activeNote, noteList, noteModel), Priority.ALWAYS)
 
         }
