@@ -19,13 +19,14 @@ class NoteList(val noteModel: Model): VBox() {
         val title = Label( noteData.title ).apply {
             HBox.setHgrow(this, Priority.NEVER)
         }
+
         val date = Label( noteData.getDateEdited() + " " ).apply {
             minWidth = Label.USE_PREF_SIZE
         }
         val preview = Label( noteData.getPreview() ).apply {
             HBox.setHgrow(this, Priority.NEVER)
         }
-        val tags = Label("tags").apply {
+        val tags = Label(noteData.getFirstTags()[0] +  noteData.getFirstTags()[1] + noteData.getFirstTags()[2]).apply {
             HBox.setHgrow(this, Priority.NEVER)
         }
 
@@ -45,7 +46,6 @@ class NoteList(val noteModel: Model): VBox() {
             title.text = noteData.getNoteTitle()
             date.text = noteData.getDateEdited()
             preview.text = noteData.getPreview()
-
             if (noteData.isActive) {
                 setToActiveColor()
             } else {
@@ -104,6 +104,7 @@ class NoteList(val noteModel: Model): VBox() {
                 if (e.button == MouseButton.PRIMARY) {
                     noteModel.setActiveNote(noteData)
                     println("Note named ${noteData.title} set as active note with body ${noteData.getHTML()}")
+                    println("Note tags ${noteData.getAllTags()}")
                 } else if (e.button == MouseButton.SECONDARY) {
 
                 }

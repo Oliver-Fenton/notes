@@ -17,6 +17,8 @@ class Model {
     var isSplitView = SimpleBooleanProperty( true )
     val activeNote = SimpleObjectProperty<NoteData?>(null)
     var notes: ObservableList<NoteData> = FXCollections.observableArrayList()
+    var allTags: Array<String> = arrayOf<String>()
+
     private var idCounter: Int = 0
 
     /*
@@ -135,5 +137,15 @@ class Model {
         }
     }
 
-
+    fun trimTags(currTag: String) {
+        for (n in notes) {
+            if (!n.getDisplay()) {
+                continue
+            }else if (this.allTags.contains(currTag)) {
+                n.doDisplay()
+            } else {
+                n.notDisplay()
+            }
+        }
+    }
 }
