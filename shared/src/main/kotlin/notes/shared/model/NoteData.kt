@@ -1,8 +1,11 @@
 package notes.shared.model
 
 import javafx.beans.InvalidationListener
+import javafx.beans.Observable
 import javafx.beans.value.ChangeListener
 import javafx.beans.value.ObservableObjectValue
+import javafx.collections.FXCollections
+import javafx.collections.ObservableList
 import javafx.scene.control.Label
 import javafx.scene.control.TextField
 import javafx.scene.control.ToolBar
@@ -29,6 +32,7 @@ enum class TextChange {
 class NoteData(val id: Int, var title: String): ObservableObjectValue<NoteData?> {
     private var changeListeners = mutableListOf<ChangeListener<in NoteData>?>()
     private var invalidationListeners = mutableListOf<InvalidationListener?>()
+    var tags: ObservableList<String> = FXCollections.observableArrayList()
 
     var body = "<html dir=\"ltr\"><head></head><body contenteditable=\"true\"></body></html>\n"
     var dateCreated = LocalDateTime.now()
@@ -39,10 +43,17 @@ class NoteData(val id: Int, var title: String): ObservableObjectValue<NoteData?>
     var undoStack = ArrayList<Pair<TextChange, String>>()
     var redoStack = ArrayList<Pair<TextChange, String>>()
 
-    constructor( id: Int, title: String, body: String, dateCreated: String, dateEdited: String ) : this( id, title ) {
+    constructor( id: Int, title: String, body: String, dateCreated: String, dateEdited: String, noteTags: String) : this( id, title ) {
         this.body = body
         this.dateCreated = LocalDateTime.parse( dateCreated )
         this.dateEdited = LocalDateTime.parse( dateEdited )
+        val trimmedNoteTags =  noteTags.substring(1, noteTags.length - 1)
+        if (trimmedNoteTags != "") {
+            val noteTagsArr = trimmedNoteTags.split(",")
+            noteTagsArr.forEach { e ->
+                this.tags.add(e)
+            }
+        }
     }
 
     override fun addListener(listener: ChangeListener<in NoteData?>?) { changeListeners.add(listener) }
@@ -145,12 +156,12 @@ class NoteData(val id: Int, var title: String): ObservableObjectValue<NoteData?>
             var bodyTagIndex = this.body.indexOf("<body")
             var beginningSubstring = this.body.substring(0, bodyTagIndex + 5)
             var endingSubstring = this.body.substring(bodyTagIndex + 5)
-            return "$beginningSubstring style='background-color: $backgroundColor;' $endingSubstring"
+            return "$beginningSubstring style=background-color: $backgroundColor; $endingSubstring"
         }
         else { // has style already
             var beginningSubstring = this.body.substring(0, beginningStyleIndex + 12)
             var endingSubstring = this.body.substring(endingStyleIndex)
-            return "$beginningSubstring'background-color: $backgroundColor;' $endingSubstring"
+            return "$beginningSubstring background-color: $backgroundColor; $endingSubstring"
         }
     }
 
@@ -193,6 +204,10 @@ class NoteData(val id: Int, var title: String): ObservableObjectValue<NoteData?>
 
     fun notDisplay() {
         isDisplay = false
+    }
+
+    fun getDisplay(): Boolean {
+        return isDisplay
     }
 
     fun undo(): String? {
@@ -324,4 +339,36 @@ class NoteData(val id: Int, var title: String): ObservableObjectValue<NoteData?>
     fun emptyRedo() {
         redoStack.clear()
     }
+
+    fun getAllTags(): ObservableList<String> {
+        return tags
+    }
+
+    fun addTag(input: String) {
+        tags.add(input)
+    }
+
+    fun removeTag(input: String) {
+        tags.remove(input)
+    }
+
+    fun getFirstTags(): ObservableList<String> {
+        val previewTags: ObservableList<String> = FXCollections.observableArrayList()
+        for (i in 1..3 ) {
+            previewTags.add("")
+        }
+        tags.forEachIndexed{index, element ->
+            var temp = element
+            if (element.length > 15) {
+                temp = element.substring(1, 12) + "..."
+            }
+            if (index < 2) {
+                previewTags[index] = "$temp, "
+            } else if (index == 2) {
+                previewTags[index] = temp
+            }
+        }
+        return previewTags
+    }
+
 }

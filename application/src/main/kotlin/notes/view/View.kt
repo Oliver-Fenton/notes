@@ -7,7 +7,9 @@ import javafx.scene.control.*
 import javafx.scene.image.Image
 import javafx.scene.image.ImageView
 import javafx.scene.input.KeyCode
+import javafx.scene.input.KeyEvent
 import javafx.scene.input.MouseButton
+import javafx.scene.input.MouseEvent
 import javafx.scene.layout.BorderPane
 import javafx.scene.layout.VBox
 import notes.shared.Constants
@@ -22,7 +24,13 @@ class View(private val noteModel: Model): BorderPane() {
         val noteListBackground = if (Constants.theme == "light") Constants.LightNoteListBackgroundColor else Constants.DarkNoteListBackgroundColor
         style = "-fx-background-color: $noteListBackground;" // change to be theme background color
     }
+
+    val tagsBar = TagsBar(noteModel, noteListView)
+    val tagsBarScrollBar = ScrollPane(tagsBar)
+
     val noteView = NoteView( noteModel)
+    val noteViewWrapper = VBox(noteView, tagsBarScrollBar)
+
     private val menuBar = Menubar( noteModel, noteView, noteListView)
     private val topVBox = VBox( menuBar )
 
@@ -35,7 +43,7 @@ class View(private val noteModel: Model): BorderPane() {
         maxWidth = 500.0
     }
 
-    private var splitView = SplitPane(noteList, noteView)
+    private var splitView = SplitPane(noteList, noteViewWrapper)
     var curDividerPos = splitView.dividerPositions.first()
     val contextMenuSort = SortMenuContext(SortMenu(noteModel, noteListView))
 
@@ -58,6 +66,9 @@ class View(private val noteModel: Model): BorderPane() {
                 noteList.contextMenu = this.contextMenuSort
             }
         }
+
+        // val tagsList = noteModel.activeNote.value?.getAllTags()
+        // val tagsBar = TagsBar()
     }
 
     private fun hideNoteList() {
@@ -88,24 +99,24 @@ class View(private val noteModel: Model): BorderPane() {
         //toolBar2.items.forEach { e -> println(e) }
 
         nodesToKeepTop.add(Constants.notesArea.lookup(".html-editor-cut"))
-        Constants.notesArea.lookup(".html-editor-cut").addEventHandler(javafx.scene.input.MouseEvent.MOUSE_CLICKED) {
+        Constants.notesArea.lookup(".html-editor-cut").addEventHandler(MouseEvent.MOUSE_CLICKED) {
             noteModel.activeNote.value?.addToUndoStack(TextChange.DELETE)
             noteModel.activeNote.value?.setNoteBody(Constants.notesArea.htmlText)
         }
         nodesToKeepTop.add(Constants.notesArea.lookup(".html-editor-copy"))
         nodesToKeepTop.add(Constants.notesArea.lookup(".html-editor-paste"))
-        Constants.notesArea.lookup(".html-editor-paste").addEventHandler(javafx.scene.input.MouseEvent.MOUSE_CLICKED) {
+        Constants.notesArea.lookup(".html-editor-paste").addEventHandler(MouseEvent.MOUSE_CLICKED) {
             noteModel.activeNote.value?.addToUndoStack(TextChange.INSERT)
             noteModel.activeNote.value?.setNoteBody(Constants.notesArea.htmlText)
         }
 //        nodesToKeepTop.add(editor.lookup(".html-editor-numbers"))
         nodesToKeepTop.add(Constants.notesArea.lookup(".html-editor-bullets"))
-        Constants.notesArea.lookup(".html-editor-bullets").addEventHandler(javafx.scene.input.MouseEvent.MOUSE_CLICKED) {
+        Constants.notesArea.lookup(".html-editor-bullets").addEventHandler(MouseEvent.MOUSE_CLICKED) {
             noteModel.activeNote.value?.addToUndoStack(TextChange.LIST)
             noteModel.activeNote.value?.setNoteBody(Constants.notesArea.htmlText)
         }
         nodesToKeepTop.add(Constants.notesArea.lookup(".html-editor-foreground"))
-        Constants.notesArea.lookup(".html-editor-foreground").addEventHandler(javafx.scene.input.MouseEvent.MOUSE_CLICKED) {
+        Constants.notesArea.lookup(".html-editor-foreground").addEventHandler(MouseEvent.MOUSE_CLICKED) {
             noteModel.activeNote.value?.addToUndoStack(TextChange.COLOR)
             noteModel.activeNote.value?.setNoteBody(Constants.notesArea.htmlText)
         }
@@ -113,17 +124,17 @@ class View(private val noteModel: Model): BorderPane() {
 
 //        nodesToKeepBottom.add(editor.lookup(".font-menu-button"))
         nodesToKeepBottom.add(Constants.notesArea.lookup(".html-editor-bold"))
-        Constants.notesArea.lookup(".html-editor-bold").addEventHandler(javafx.scene.input.MouseEvent.MOUSE_CLICKED) {
+        Constants.notesArea.lookup(".html-editor-bold").addEventHandler(MouseEvent.MOUSE_CLICKED) {
             noteModel.activeNote.value?.addToUndoStack(TextChange.BOLD)
             noteModel.activeNote.value?.setNoteBody(Constants.notesArea.htmlText)
         }
         nodesToKeepBottom.add(Constants.notesArea.lookup(".html-editor-italic"))
-        Constants.notesArea.lookup(".html-editor-italic").addEventHandler(javafx.scene.input.MouseEvent.MOUSE_CLICKED) {
+        Constants.notesArea.lookup(".html-editor-italic").addEventHandler(MouseEvent.MOUSE_CLICKED) {
             noteModel.activeNote.value?.addToUndoStack(TextChange.ITALICIZE)
             noteModel.activeNote.value?.setNoteBody(Constants.notesArea.htmlText)
         }
         nodesToKeepBottom.add(Constants.notesArea.lookup(".html-editor-underline"))
-        Constants.notesArea.lookup(".html-editor-underline").addEventHandler(javafx.scene.input.MouseEvent.MOUSE_CLICKED) {
+        Constants.notesArea.lookup(".html-editor-underline").addEventHandler(MouseEvent.MOUSE_CLICKED) {
             noteModel.activeNote.value?.addToUndoStack(TextChange.UNDERLINE)
             noteModel.activeNote.value?.setNoteBody(Constants.notesArea.htmlText)
         }
@@ -147,6 +158,7 @@ class View(private val noteModel: Model): BorderPane() {
         // minWidth = Label.USE_PREF_SIZE
         //minWidth = toolBar2.width
             alignment = Pos.CENTER
+            promptText = "New Note"
         }
 
         title.textProperty().addListener { _, _, newValue ->
@@ -213,7 +225,7 @@ class View(private val noteModel: Model): BorderPane() {
         toolBar1.items.add(1, undoButton)
         toolBar1.items.add(2, redoButton)
 
-        Constants.notesArea.addEventFilter(javafx.scene.input.KeyEvent.KEY_RELEASED) { event ->
+        Constants.notesArea.addEventFilter(KeyEvent.KEY_RELEASED) { event ->
             if (event.isMetaDown && KeyCode.Z == event.code) {
                 Constants.notesArea.htmlText = noteModel.activeNote.value?.undo()
                 event.consume()

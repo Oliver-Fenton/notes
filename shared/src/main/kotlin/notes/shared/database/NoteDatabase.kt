@@ -74,7 +74,7 @@ class NoteDatabase {
         }
 
         private fun createTableIfNotExists() {
-            val createNoteDataTableIfNotExistsSQL = "CREATE TABLE IF NOT EXISTS note_data ( id INTEGER PRIMARY KEY, title TEXT, body TEXT, dateCreated TEXT, dateEdited TEXT );"
+            val createNoteDataTableIfNotExistsSQL = "CREATE TABLE IF NOT EXISTS note_data ( id INTEGER PRIMARY KEY, title TEXT, body TEXT, dateCreated TEXT, dateEdited TEXT, tags TEXT );"
             val createPreferencesTableIfNotExistsSQL = "CREATE TABLE IF NOT EXISTS preferences ( id INTEGER PRIMARY KEY, x REAL, y REAL, width REAL, height REAL, dividerPos REAL, isListCollapsed INTEGER );"
             val setDefaultPreferencesIfTableEmptySQL = "INSERT INTO preferences (x, y, width, height, dividerPos, isListCollapsed ) SELECT 0.0, 0.0, 600.0, 400.0, 200.0, 0 WHERE NOT EXISTS (SELECT 1 FROM preferences);"
 
@@ -118,7 +118,8 @@ class NoteDatabase {
                     val body = rs.getString("body")
                     val dateCreated = rs.getString("dateCreated")
                     val dateEdited = rs.getString("dateEdited")
-                    list.add( NoteData( id, title, body, dateCreated, dateEdited ) )
+                    val tags = rs.getString("tags")
+                    list.add( NoteData( id, title, body, dateCreated, dateEdited, tags ) )
                 }
                 rs.close()
                 preparedStatement.close()
@@ -151,7 +152,7 @@ class NoteDatabase {
         }
 
         fun insertNote( note: NoteData ) {
-            val insertNoteSQL = "INSERT INTO note_data (id, title, body, dateCreated, dateEdited) VALUES ('${note.id}', '${note.title}', '${note.body}', '${note.dateCreated}', '${note.dateEdited}');"
+            val insertNoteSQL = "INSERT INTO note_data (id, title, body, dateCreated, dateEdited, tags) VALUES ('${note.id}', '${note.title}', '${note.body}', '${note.dateCreated}','${note.dateEdited}','${note.getAllTags()}');"
 
             val conn = connect()
             if ( conn == null ) {
@@ -170,7 +171,7 @@ class NoteDatabase {
         }
 
         fun updateNote( note: NoteData ) {
-            val updateNoteSQL = "UPDATE note_data SET title = '${note.title}', body = '${note.body}', dateEdited = '${note.dateEdited}' WHERE id = ${note.id};"
+            val updateNoteSQL = "UPDATE note_data SET title = '${note.title}', body = '${note.body}', dateEdited = '${note.dateEdited}', tags = '${note.getAllTags()}' WHERE id = ${note.id};"
 
             val conn = connect()
             if ( conn == null ) {

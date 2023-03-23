@@ -26,18 +26,30 @@ class SortMenu(noteModel: Model, noteList: NoteList): Menu("Sort") {
     private fun getMessage(ascending: Boolean, type: String): String {
         if (ascending) {
             if (type.equals("Alphabetical")) {
-                return A_Z
+                return Z_A
             } else if (type.equals("Date")) {
                 return NEWEST
             }
         } else {
             if (type.equals("Alphabetical")) {
-                return Z_A
+                return A_Z
             } else if (type.equals("Date")) {
                 return OLDEST
             }
         }
         return ""
+    }
+
+    fun whichSort(noteModel: Model) {
+        if (sortAlphaBody.isSelected) {
+            noteModel.sortAlpha(this.reverseOrder)
+        } else if (sortAlphaTitle.isSelected) {
+            noteModel.sortAlphaTitle(this.reverseOrder)
+        } else if (sortDateCreated.isSelected) {
+            noteModel.sortDate(this.reverseOrder)
+        } else if (sortDateEdited.isSelected) {
+            noteModel.sortDateEdited(this.reverseOrder)
+        }
     }
 
     private fun setAllSelectedFalse(param: CheckMenuItem) {
@@ -55,30 +67,18 @@ class SortMenu(noteModel: Model, noteList: NoteList): Menu("Sort") {
 
         this.sortAscending.setOnAction {
             this.sortAscending.isSelected = true
-            if (this.sortAscending.isSelected) {
-                this.sortDescending.isSelected = false
-                this.reverseOrder = false
-            }
-            noteModel.sortAlpha(reverseOrder)
+            this.sortDescending.isSelected = false
+            this.reverseOrder = false
+            noteModel.sortAlpha(this.reverseOrder)
+            whichSort(noteModel)
             noteList.refreshList(noteModel.notes)
-            if (this.sortAlphaBody.isSelected) {
-                noteModel.sortAlpha(reverseOrder)
-            } else {
-                noteModel.sortDate(reverseOrder)
-            }
         }
 
         this.sortDescending.setOnAction {
             this.sortDescending.isSelected = true
-            if (this.sortDescending.isSelected) {
-                this.sortAscending.isSelected = false
-                this.reverseOrder = true
-            }
-            if (this.sortAlphaBody.isSelected) {
-                noteModel.sortAlpha(reverseOrder)
-            } else {
-                noteModel.sortDate(reverseOrder)
-            }
+            this.sortAscending.isSelected = false
+            this.reverseOrder = true
+            whichSort(noteModel)
             noteList.refreshList(noteModel.notes)
         }
 
@@ -87,7 +87,7 @@ class SortMenu(noteModel: Model, noteList: NoteList): Menu("Sort") {
             this.sortAscending.text = this.getMessage(true, "Alphabetical")
             this.sortDescending.text = this.getMessage(false, "Alphabetical")
             println("Sort Alphabetical Menu")
-            noteModel.sortAlpha(reverseOrder)
+            whichSort(noteModel)
             noteList.refreshList(noteModel.notes)
         }
 
@@ -96,7 +96,7 @@ class SortMenu(noteModel: Model, noteList: NoteList): Menu("Sort") {
             this.sortAscending.text = this.getMessage(true, "Date")
             this.sortDescending.text = this.getMessage(false, "Date")
             println("Sort Date Menu")
-            noteModel.sortDate(reverseOrder)
+            whichSort(noteModel)
             noteList.refreshList(noteModel.notes)
         }
 
@@ -105,7 +105,7 @@ class SortMenu(noteModel: Model, noteList: NoteList): Menu("Sort") {
             this.sortAscending.text = this.getMessage(true, "Date")
             this.sortDescending.text = this.getMessage(false, "Date")
             println("Sort Date Edited Menu")
-            noteModel.sortDateEdited(reverseOrder)
+            whichSort(noteModel)
             noteList.refreshList(noteModel.notes)
         }
 
@@ -114,7 +114,7 @@ class SortMenu(noteModel: Model, noteList: NoteList): Menu("Sort") {
             this.sortAscending.text = this.getMessage(true, "Alphabetical")
             this.sortDescending.text = this.getMessage(false, "Alphabetical")
             println("Sort Note Title")
-            noteModel.sortAlphaTitle(reverseOrder)
+            whichSort(noteModel)
             noteList.refreshList(noteModel.notes)
         }
 
