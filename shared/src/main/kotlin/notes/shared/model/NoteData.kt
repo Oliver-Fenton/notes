@@ -265,7 +265,6 @@ class NoteData(val id: Int, var title: String): ObservableObjectValue<NoteData?>
                 }
             }
             setNoteBody(action.second)
-            print("UNDO")
             return action.second
         }
         return null
@@ -330,7 +329,6 @@ class NoteData(val id: Int, var title: String): ObservableObjectValue<NoteData?>
                 }
             }
             setNoteBody(action.second)
-            print("REDO")
             return action.second
         }
         return null
