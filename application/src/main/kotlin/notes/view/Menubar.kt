@@ -10,7 +10,7 @@ import notes.shared.Constants
 import notes.shared.SysInfo
 import notes.shared.model.Model
 
-class Menubar(val noteModel: Model, val noteView: NoteView, val noteList: NoteList): MenuBar() {
+class Menubar(val noteModel: Model, val noteView: NoteView, val noteList: NoteList, val tagsBar: TagsBar): MenuBar() {
     // FILE MENU
     private var fileMenu = Menu("File")
     private var newNote = MenuItem("New Note")
@@ -150,6 +150,7 @@ class Menubar(val noteModel: Model, val noteView: NoteView, val noteList: NoteLi
                 }
             }
         }
+        tagsBar.setTagsBarColors()
     }
 
     fun setLightTheme() {
@@ -195,5 +196,6 @@ class Menubar(val noteModel: Model, val noteView: NoteView, val noteList: NoteLi
                 }
             }
         }
+        tagsBar.setTagsBarColors()
     }
 }
