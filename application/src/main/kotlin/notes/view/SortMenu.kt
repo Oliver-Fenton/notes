@@ -2,7 +2,6 @@ package notes.view
 
 import javafx.scene.control.CheckMenuItem
 import javafx.scene.control.Menu
-import javafx.scene.control.MenuItem
 import javafx.scene.control.SeparatorMenuItem
 import notes.shared.model.Model
 
@@ -13,7 +12,6 @@ class SortMenu(noteModel: Model, noteList: NoteList): Menu("Sort") {
     private var sortAlphaTitle = CheckMenuItem("Note Title")
     private var sortSubMenuDivider = SeparatorMenuItem()
     var reverseOrder = false
-    private var temp = MenuItem("Temp") // TODO: update when decided
 
     private val A_Z = "A to Z"
     private val Z_A = "Z to A"
@@ -25,15 +23,15 @@ class SortMenu(noteModel: Model, noteList: NoteList): Menu("Sort") {
     private var sortDescending = CheckMenuItem(this.getMessage(false, "Date"))
     private fun getMessage(ascending: Boolean, type: String): String {
         if (ascending) {
-            if (type.equals("Alphabetical")) {
+            if (type == "Alphabetical") {
                 return A_Z
-            } else if (type.equals("Date")) {
+            } else if (type == "Date") {
                 return NEWEST
             }
         } else {
-            if (type.equals("Alphabetical")) {
+            if (type == "Alphabetical") {
                 return Z_A
-            } else if (type.equals("Date")) {
+            } else if (type == "Date") {
                 return OLDEST
             }
         }
