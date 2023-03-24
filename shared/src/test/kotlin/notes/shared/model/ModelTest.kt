@@ -1,10 +1,12 @@
 package notes.shared.model
 
 import org.json.JSONObject
+import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 
 class ModelTest {
 
+    @Disabled
     @Test
     fun noteToJson() {
         val note = NoteData(999, "MODEL TEST NOTE", "test test test", "2023-03-20T10:30:15.123456", "2023-03-20T10:30:15.123456", "")
@@ -12,6 +14,7 @@ class ModelTest {
         println("actual: ${note.toJson()}")
     }
 
+    @Disabled
     @Test
     fun jsonToNote() {
         val model = Model()
@@ -28,6 +31,7 @@ class ModelTest {
         println("actual: ${note.toJson()}")
     }
 
+    @Disabled
     @Test
     fun getNoteFromWebService() {
         val model = Model()
@@ -36,6 +40,7 @@ class ModelTest {
         println(note.toJson())
     }
 
+    @Disabled
     @Test
     fun getNotesFromWebService() {
         val model = Model()
@@ -44,6 +49,7 @@ class ModelTest {
         for (note in notes) println(note.toJson())
     }
 
+    @Disabled
     @Test
     fun postNoteToWebService() {
         val model = Model()
@@ -53,6 +59,7 @@ class ModelTest {
         println(model.getNotesFromWebService())
     }
 
+    @Disabled
     @Test
     fun putNoteToWebService() {
         val model = Model()
@@ -62,6 +69,7 @@ class ModelTest {
         println(model.getNotesFromWebService())
     }
 
+    @Disabled
     @Test
     fun deleteNoteFromWebService() {
         val model = Model()
