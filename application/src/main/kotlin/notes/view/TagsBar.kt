@@ -18,6 +18,7 @@ class TagsBar(noteModel: Model, noteList: NoteList) : HBox() {
 
     inner class TagButton(activeNote: SimpleObjectProperty<NoteData?>, tag: String, noteList: NoteList, noteModel: Model) : HBox() {
         var tagImageView = ImageView(Image("Close-Icon.png"))
+
         var tagText = Label(tag).apply {
             style = "-fx-background: white;"
         }
@@ -26,12 +27,20 @@ class TagsBar(noteModel: Model, noteList: NoteList) : HBox() {
             tagImageView.maxHeight(10.0)
             tagImageView.maxWidth(10.0)
             tagImageView.isPreserveRatio = true
+
+            var textBackgroundColor = if (Constants.theme == "light") "white" else "black"
+            tagText.apply {
+                style = "-fx-background: $textBackgroundColor;"
+            }
+
+            var backgroundColor = if (Constants.theme == "light") "white" else "black"
+            var borderColor = if (Constants.theme == "light") "#BEBEBE" else "#5A5A5A"
             this.style =
                         "-fx-padding: 3;" +
                         "-fx-border-width: 1;" +
-                        "-fx-border-color: #BEBEBE;" +
+                        "-fx-border-color: $borderColor;" +
                         "-fx-border-radius: 4;" +
-                        "-fx-background-color: white;"
+                        "-fx-background-color: $backgroundColor;"
             this.prefHeight = 10.0
             this.children.addAll(tagText, tagImageView)
 

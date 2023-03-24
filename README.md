@@ -12,6 +12,18 @@ Richard Hua
 ## Quick-start
 Download distZip file and run the executable inside
 
+## Release Notes 1.3.0
+* Add and remove tags for each note
+* Dark and light themes
+* Sorting by date created, date edited, and title
+* Tags bar included to display all tags of active note
+* Title bar included to change note title
+* Default note added
+* Date edited updated for note title and body changes
+* Hooked application up with REST Web Service
+* Undo/redo for entire words vs single characters
+* Added unit tests for new features
+
 ## Release Notes 1.2.0
 * Save and restore window size and position
 * Undo and redo text inputs and styles (cut, copy, paste, bold, italics, underline, colour, bullet list, etc.)

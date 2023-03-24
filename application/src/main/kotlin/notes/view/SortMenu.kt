@@ -8,7 +8,6 @@ import notes.shared.model.Model
 class SortMenu(noteModel: Model, noteList: NoteList): Menu("Sort") {
     private var sortDateCreated = CheckMenuItem("Date Created")
     private var sortDateEdited = CheckMenuItem("Date Edited")
-    private var sortAlphaBody = CheckMenuItem("Note Body")
     private var sortAlphaTitle = CheckMenuItem("Note Title")
     private var sortSubMenuDivider = SeparatorMenuItem()
     var reverseOrder = false
@@ -24,13 +23,13 @@ class SortMenu(noteModel: Model, noteList: NoteList): Menu("Sort") {
     private fun getMessage(ascending: Boolean, type: String): String {
         if (ascending) {
             if (type == "Alphabetical") {
-                return A_Z
+                return Z_A
             } else if (type == "Date") {
                 return NEWEST
             }
         } else {
             if (type == "Alphabetical") {
-                return Z_A
+                return A_Z
             } else if (type == "Date") {
                 return OLDEST
             }
@@ -39,9 +38,7 @@ class SortMenu(noteModel: Model, noteList: NoteList): Menu("Sort") {
     }
 
     fun whichSort(noteModel: Model) {
-        if (sortAlphaBody.isSelected) {
-            noteModel.sortAlpha(this.reverseOrder)
-        } else if (sortAlphaTitle.isSelected) {
+        if (sortAlphaTitle.isSelected) {
             noteModel.sortAlphaTitle(this.reverseOrder)
         } else if (sortDateCreated.isSelected) {
             noteModel.sortDate(this.reverseOrder)
@@ -52,14 +49,13 @@ class SortMenu(noteModel: Model, noteList: NoteList): Menu("Sort") {
 
     private fun setAllSelectedFalse(param: CheckMenuItem) {
         this.sortDateCreated.isSelected = false
-        this.sortAlphaBody.isSelected = false
         this.sortDateEdited.isSelected = false
         this.sortAlphaTitle.isSelected = false
         param.isSelected = true
     }
 
     init {
-        this.items.addAll(sortDateCreated, sortDateEdited, sortAlphaTitle, sortAlphaBody, sortSubMenuDivider, sortAscending, sortDescending)
+        this.items.addAll(sortDateCreated, sortDateEdited, sortAlphaTitle, sortSubMenuDivider, sortAscending, sortDescending)
         this.sortAscending.isSelected = true
         this.sortDateCreated.isSelected = true
 
@@ -76,15 +72,6 @@ class SortMenu(noteModel: Model, noteList: NoteList): Menu("Sort") {
             this.sortDescending.isSelected = true
             this.sortAscending.isSelected = false
             this.reverseOrder = true
-            whichSort(noteModel)
-            noteList.refreshList(noteModel.notes)
-        }
-
-        this.sortAlphaBody.setOnAction {
-            this.setAllSelectedFalse(this.sortAlphaBody)
-            this.sortAscending.text = this.getMessage(true, "Alphabetical")
-            this.sortDescending.text = this.getMessage(false, "Alphabetical")
-            println("Sort Alphabetical Menu")
             whichSort(noteModel)
             noteList.refreshList(noteModel.notes)
         }
@@ -109,8 +96,8 @@ class SortMenu(noteModel: Model, noteList: NoteList): Menu("Sort") {
 
         this.sortAlphaTitle.setOnAction {
             this.setAllSelectedFalse(this.sortAlphaTitle)
-            this.sortAscending.text = this.getMessage(true, "Alphabetical")
             this.sortDescending.text = this.getMessage(false, "Alphabetical")
+            this.sortAscending.text = this.getMessage(true, "Alphabetical")
             println("Sort Note Title")
             whichSort(noteModel)
             noteList.refreshList(noteModel.notes)

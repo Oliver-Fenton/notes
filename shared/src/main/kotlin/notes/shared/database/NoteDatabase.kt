@@ -65,6 +65,8 @@ class NoteDatabase {
             var conn: Connection? = null
             try {
                 val url = "jdbc:sqlite:./NoteDatabase.db"
+                // TODO Change to own for distzip
+                //val url = "jdbc:sqlite:/Users/lindsaymark/IdeaProjects/glory/application/NoteDatabase.db"
                 conn = DriverManager.getConnection( url )
                 println( "Connection to SQLite has been established.")
             } catch ( e: SQLException ) {
