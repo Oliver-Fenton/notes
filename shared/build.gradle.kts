@@ -23,6 +23,9 @@ repositories {
 dependencies {
     implementation("org.jsoup:jsoup:1.15.4")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4")
+    implementation("org.springframework:spring-web:6.0.6")
+    implementation("org.json:json:20230227")
+    implementation("com.google.code.gson:gson:2.10.1")
     implementation("org.xerial:sqlite-jdbc:3.39.3.0")
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.2")
     testImplementation("org.junit.jupiter:junit-jupiter:5.8.1")

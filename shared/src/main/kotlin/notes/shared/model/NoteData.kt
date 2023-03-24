@@ -1,7 +1,10 @@
 package notes.shared.model
 
+import com.google.gson.*
+import com.google.gson.JsonElement
+import com.google.gson.JsonObject
+import com.google.gson.reflect.TypeToken
 import javafx.beans.InvalidationListener
-import javafx.beans.Observable
 import javafx.beans.value.ChangeListener
 import javafx.beans.value.ObservableObjectValue
 import javafx.collections.FXCollections
@@ -11,6 +14,7 @@ import javafx.scene.control.TextField
 import javafx.scene.control.ToolBar
 import notes.shared.Constants
 import org.jsoup.Jsoup
+import java.lang.reflect.Type
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
@@ -27,6 +31,50 @@ enum class TextChange {
     UNLIST,
     COLOR,
     UNCOLOR
+}
+
+class LocalDateTimeTypeAdapter : JsonSerializer<LocalDateTime>, JsonDeserializer<LocalDateTime> {
+    private val formatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME
+
+    override fun serialize(src: LocalDateTime?, typeOfSrc: Type?, context: JsonSerializationContext?): JsonElement {
+        return JsonPrimitive(src?.format(formatter))
+    }
+
+    override fun deserialize(json: JsonElement?, typeOfT: Type?, context: JsonDeserializationContext?): LocalDateTime {
+        return LocalDateTime.parse(json?.asString, formatter)
+    }
+}
+
+class NoteDataTypeAdapter: JsonSerializer<NoteData>, JsonDeserializer<NoteData> {
+    private val formatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME
+
+    override fun deserialize(json: JsonElement?, typeOfT: Type?, context: JsonDeserializationContext?): NoteData {
+        val jsonObject: JsonObject? = json?.asJsonObject
+        val id = jsonObject?.get("id")?.asInt ?: throw JsonParseException("id is missing")
+        val title = jsonObject.get("title").asString
+        val body = jsonObject.get("body").asString
+        val dateCreated = context?.deserialize(jsonObject.get("dateCreated"), LocalDateTime::class.java)
+            ?: LocalDateTime.now()
+        val dateEdited = context?.deserialize(jsonObject.get("dateEdited"), LocalDateTime::class.java)
+            ?: LocalDateTime.now()
+
+        return NoteData(id, title).apply {
+            this.body = body
+            this.dateCreated = dateCreated
+            this.dateEdited = dateEdited
+        }
+    }
+
+    override fun serialize(src: NoteData?, typeOfSrc: Type?, context: JsonSerializationContext?): JsonElement {
+        val json = JsonObject()
+        json.addProperty("id", src?.id)
+        json.addProperty("title", src?.title)
+        json.addProperty("body", src?.body)
+        json.addProperty("dateCreated", src?.dateCreated?.format(formatter))
+        json.addProperty("dateEdited", src?.dateEdited?.format(formatter))
+
+        return json
+    }
 }
 
 class NoteData(val id: Int, var title: String): ObservableObjectValue<NoteData?> {
@@ -53,6 +101,26 @@ class NoteData(val id: Int, var title: String): ObservableObjectValue<NoteData?>
             noteTagsArr.forEach { e ->
                 this.tags.add(e)
             }
+        }
+    }
+
+    companion object {
+        fun deserializeNote(json: String): NoteData {
+            val gson = GsonBuilder()
+                .registerTypeAdapter(NoteData::class.java, NoteDataTypeAdapter())
+                .registerTypeAdapter(LocalDateTime::class.java, LocalDateTimeTypeAdapter())
+                .create()
+
+            return gson.fromJson(json, NoteData::class.java)
+        }
+
+        fun deserializeNoteList(jsonArray: String): List<NoteData> {
+            val gson = GsonBuilder()
+                .registerTypeAdapter(NoteData::class.java, NoteDataTypeAdapter())
+                .registerTypeAdapter(LocalDateTime::class.java, LocalDateTimeTypeAdapter())
+                .create()
+            val type: Type = object: TypeToken<List<NoteData>>() {}.type
+            return gson.fromJson(jsonArray, type)
         }
     }
 
@@ -153,14 +221,14 @@ class NoteData(val id: Int, var title: String): ObservableObjectValue<NoteData?>
         val endingStyleIndex = this.body.indexOf("contenteditable=")
 
         if (beginningStyleIndex == -1) { // no style set yet
-            var bodyTagIndex = this.body.indexOf("<body")
-            var beginningSubstring = this.body.substring(0, bodyTagIndex + 5)
-            var endingSubstring = this.body.substring(bodyTagIndex + 5)
+            val bodyTagIndex = this.body.indexOf("<body")
+            val beginningSubstring = this.body.substring(0, bodyTagIndex + 5)
+            val endingSubstring = this.body.substring(bodyTagIndex + 5)
             return "$beginningSubstring style=background-color: $backgroundColor; $endingSubstring"
         }
         else { // has style already
-            var beginningSubstring = this.body.substring(0, beginningStyleIndex + 12)
-            var endingSubstring = this.body.substring(endingStyleIndex)
+            val beginningSubstring: String = this.body.substring(0, beginningStyleIndex + 12)
+            val endingSubstring = this.body.substring(endingStyleIndex)
             return "$beginningSubstring background-color: $backgroundColor; $endingSubstring"
         }
     }
@@ -369,4 +437,12 @@ class NoteData(val id: Int, var title: String): ObservableObjectValue<NoteData?>
         return previewTags
     }
 
+
+    fun toJson(): String {
+        val gson = GsonBuilder()
+            .registerTypeAdapter(NoteData::class.java, NoteDataTypeAdapter())
+            .create()
+
+        return gson.toJson(this)
+    }
 }
