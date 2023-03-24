@@ -1,4 +1,4 @@
 
 rootProject.name = "Notes"
 
-include("application", "shared")
+include("application", "shared", "rest-service")
