@@ -1,7 +1,6 @@
 package notes.shared.model
 
 import javafx.beans.InvalidationListener
-import javafx.beans.Observable
 import javafx.beans.value.ChangeListener
 import javafx.beans.value.ObservableObjectValue
 import javafx.collections.FXCollections
@@ -9,6 +8,7 @@ import javafx.collections.ObservableList
 import javafx.scene.control.Label
 import javafx.scene.control.TextField
 import javafx.scene.control.ToolBar
+import javafx.scene.input.KeyCode
 import notes.shared.Constants
 import org.jsoup.Jsoup
 import java.time.LocalDateTime
@@ -42,6 +42,10 @@ class NoteData(val id: Int, var title: String): ObservableObjectValue<NoteData?>
 
     var undoStack = ArrayList<Pair<TextChange, String>>()
     var redoStack = ArrayList<Pair<TextChange, String>>()
+
+    init {
+        addToUndoStack(TextChange.INSERT)
+    }
 
     constructor( id: Int, title: String, body: String, dateCreated: String, dateEdited: String, noteTags: String) : this( id, title ) {
         this.body = body
@@ -275,8 +279,16 @@ class NoteData(val id: Int, var title: String): ObservableObjectValue<NoteData?>
         return null
     }
 
-    fun addToUndoStack(type: TextChange) {
-        undoStack.add(Pair(type, getHTML()))
+    fun addToUndoStack(type: TextChange, letter: KeyCode? = null) {
+        if (letter != null) {
+            if (letter == KeyCode.SPACE) {
+                undoStack.add(Pair(type, getHTML()))
+            }
+        }
+        else {
+            undoStack.add(Pair(type, getHTML()))
+        }
+
     }
 
     fun redo(): String? {

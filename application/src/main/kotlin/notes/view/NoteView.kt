@@ -36,9 +36,12 @@ class NoteView(noteModel: Model): StackPane() {
         Constants.notesArea.setOnKeyReleased { e ->
             if (e.code.isLetterKey || e.code == KeyCode.SPACE || e.code.isDigitKey) {
                 noteModel.activeNote.value?.emptyRedo()
-                noteModel.activeNote.value?.addToUndoStack(TextChange.INSERT)
+                noteModel.activeNote.value?.addToUndoStack(TextChange.INSERT, e.code)
             }
             noteModel.activeNote.value?.setNoteBody(Constants.notesArea.htmlText)
+            if (e.code == KeyCode.SPACE) {
+                noteModel.activeNote.value?.addToUndoStack(TextChange.INSERT)
+            }
             println("activeNoteData: ${noteModel.activeNote.value?.getHTML()}")
         }
 

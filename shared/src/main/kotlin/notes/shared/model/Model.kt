@@ -4,11 +4,6 @@ import javafx.beans.property.SimpleBooleanProperty
 import javafx.beans.property.SimpleObjectProperty
 import javafx.collections.FXCollections
 import javafx.collections.ObservableList
-import javafx.scene.control.Label
-import javafx.scene.control.TextField
-import javafx.scene.control.ToolBar
-import javafx.scene.web.HTMLEditor
-import notes.shared.Constants
 import notes.shared.database.NoteDatabase
 import notes.shared.preferences.Preferences
 
@@ -52,6 +47,7 @@ class Model {
     fun createNote() {
         idCounter++
         val newNote = NoteData(idCounter, "New Note #$idCounter")
+        newNote.addToUndoStack(TextChange.INSERT)
         notes.add( newNote )
         setActiveNote( newNote )
 
