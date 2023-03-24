@@ -6,9 +6,11 @@ import javafx.collections.FXCollections
 import javafx.collections.ObservableList
 import notes.shared.database.NoteDatabase
 import notes.shared.preferences.Preferences
+import notes.shared.webserviceclient.WebServiceClient
 
 class Model {
-    val noteDatabase = NoteDatabase()
+    private val noteDatabase = NoteDatabase()
+    private val webServiceClient = WebServiceClient()
     var isSplitView = SimpleBooleanProperty( true )
     val activeNote = SimpleObjectProperty<NoteData?>(null)
     var notes: ObservableList<NoteData> = FXCollections.observableArrayList()
@@ -82,6 +84,32 @@ class Model {
 
     fun saveNoteToDatabase( note: NoteData ) {
         noteDatabase.updateNote( note )
+    }
+
+    fun jsonToNote(json: String): NoteData {
+        return NoteData.deserializeNote(json)
+    }
+
+    fun getNoteFromWebService(id: Long): NoteData {
+        val string = webServiceClient.get(id)
+        return NoteData.deserializeNote(string)
+    }
+
+    fun getNotesFromWebService(): List<NoteData> {
+        val string = webServiceClient.get()
+        return NoteData.deserializeNoteList(string)
+    }
+
+    fun postNoteToWebService(note: NoteData) {
+        webServiceClient.post(note.toJson())
+    }
+
+    fun putNoteToWebService(note: NoteData) {
+        webServiceClient.put(note.id, note.toJson())
+    }
+
+    fun deleteNoteFromWebService(id: Int) {
+        webServiceClient.delete(id)
     }
 
 
