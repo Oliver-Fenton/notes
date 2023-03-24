@@ -100,7 +100,7 @@ class NoteData(val id: Int, var title: String): ObservableObjectValue<NoteData?>
         this.body = body
         this.dateCreated = LocalDateTime.parse( dateCreated )
         this.dateEdited = LocalDateTime.parse( dateEdited )
-        val trimmedNoteTags =  noteTags.substring(0, noteTags.length - 1)
+        val trimmedNoteTags =  noteTags.substring(1, noteTags.length - 1)
         if (trimmedNoteTags != "") {
             val noteTagsArr = trimmedNoteTags.split(", ")
             noteTagsArr.forEach { e ->
