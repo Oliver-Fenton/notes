@@ -11,6 +11,7 @@ import javafx.scene.input.KeyEvent
 import javafx.scene.input.MouseButton
 import javafx.scene.input.MouseEvent
 import javafx.scene.layout.BorderPane
+import javafx.scene.layout.Priority
 import javafx.scene.layout.VBox
 import notes.shared.Constants
 import notes.shared.model.Model
@@ -29,9 +30,11 @@ class View(private val noteModel: Model): BorderPane() {
     val tagsBarScrollBar = ScrollPane(tagsBar)
 
     val noteView = NoteView( noteModel)
-    val noteViewWrapper = VBox(noteView, tagsBarScrollBar)
+    val noteViewWrapper = VBox(noteView, tagsBarScrollBar).apply{
+        VBox.setVgrow(noteView, Priority.ALWAYS)
+    }
 
-    private val menuBar = Menubar( noteModel, noteView, noteListView)
+    private val menuBar = Menubar( noteModel, noteView, noteListView, tagsBar)
     private val topVBox = VBox( menuBar )
 
     private val searchBar = SearchBar(noteModel, noteListView)

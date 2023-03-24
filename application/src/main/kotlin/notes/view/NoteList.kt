@@ -26,7 +26,7 @@ class NoteList(val noteModel: Model): VBox() {
         val preview = Label( noteData.getPreview() ).apply {
             HBox.setHgrow(this, Priority.NEVER)
         }
-        val tags = Label(noteData.getFirstTags()[0] +  noteData.getFirstTags()[1] + noteData.getFirstTags()[2]).apply {
+        val tags = Label(formatTagDisplay(noteData.getTheTags())).apply {
             HBox.setHgrow(this, Priority.NEVER)
         }
 
@@ -41,6 +41,19 @@ class NoteList(val noteModel: Model): VBox() {
             HBox.setMargin(date, Insets(0.0, 0.0, 0.0, 0.0))
         }
 
+        fun formatTagDisplay(previewTags: ObservableList<String>) : String {
+            var tagDisplay = ""
+
+            for (tag in previewTags) {
+                tagDisplay += "#"
+                tagDisplay += tag
+                if (previewTags.indexOf(tag) < previewTags.size - 1) {
+                    tagDisplay += ", "
+                }
+            }
+
+            return tagDisplay
+        }
         fun refresh(noteData: NoteData) {
             //title.text = noteData.title
             title.text = noteData.getNoteTitle()
@@ -118,10 +131,19 @@ class NoteList(val noteModel: Model): VBox() {
     }
     fun refreshList(noteList: ObservableList<NoteData>) {
         children.clear()
+
         for (noteData in noteList.reversed()) {
             if(noteData.isDisplay) {
-                children.add(NotePreview(noteData))
+                var notePreview = NotePreview(noteData)
+
+                if (noteData.isActive) {
+                    notePreview.setToActiveColor()
+                } else {
+                    notePreview.setToInactiveColor()
+                }
+                children.add(notePreview)
             }
+
         }
     }
     init {

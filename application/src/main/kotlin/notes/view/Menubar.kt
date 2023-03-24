@@ -10,11 +10,10 @@ import notes.shared.Constants
 import notes.shared.SysInfo
 import notes.shared.model.Model
 
-class Menubar(val noteModel: Model, val noteView: NoteView, val noteList: NoteList): MenuBar() {
+class Menubar(val noteModel: Model, val noteView: NoteView, val noteList: NoteList, val tagsBar: TagsBar): MenuBar() {
     // FILE MENU
     private var fileMenu = Menu("File")
     private var newNote = MenuItem("New Note")
-    private var newFolder = MenuItem("New Folder")
     private var deleteNote = MenuItem("Delete Note")
     private val quit = MenuItem("Quit")
 
@@ -94,7 +93,6 @@ class Menubar(val noteModel: Model, val noteView: NoteView, val noteList: NoteLi
 
         newNote.accelerator = KeyCodeCombination(KeyCode.N, OS_KeyCombo)
         deleteNote.accelerator = KeyCodeCombination(KeyCode.D, OS_KeyCombo)
-        newFolder.accelerator = KeyCodeCombination(KeyCode.F, OS_KeyCombo)
         quit.accelerator = KeyCodeCombination(KeyCode.Q, OS_KeyCombo)
         undo.accelerator = KeyCodeCombination(KeyCode.Z, OS_KeyCombo)
         redo.accelerator = KeyCodeCombination(KeyCode.R, OS_KeyCombo) // not able to do 3 keycode combo
@@ -102,7 +100,7 @@ class Menubar(val noteModel: Model, val noteView: NoteView, val noteList: NoteLi
         copy.accelerator = KeyCodeCombination(KeyCode.C, OS_KeyCombo)
         paste.accelerator = KeyCodeCombination(KeyCode.V, OS_KeyCombo)
 
-        fileMenu.items.addAll(newNote, deleteNote, newFolder, quit)
+        fileMenu.items.addAll(newNote, deleteNote, quit)
         editMenu.items.addAll(undo, redo, cut, copy, paste)
         viewMenu.items.addAll(darkTheme, lightTheme, sortSubMenu)
 
@@ -152,6 +150,7 @@ class Menubar(val noteModel: Model, val noteView: NoteView, val noteList: NoteLi
                 }
             }
         }
+        tagsBar.setTagsBarColors()
     }
 
     fun setLightTheme() {
@@ -197,5 +196,6 @@ class Menubar(val noteModel: Model, val noteView: NoteView, val noteList: NoteLi
                 }
             }
         }
+        tagsBar.setTagsBarColors()
     }
 }
