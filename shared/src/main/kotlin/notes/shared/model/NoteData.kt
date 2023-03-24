@@ -95,9 +95,9 @@ class NoteData(val id: Int, var title: String): ObservableObjectValue<NoteData?>
         this.body = body
         this.dateCreated = LocalDateTime.parse( dateCreated )
         this.dateEdited = LocalDateTime.parse( dateEdited )
-        val trimmedNoteTags =  noteTags.substring(0, noteTags.length - 1)
+        val trimmedNoteTags =  noteTags.substring(1, noteTags.length - 1)
         if (trimmedNoteTags != "") {
-            val noteTagsArr = trimmedNoteTags.split(",")
+            val noteTagsArr = trimmedNoteTags.split(", ")
             noteTagsArr.forEach { e ->
                 this.tags.add(e)
             }
@@ -221,15 +221,15 @@ class NoteData(val id: Int, var title: String): ObservableObjectValue<NoteData?>
         val endingStyleIndex = this.body.indexOf("contenteditable=")
 
         if (beginningStyleIndex == -1) { // no style set yet
-            val bodyTagIndex = this.body.indexOf("<body")
-            val beginningSubstring = this.body.substring(0, bodyTagIndex + 5)
-            val endingSubstring = this.body.substring(bodyTagIndex + 5)
-            return "$beginningSubstring style=background-color: $backgroundColor; $endingSubstring"
+            var bodyTagIndex = this.body.indexOf("<body")
+            var beginningSubstring = this.body.substring(0, bodyTagIndex + 5)
+            var endingSubstring = this.body.substring(bodyTagIndex + 5)
+            return "$beginningSubstring style=\"background-color: $backgroundColor;\" $endingSubstring"
         }
         else { // has style already
-            val beginningSubstring: String = this.body.substring(0, beginningStyleIndex + 12)
-            val endingSubstring = this.body.substring(endingStyleIndex)
-            return "$beginningSubstring background-color: $backgroundColor; $endingSubstring"
+            var beginningSubstring = this.body.substring(0, beginningStyleIndex + 12)
+            var endingSubstring = this.body.substring(endingStyleIndex)
+            return "$beginningSubstring\"background-color: $backgroundColor;\" $endingSubstring"
         }
     }
 
@@ -240,15 +240,15 @@ class NoteData(val id: Int, var title: String): ObservableObjectValue<NoteData?>
     fun getPreview(): String { return getText().take(100) }
 
     fun getDateCreated(): String {
-       // val formatter = DateTimeFormatter.ofPattern("MMMM d, yyyy '@' h:mm a")
-        val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:MM:SS")
+        val formatter = DateTimeFormatter.ofPattern("MMMM d, yyyy '@' h:mm a")
+        //val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:MM:SS")
 
         return dateCreated.format(formatter)
     }
 
     fun getDateEdited(): String {
-       // val formatter = DateTimeFormatter.ofPattern("MMMM d, yyyy '@' h:mm a")
-        val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:MM:SS")
+        val formatter = DateTimeFormatter.ofPattern("MMMM d, yyyy '@' h:mm a")
+        //val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:MM:SS")
 
         return dateEdited.format(formatter)
     }
@@ -258,6 +258,7 @@ class NoteData(val id: Int, var title: String): ObservableObjectValue<NoteData?>
         val updatedBackgroundHTML = changeBodyBackgroundColor(if (Constants.theme == "light") Constants.LightHTMLEditorColor else Constants.DarkHTMLEditorColor)
         changeNoteBody(updatedBackgroundHTML)
         Constants.notesArea.htmlText = getHTML()
+
 
         invalidationListeners.forEach { it?.invalidated(this) }
         changeListeners.forEach { it?.changed(this, this.value, value) }
@@ -422,22 +423,13 @@ class NoteData(val id: Int, var title: String): ObservableObjectValue<NoteData?>
         tags.remove(input)
     }
 
-    fun getFirstTags(): ObservableList<String> {
+    fun getTheTags(): ObservableList<String> {
         val previewTags: ObservableList<String> = FXCollections.observableArrayList()
-        for (i in 1..3 ) {
-            previewTags.add("")
+
+        for (i in 0 until tags.size) {
+            previewTags.add(tags[i])
         }
-        tags.forEachIndexed{index, element ->
-            var temp = element
-            if (element.length > 15) {
-                temp = element.substring(1, 12) + "..."
-            }
-            if (index < 2) {
-                previewTags[index] = "$temp, "
-            } else if (index == 2) {
-                previewTags[index] = temp
-            }
-        }
+
         return previewTags
     }
 

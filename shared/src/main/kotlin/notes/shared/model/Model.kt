@@ -137,8 +137,7 @@ class Model {
     }
 
     fun sortDateEdited(reverseOrder: Boolean) {
-        println("Sort Date Edited")
-        var sortedNotes = notes.sortedWith(compareBy{ it.getDateEdited()})
+        var sortedNotes = notes.sortedWith(compareBy{ it.dateEdited})
         if (reverseOrder) {
             sortedNotes = sortedNotes.reversed()
         }
