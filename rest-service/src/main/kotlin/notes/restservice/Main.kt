@@ -1,5 +1,9 @@
 package notes.restservice
 
+import com.google.gson.Gson
+import com.google.gson.GsonBuilder
+import com.google.gson.JsonObject
+import com.google.gson.annotations.SerializedName
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
 import org.springframework.stereotype.Service
@@ -27,71 +31,62 @@ class NoteController(private val service: NoteService) {
         service.createNote(note)
     }
 
-    @GetMapping("/{id}")
-    fun getNote(@PathVariable id: Long): Note? {
-        return service.getNote(id)
-    }
-
     @PutMapping("/{id}")
-    fun updateNote(@PathVariable id: Long, @RequestBody note: Note) {
+    fun updateNote(@PathVariable id: Int, @RequestBody note: Note) {
         require(id == note.id)
         service.updateNote(id, note)
     }
 
     @DeleteMapping("/{id}")
-    fun deleteNote(@PathVariable id: Long) = service.deleteNote(id)
+    fun deleteNote(@PathVariable id: Int) {
+        println("deleting note with id '$id'")
+        service.deleteNote(id)
+    }
 }
 
 @Service
 class NoteService {
-    var noteMap: MutableMap<Long, Note> = mutableMapOf()
+    val db = NoteDatabase()
 
-    fun getAllNotes() = noteMap.values.toList()
+    fun getAllNotes(): List<Note> {
+        val noteList = mutableListOf<Note>()
+        val jsonArray = db.getNotes()
+        val gson = Gson()
+
+        for ( i in 0 until jsonArray.size() ) {
+            val noteJson = jsonArray.get(i).asJsonObject
+            val note = gson.fromJson(noteJson, Note::class.java)
+            noteList.add(note)
+        }
+
+        return noteList
+    }
 
     fun createNote(note: Note) {
-        noteMap[note.id] = note
+        val gson = Gson()
+        val jsonString = gson.toJson(note)
+        val jsonObject: JsonObject = gson.fromJson(jsonString, JsonObject::class.java)
+        db.insertNote(jsonObject)
     }
 
-    fun getNote(id: Long): Note? {
-        return noteMap[id]
-    }
-
-    fun updateNote(id: Long, note: Note) {
+    fun updateNote(id: Int, note: Note) {
         require(id == note.id)
-        noteMap[id] = note
+
+        val gson = Gson()
+        val jsonString = gson.toJson(note)
+        val jsonObject: JsonObject = gson.fromJson(jsonString, JsonObject::class.java)
+        db.updateNote(id, jsonObject)
     }
 
-    fun deleteNote(id: Long) {
-        noteMap.remove(id)
+    fun deleteNote(id: Int) {
+        db.deleteNote(id)
     }
 }
-/*
-@Service
-class NoteDatabaseService( @Autowired val db: NoteRepository ) {
-    fun getAllNotes(): List<Note> = db.findAll().toList()
-
-    fun createNote(note: Note): Note { return db.save(note) }
-
-    fun getNote(id: Long): Note? { return db.findById(id).orElse(null) }
-
-    fun updateNote(id: Long, note: Note): Note {
-        require(id == note.id)
-        return db.save(note)
-    }
-
-    fun deleteNote(id: Long) { db.deleteById(id) }
-}
-
-@Repository
-interface NoteRepository : CrudRepository<Note, Long> {
-    // Define any additional methods here if needed
-}
-*/
 
 data class Note(
-    var id: Long,
-    var title: String,
-    var body: String,
-    var dateCreated: LocalDateTime,
-    var dateEdited: LocalDateTime
+    @SerializedName("id") var id: Int,
+    @SerializedName("title") var title: String,
+    @SerializedName("body") var body: String,
+    @SerializedName("dateCreated") var dateCreated: String,
+    @SerializedName("dateEdited") var dateEdited: String
 )

@@ -8,7 +8,7 @@ plugins {
 }
 
 group = "notes"
-version = "0.0.1-SNAPSHOT"
+version = "1.2.0"
 java.sourceCompatibility = JavaVersion.VERSION_17
 
 repositories {
@@ -17,8 +17,11 @@ repositories {
 
 dependencies {
     implementation("org.springframework.boot:spring-boot-starter-web")
+    implementation("com.google.code.gson:gson:2.10.1")
+    implementation("org.xerial:sqlite-jdbc:3.39.3.0")
     implementation(kotlin("reflect"))
     testImplementation("org.springframework.boot:spring-boot-starter-test")
+    testImplementation("org.junit.jupiter:junit-jupiter:5.8.1")
 }
 
 tasks.withType<KotlinCompile> {
@@ -31,3 +34,5 @@ tasks.withType<KotlinCompile> {
 tasks.withType<Test> {
     useJUnitPlatform()
 }
+
+tasks.register("prepareKotlinBuildScriptModel"){}
