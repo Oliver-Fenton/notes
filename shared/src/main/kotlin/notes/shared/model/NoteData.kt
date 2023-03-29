@@ -14,6 +14,7 @@ import javafx.scene.control.TextField
 import javafx.scene.control.ToolBar
 import javafx.scene.input.KeyCode
 import notes.shared.Constants
+import notes.shared.SysInfo
 import org.jsoup.Jsoup
 import java.lang.reflect.Type
 import java.time.LocalDateTime

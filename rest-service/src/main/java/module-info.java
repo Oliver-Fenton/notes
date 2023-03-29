@@ -5,5 +5,7 @@ module notes.restservice {
     requires spring.context;
     requires spring.web;
     requires spring.beans;
+    requires com.google.gson;
+    requires java.sql;
     exports notes.restservice;
 }

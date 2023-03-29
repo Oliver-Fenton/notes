@@ -22,17 +22,22 @@ class Model {
      * load notes from database
      */
     init {
-        val noteList = noteDatabase.getNotes()
+        //val noteList = noteDatabase.getNotes()
+        val noteList = getNotesFromWebService()
+
         for ( note in noteList ) {
             notes.add( note )
         }
-        idCounter = noteDatabase.getMaxId()
+
+        //idCounter = noteDatabase.getMaxId()
+        idCounter = notes.maxByOrNull { it.id }?.id ?: 0
     }
 
     fun setActiveNote( note: NoteData? ) {
         // save changes to old note in database
         if ( activeNote.value != null ) {
-            noteDatabase.updateNote( activeNote.value!! )
+            //noteDatabase.updateNote( activeNote.value!! )
+            webServiceClient.put(activeNote.value!!.id, activeNote.value!!.toJson())
         }
 
         // deactivate old note
@@ -54,7 +59,8 @@ class Model {
         setActiveNote( newNote )
 
         // save new note to database
-        noteDatabase.insertNote( newNote )
+        //noteDatabase.insertNote( newNote )
+        webServiceClient.post( newNote.toJson() )
     }
 
     fun deleteNote() {
@@ -63,7 +69,8 @@ class Model {
             var curIndex = notes.indexOf( it.value )
             if ( curIndex > 0 ) curIndex -= 1
             notes.remove( it )
-            noteDatabase.deleteNote( it )
+            //noteDatabase.deleteNote( it )
+            webServiceClient.delete( it.id )
             if ( notes.isNotEmpty() ) { setActiveNote( notes[curIndex] ) }
             else {
                 activeNote.value?.clearTitleAndDateHTMLEditor()
@@ -83,7 +90,8 @@ class Model {
     }
 
     fun saveNoteToDatabase( note: NoteData ) {
-        noteDatabase.updateNote( note )
+        //noteDatabase.updateNote( note )
+        webServiceClient.put(note.id, note.toJson())
     }
 
     fun jsonToNote(json: String): NoteData {
@@ -92,7 +100,7 @@ class Model {
 
     fun getNoteFromWebService(id: Long): NoteData {
         val string = webServiceClient.get(id)
-        return NoteData.deserializeNote(string)
+        return if (string.isNotEmpty()) NoteData.deserializeNote(string) else NoteData(-1, "error")
     }
 
     fun getNotesFromWebService(): List<NoteData> {
