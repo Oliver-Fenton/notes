@@ -62,7 +62,8 @@ class SearchBar(noteModel: Model, nList: NoteList) : StackPane(){
         } else {
             for (item in list) {
                 val ref = item.getText()
-                if (ref.contains(input)) {
+                val title = item.getNoteTitle()
+                if (ref.contains(input) || title.contains(input)) {
                     println(ref)
                     item.doDisplay()
                 } else {
