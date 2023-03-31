@@ -29,7 +29,10 @@ class View(private val noteModel: Model): BorderPane() {
     val tagsBar = TagsBar(noteModel, noteListView)
     val tagsBarScrollBar = ScrollPane(tagsBar)
 
-    val noteView = NoteView( noteModel)
+    val noteView = NoteView( noteModel).apply{
+        style = "-fx-line-spacing: 50px;"
+    }
+
     val noteViewWrapper = VBox(noteView, tagsBarScrollBar).apply{
         VBox.setVgrow(noteView, Priority.ALWAYS)
     }
@@ -98,8 +101,8 @@ class View(private val noteModel: Model): BorderPane() {
         val nodesToKeepTop: HashSet<Node> = HashSet()
         val nodesToKeepBottom: HashSet<Node> = HashSet()
 
-        //toolBar1.items.forEach { e -> println(e) }
-        //toolBar2.items.forEach { e -> println(e) }
+        toolBar1.items.forEach { e -> println(e) }
+        toolBar2.items.forEach { e -> println(e) }
 
         nodesToKeepTop.add(Constants.notesArea.lookup(".html-editor-cut"))
         Constants.notesArea.lookup(".html-editor-cut").addEventHandler(MouseEvent.MOUSE_CLICKED) {
@@ -126,6 +129,9 @@ class View(private val noteModel: Model): BorderPane() {
 //        nodesToKeepTop.add(editor.lookup(".html-editor-background"))
 
 //        nodesToKeepBottom.add(editor.lookup(".font-menu-button"))
+        nodesToKeepTop.add(Constants.notesArea.lookup(".font-menu-button"))
+        nodesToKeepBottom.add(Constants.notesArea.lookup(".font-menu-button"))
+
         nodesToKeepBottom.add(Constants.notesArea.lookup(".html-editor-bold"))
         Constants.notesArea.lookup(".html-editor-bold").addEventHandler(MouseEvent.MOUSE_CLICKED) {
             noteModel.activeNote.value?.addToUndoStack(TextChange.BOLD)
@@ -165,12 +171,17 @@ class View(private val noteModel: Model): BorderPane() {
         }
 
         title.textProperty().addListener { _, _, newValue ->
-            if (noteModel.activeNote.value?.getNoteTitle() == newValue) {
-                noteModel.activeNote.value?.changeNoteTitle(title.text)
+            if (noteModel.activeNote.value != null) {
+                if (noteModel.activeNote.value?.getNoteTitle() == newValue) {
+                    noteModel.activeNote.value?.changeNoteTitle(title.text)
 
-            } else {
-                noteModel.activeNote.value?.setNoteTitle(title.text)
-                date.text = noteModel.activeNote.value?.getDateEdited()
+                } else {
+                    noteModel.activeNote.value?.setNoteTitle(title.text)
+                    date.text = noteModel.activeNote.value?.getDateEdited()
+                }
+            }
+            else {
+                noteModel.createNote(newValue)
             }
         }
 

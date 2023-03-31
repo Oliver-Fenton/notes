@@ -1,6 +1,8 @@
 package notes.view
 
 
+import javafx.scene.control.TextField
+import javafx.scene.control.ToolBar
 import javafx.scene.input.KeyCode
 import javafx.scene.layout.StackPane
 import notes.shared.Constants
@@ -34,15 +36,25 @@ class NoteView(noteModel: Model): StackPane() {
         }
 
         Constants.notesArea.setOnKeyReleased { e ->
-            if (e.code.isLetterKey || e.code == KeyCode.SPACE || e.code.isDigitKey) {
-                noteModel.activeNote.value?.emptyRedo()
-                noteModel.activeNote.value?.addToUndoStack(TextChange.INSERT, e.code)
+            val toolBar2: ToolBar = Constants.notesArea.lookup(".bottom-toolbar") as ToolBar
+            val title = toolBar2.lookup(".text-field") as TextField
+            if (noteModel.notes.size == 0 && title.text == "") {
+                val currentNotesAreaHtml = Constants.notesArea.htmlText
+                noteModel.createNote()
+                noteModel.activeNote.value?.setNoteBody(currentNotesAreaHtml)
+                setTextArea(currentNotesAreaHtml)
             }
-            noteModel.activeNote.value?.setNoteBody(Constants.notesArea.htmlText)
-            if (e.code == KeyCode.SPACE) {
-                noteModel.activeNote.value?.addToUndoStack(TextChange.INSERT)
+            else {
+                if (e.code.isLetterKey || e.code == KeyCode.SPACE || e.code.isDigitKey) {
+                    noteModel.activeNote.value?.emptyRedo()
+                    noteModel.activeNote.value?.addToUndoStack(TextChange.INSERT, e.code)
+                }
+                noteModel.activeNote.value?.setNoteBody(Constants.notesArea.htmlText)
+                if (e.code == KeyCode.SPACE) {
+                    noteModel.activeNote.value?.addToUndoStack(TextChange.INSERT)
+                }
+                println("activeNoteData: ${noteModel.activeNote.value?.getHTML()}")
             }
-            println("activeNoteData: ${noteModel.activeNote.value?.getHTML()}")
         }
 
         children.add(Constants.notesArea)
