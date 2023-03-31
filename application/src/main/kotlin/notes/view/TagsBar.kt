@@ -75,8 +75,8 @@ class TagsBar(noteModel: Model, noteList: NoteList) : HBox() {
 
             confirmButton.setOnAction {
                 if (tagInput.text != "") {
-                    tagsBar.TagButton(activeNote, tagInput.text, noteList, noteModel)
-                    activeNote.value?.addTag(tagInput.text)
+                    tagsBar.TagButton(activeNote, tagInput.text.trim(), noteList, noteModel)
+                    activeNote.value?.addTag(tagInput.text.trim())
                     noteList.refreshList(noteModel.notes)
                     tagInput.text = ""
                 }
@@ -84,8 +84,8 @@ class TagsBar(noteModel: Model, noteList: NoteList) : HBox() {
             this.setOnKeyReleased { event ->
                 if (event.code == KeyCode.ENTER) {
                     if (tagInput.text != "") {
-                        tagsBar.TagButton(activeNote, tagInput.text, noteList, noteModel)
-                        activeNote.value?.addTag(tagInput.text)
+                        tagsBar.TagButton(activeNote, tagInput.text.trim(), noteList, noteModel)
+                        activeNote.value?.addTag(tagInput.text.trim())
                         noteList.refreshList(noteModel.notes)
                         tagInput.text = ""
                     }
