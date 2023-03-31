@@ -28,8 +28,9 @@ class Menubar(val noteModel: Model, val noteView: NoteView, val noteList: NoteLi
     // VIEW MENU
     private var viewMenu = Menu("View")
     private var sortSubMenu = SortMenu(noteModel, noteList)
-    private var darkTheme = MenuItem("Dark Theme")
-    private var lightTheme = MenuItem("Light Theme")
+    private var themeSubMenu = Menu("Theme")
+    private var darkTheme = CheckMenuItem("Dark")
+    private var lightTheme = CheckMenuItem("Light")
 
     init {
 
@@ -102,12 +103,16 @@ class Menubar(val noteModel: Model, val noteView: NoteView, val noteList: NoteLi
 
         fileMenu.items.addAll(newNote, deleteNote, quit)
         editMenu.items.addAll(undo, redo, cut, copy, paste)
-        viewMenu.items.addAll(darkTheme, lightTheme, sortSubMenu)
-
+        themeSubMenu.items.addAll(darkTheme, lightTheme)
+        // light theme as default selected
+        lightTheme.isSelected = true
+        viewMenu.items.addAll(themeSubMenu, sortSubMenu)
         this.menus.addAll(fileMenu, editMenu, viewMenu)
     }
 
     fun setDarkTheme() {
+        darkTheme.isSelected = true
+        lightTheme.isSelected = false
         scene.root.style = "-fx-base:black"
         Constants.theme = "dark"
         noteList.refreshList(noteModel.notes)
@@ -154,6 +159,8 @@ class Menubar(val noteModel: Model, val noteView: NoteView, val noteList: NoteLi
     }
 
     fun setLightTheme() {
+        lightTheme.isSelected = true
+        darkTheme.isSelected = false
         scene.root.style = ""
         Constants.theme = "light"
         noteList.refreshList(noteModel.notes)

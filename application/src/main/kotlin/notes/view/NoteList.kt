@@ -18,10 +18,17 @@ class NoteList(val noteModel: Model): VBox() {
 
         val title = Label( noteData.title ).apply {
             HBox.setHgrow(this, Priority.NEVER)
+            style = "-fx-font-weight: bold;" +
+                    "-fx-font-family: Arial;"
         }
 
-        val date = Label( noteData.getDateEdited() + " " ).apply {
+        val date = Label( noteData.getDateEdited()).apply {
+            HBox.setHgrow(this, Priority.NEVER)
             minWidth = Label.USE_PREF_SIZE
+            style = "-fx-font-family: Arial;"
+        }
+        val filler = Label( "  ").apply {
+            HBox.setHgrow(this, Priority.NEVER)
         }
         val preview = Label( noteData.getPreview() ).apply {
             HBox.setHgrow(this, Priority.NEVER)
@@ -30,11 +37,12 @@ class NoteList(val noteModel: Model): VBox() {
             HBox.setHgrow(this, Priority.NEVER)
         }
 
-        val dateAndPreview = HBox(date, preview).apply {
+        val dateAndPreview = HBox(date, filler, preview).apply {
             HBox.setMargin(date, Insets(0.0, 0.0, 0.0, 0.0))
         }
         val titleHBox = HBox(title).apply {
             HBox.setMargin(date, Insets(0.0, 0.0, 0.0, 0.0))
+            style = "-fx-font-weight: bold;"
         }
 
         val tagsHBox = HBox(tags).apply {
