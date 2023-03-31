@@ -165,12 +165,17 @@ class View(private val noteModel: Model): BorderPane() {
         }
 
         title.textProperty().addListener { _, _, newValue ->
-            if (noteModel.activeNote.value?.getNoteTitle() == newValue) {
-                noteModel.activeNote.value?.changeNoteTitle(title.text)
+            if (noteModel.activeNote.value != null) {
+                if (noteModel.activeNote.value?.getNoteTitle() == newValue) {
+                    noteModel.activeNote.value?.changeNoteTitle(title.text)
 
-            } else {
-                noteModel.activeNote.value?.setNoteTitle(title.text)
-                date.text = noteModel.activeNote.value?.getDateEdited()
+                } else {
+                    noteModel.activeNote.value?.setNoteTitle(title.text)
+                    date.text = noteModel.activeNote.value?.getDateEdited()
+                }
+            }
+            else {
+                noteModel.createNote(newValue)
             }
         }
 

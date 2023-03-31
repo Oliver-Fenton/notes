@@ -51,9 +51,9 @@ class Model {
         activeNote.value?.setTitleHTMLEditor()
     }
 
-    fun createNote() {
+    fun createNote(title: String? = null) {
         idCounter++
-        val newNote = NoteData(idCounter, "New Note #$idCounter")
+        val newNote = NoteData(idCounter, title ?: "New Note #$idCounter")
         newNote.addToUndoStack(TextChange.INSERT)
         notes.add( newNote )
         setActiveNote( newNote )
