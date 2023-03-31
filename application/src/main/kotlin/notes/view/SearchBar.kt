@@ -24,14 +24,29 @@ class SearchBar(noteModel: Model, nList: NoteList) : StackPane(){
         return this.searchBar.text
     }
 
-    private fun stringMatch(list: ObservableList<NoteData>, input: String) {
+    private fun tagMatch(list: ObservableList<NoteData>, input: String) {
         for (item in list) {
-            val ref = item.getText()
-            if (ref.contains(input)) {
-                println(ref)
-                item.doDisplay()
-            } else {
-                item.notDisplay()
+            item.notDisplay()
+            for (tag in item.tags) {
+                if (input == tag) {
+                    item.doDisplay()
+                    break
+                }
+            }
+        }
+    }
+    private fun stringMatch(list: ObservableList<NoteData>, input: String) {
+        if (input.length > 1 && input.substring(0,1) == "#") {
+            tagMatch(list, input)
+        } else {
+            for (item in list) {
+                val ref = item.getText()
+                if (ref.contains(input)) {
+                    println(ref)
+                    item.doDisplay()
+                } else {
+                    item.notDisplay()
+                }
             }
         }
     }
