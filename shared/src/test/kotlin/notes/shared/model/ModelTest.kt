@@ -1,3 +1,5 @@
+// Copyright (c) 2023. Gillian Johnson, Lindsay Mark, Oliver Fenton, Richard Hua.
+
 package notes.shared.model
 
 import org.json.JSONObject
