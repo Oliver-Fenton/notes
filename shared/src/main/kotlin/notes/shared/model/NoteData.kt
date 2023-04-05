@@ -61,11 +61,14 @@ class NoteDataTypeAdapter: JsonSerializer<NoteData>, JsonDeserializer<NoteData> 
             ?: LocalDateTime.now()
         val dateEdited = context?.deserialize(jsonObject.get("dateEdited"), LocalDateTime::class.java)
             ?: LocalDateTime.now()
+        val tagsArray = jsonObject?.get("tags")?.asJsonArray ?: JsonArray()
+        val tagsList = tagsArray.map { it.asString }
 
         return NoteData(id, title).apply {
             this.body = body
             this.dateCreated = dateCreated
             this.dateEdited = dateEdited
+            this.tags = FXCollections.observableArrayList(tagsList)
         }
     }
 
@@ -76,12 +79,13 @@ class NoteDataTypeAdapter: JsonSerializer<NoteData>, JsonDeserializer<NoteData> 
         json.addProperty("body", src?.body)
         json.addProperty("dateCreated", src?.dateCreated?.format(formatter))
         json.addProperty("dateEdited", src?.dateEdited?.format(formatter))
+        json.add("tags", context?.serialize(src?.tags))
 
         return json
     }
 }
 
-class NoteData(val id: Int, var title: String): ObservableObjectValue<NoteData?> {
+class NoteData(public val id: Int, public var title: String): ObservableObjectValue<NoteData?> {
     private var changeListeners = mutableListOf<ChangeListener<in NoteData>?>()
     private var invalidationListeners = mutableListOf<InvalidationListener?>()
     var tags: ObservableList<String> = FXCollections.observableArrayList()

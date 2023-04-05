@@ -4,29 +4,11 @@ package notes.restservice
 
 import com.google.gson.JsonArray
 import com.google.gson.JsonObject
+import com.google.gson.JsonParser
 import java.sql.Connection
 import java.sql.DriverManager
 import java.sql.ResultSet
 import java.sql.SQLException
-
-/*
-
-DROP TABLE note_data;
-
-CREATE TABLE note_data (
-  id LONG PRIMARY KEY,
-  title TEXT,
-  body TEXT,
-  dateCreated TEXT,
-  dateEdited TEXT
-);
-
-INSERT INTO note_data (id, title, body, dateCreated, dateEdited)
-    VALUES(1,'note #1','1 1 1 1 1','2023-03-09T14:30:00.123456789','2023-03-09T14:30:00.123456789');
-INSERT INTO note_data (id, title, body, dateCreated, dateEdited)
-    VALUES(2,'note #2','2 2 2 2 2','2023-03-09T14:30:00.123456789','2023-03-09T14:30:00.123456789');
-
- */
 
 class NoteDatabase {
     fun getNotes(): JsonArray {
@@ -34,10 +16,12 @@ class NoteDatabase {
     }
 
     fun insertNote(note: JsonObject) {
+        println("inserting note in web service db: $note")
         database.insertNote( note )
     }
 
     fun updateNote( id: Int, note: JsonObject ) {
+        println("updating note #$id in web service db: $note")
         database.updateNote( id, note )
     }
 
@@ -54,7 +38,7 @@ class NoteDatabase {
         private fun connect(): Connection? {
             var conn: Connection? = null
             try {
-                val url = "jdbc:sqlite:./WebServiceNoteDatabase.db"
+                val url = "jdbc:sqlite:database/WebServiceNoteDatabase.db"
                 conn = DriverManager.getConnection( url )
                 println( "Connection to SQLite has been established.")
             } catch ( e: SQLException ) {
@@ -64,7 +48,7 @@ class NoteDatabase {
         }
 
         private fun createTableIfNotExists() {
-            val createNoteDataTableIfNotExistsSQL = "CREATE TABLE IF NOT EXISTS note_data ( id INTEGER PRIMARY KEY, title TEXT, body TEXT, dateCreated TEXT, dateEdited TEXT );"
+            val createNoteDataTableIfNotExistsSQL = "CREATE TABLE IF NOT EXISTS note_data ( id INTEGER PRIMARY KEY, title TEXT, body TEXT, dateCreated TEXT, dateEdited TEXT, tags TEXT );"
 
             val conn = connect()
             if ( conn == null ) {
@@ -101,6 +85,8 @@ class NoteDatabase {
                     val body = rs.getString("body")
                     val dateCreated = rs.getString("dateCreated")
                     val dateEdited = rs.getString("dateEdited")
+                    val tags = rs.getString("tags")
+                    val tagsJson = JsonParser.parseString(tags).asJsonArray
 
                     val json = JsonObject()
                     json.addProperty("id", id)
@@ -108,6 +94,7 @@ class NoteDatabase {
                     json.addProperty("body", body)
                     json.addProperty("dateCreated", dateCreated)
                     json.addProperty("dateEdited", dateEdited)
+                    json.add("tags", tagsJson)
 
                     jsonArray.add(json)
                 }
@@ -125,8 +112,9 @@ class NoteDatabase {
             val body = note["body"].asString
             val dateCreated = note["dateCreated"].asString
             val dateEdited = note["dateEdited"].asString
+            val tags = note["tags"].asJsonArray
 
-            val insertNoteSQL = "INSERT INTO note_data (id, title, body, dateCreated, dateEdited) VALUES ('$id', '$title', '$body', '$dateCreated', '$dateEdited');"
+            val insertNoteSQL = "INSERT INTO note_data (id, title, body, dateCreated, dateEdited, tags) VALUES ('$id', '$title', '$body', '$dateCreated', '$dateEdited', '$tags');"
 
             val conn = connect()
             if ( conn == null ) {
@@ -149,8 +137,9 @@ class NoteDatabase {
             val title = note["title"].asString
             val body = note["body"].asString
             val dateEdited = note["dateEdited"].asString
+            val tags = note["tags"].asJsonArray
 
-            val updateNoteSQL = "UPDATE note_data SET title = '$title', body = '$body', dateEdited = '$dateEdited' WHERE id = $id;"
+            val updateNoteSQL = "UPDATE note_data SET title = '$title', body = '$body', dateEdited = '$dateEdited', tags = '$tags' WHERE id = $id;"
 
             require( id == noteId )
 

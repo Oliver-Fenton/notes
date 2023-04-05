@@ -4,6 +4,7 @@ package notes.restservice
 
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
+import com.google.gson.JsonArray
 import com.google.gson.JsonObject
 import org.junit.jupiter.api.Test
 
@@ -27,6 +28,10 @@ class NoteDatabaseTest {
         json.addProperty("body", "test test test")
         json.addProperty("dateCreated", "2023-03-20T10:30:15.123456")
         json.addProperty("dateEdited", "2023-03-20T10:30:15.123456")
+        val tags = JsonArray()
+        tags.add("tag1")
+        json.add("tags", tags)
+
         db.insertNote(json)
         println(db.getNotes())
     }
@@ -40,6 +45,9 @@ class NoteDatabaseTest {
         json.addProperty("body", "update update update")
         json.addProperty("dateCreated", "2023-03-20T10:30:15.123456")
         json.addProperty("dateEdited", "2023-03-20T10:30:15.123456")
+        val tags = JsonArray()
+        tags.add("new tag")
+        json.add("tags", tags)
         db.updateNote(10, json)
         println(db.getNotes())
     }

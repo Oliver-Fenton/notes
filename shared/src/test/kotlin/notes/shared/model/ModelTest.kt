@@ -2,18 +2,23 @@
 
 package notes.shared.model
 
-import org.json.JSONObject
 import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
+import java.time.LocalDateTime
 
 class ModelTest {
 
     @Disabled
     @Test
     fun noteToJson() {
-        val note = NoteData(999, "MODEL TEST NOTE", "test test test", "2023-03-20T10:30:15.123456", "2023-03-20T10:30:15.123456", "")
-        println("expected: {\"id\":999,\"title\":\"MODEL TEST NOTE\",\"body\":\"test test test\",\"dateCreated\":\"2023-03-20T10:30:15.123456\",\"dateEdited\":\"2023-03-20T10:30:15.123456\"}")
-        println("actual: ${note.toJson()}")
+        val note = NoteData( 1, "Test Note").apply {
+            body = "<html><body>This is a test note</body></html>"
+            dateCreated = LocalDateTime.now()
+            dateEdited = LocalDateTime.now()
+        }
+        note.tags.addAll(listOf("tag1", "tag2", "tag3"))
+
+        println(note.toJson())
     }
 
     @Disabled
@@ -21,16 +26,17 @@ class ModelTest {
     fun jsonToNote() {
         val model = Model()
 
-        val json = JSONObject()
-        json.put("id", 999)
-        json.put("title", "MODEL TEST NOTE")
-        json.put("body", "test test test")
-        json.put("dateCreated", "2023-03-20T10:30:15.123456")
-        json.put("dateEdited", "2023-03-20T10:30:15.123456")
+        val note = NoteData( 1, "Test Note").apply {
+            body = "<html><body>This is a test note</body></html>"
+            dateCreated = LocalDateTime.now()
+            dateEdited = LocalDateTime.now()
+        }
+        note.tags.addAll(listOf("tag1", "tag2", "tag3"))
 
-        val note = model.jsonToNote(json.toString())
-        println("expected: ${json.toString()}")
-        println("actual: ${note.toJson()}")
+        val noteFromJson = model.jsonToNote(note.toJson())
+
+        println("expected: ${note.toJson()}")
+        println("actual: ${noteFromJson.toJson()}")
     }
 
     @Disabled
