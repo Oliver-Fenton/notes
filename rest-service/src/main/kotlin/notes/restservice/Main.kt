@@ -3,7 +3,6 @@
 package notes.restservice
 
 import com.google.gson.Gson
-import com.google.gson.GsonBuilder
 import com.google.gson.JsonObject
 import com.google.gson.annotations.SerializedName
 import org.springframework.boot.autoconfigure.SpringBootApplication
@@ -90,5 +89,6 @@ data class Note(
     @SerializedName("title") var title: String,
     @SerializedName("body") var body: String,
     @SerializedName("dateCreated") var dateCreated: String,
-    @SerializedName("dateEdited") var dateEdited: String
+    @SerializedName("dateEdited") var dateEdited: String,
+    @SerializedName("tags") var tags: List<String>
 )
