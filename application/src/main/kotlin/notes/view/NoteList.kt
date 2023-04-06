@@ -11,7 +11,6 @@ import javafx.scene.input.MouseButton
 import javafx.scene.layout.HBox
 import javafx.scene.layout.Priority
 import javafx.scene.layout.VBox
-import javafx.scene.text.Font
 import javafx.scene.text.TextAlignment
 import notes.shared.Constants
 import notes.shared.model.Model
@@ -19,14 +18,14 @@ import notes.shared.model.NoteData
 
 class NoteList(val noteModel: Model): VBox() {
 
-    inner class NotePreview(noteData: NoteData): VBox() {
+    inner class NotePreview(val noteData: NoteData): VBox() {
 
         fun formatNoteTitle(noteData: NoteData, node: HBox) {
             node.children.clear()
-            var notePin = Label(noteData.getPin())
+            val notePin = Label(noteData.getPin())
             notePin.style = "-fx-font-size: 19px"
             notePin.textAlignment = TextAlignment.CENTER
-            var noteTitle =  Label(noteData.getNoteTitle())
+            val noteTitle =  Label(noteData.getNoteTitle())
             noteTitle.style = "-fx-font-weight: bold;" + "-fx-font-family: Arial;"
             noteTitle.textAlignment = TextAlignment.CENTER
             node.alignment = Pos.CENTER
@@ -165,7 +164,7 @@ class NoteList(val noteModel: Model): VBox() {
         for (noteData in noteList.reversed()) {
             if (noteData.isDisplay) {
                 if (noteData.isPinned) {
-                    var notePreview = NotePreview(noteData)
+                    val notePreview = NotePreview(noteData)
 
                     if (noteData.isActive) {
                         notePreview.setToActiveColor()
@@ -179,7 +178,7 @@ class NoteList(val noteModel: Model): VBox() {
 
         for (noteData in noteList.reversed()) {
             if (noteData.isDisplay && !noteData.isPinned) {
-                var notePreview = NotePreview(noteData)
+                val notePreview = NotePreview(noteData)
 
                 if (noteData.isActive) {
                     notePreview.setToActiveColor()
