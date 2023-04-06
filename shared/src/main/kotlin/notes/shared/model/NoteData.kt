@@ -175,6 +175,9 @@ class NoteData(public val id: Int, public var title: String): ObservableObjectVa
     fun getNoteTitle(): String { return title }
 
     fun setNoteBody(newBody: String) { // Update Note Body for front end changes
+        if (newBody == this.body) { // ensures htmleditor button click does not update time if no text selected
+            return
+        }
         this.body = newBody
         dateEdited = LocalDateTime.now()
         setDateHTMLEditor()

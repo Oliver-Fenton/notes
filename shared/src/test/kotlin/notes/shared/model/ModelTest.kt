@@ -2,6 +2,7 @@
 
 package notes.shared.model
 
+import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import java.time.LocalDateTime
@@ -85,5 +86,39 @@ class ModelTest {
         println(model.getNoteFromWebService(10))
         model.deleteNoteFromWebService(10)
         println(model.getNoteFromWebService(10))
+    }
+
+    @Disabled
+    @Test
+    fun addNotes() {
+        val model = Model()
+        model.notes.clear()
+        for (i in 0..2) {
+            model.createNote()
+            // Check that the note body is blank
+            Assertions.assertEquals(model.notes[i].getHTML(), "")
+            // Check that the note is active
+            Assertions.assertEquals(model.notes[i].isActive, true)
+        }
+        // Check that we have added exactly 101 new notes
+        Assertions.assertEquals(model.notes.size, 3)
+    }
+
+    // Ignored to avoid creating notes upon running
+    @Disabled
+    @Test
+    fun deleteNote() {
+        val model = Model()
+        model.notes.clear()
+
+        for (i in 0..2) {
+            model.createNote()
+            Assertions.assertEquals(model.notes[i].getHTML(), "")
+            Assertions.assertEquals(model.notes[i].isActive, true)
+        }
+        Assertions.assertEquals(model.notes.size, 3)
+
+        model.deleteNote()
+        Assertions.assertEquals(model.notes.size, 2)
     }
 }
