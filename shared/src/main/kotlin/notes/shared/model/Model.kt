@@ -77,7 +77,6 @@ class Model {
 
     fun deleteNote() {
         activeNote.value?.let {
-            println("Deleting active note titled '${it.title}'")
             var curIndex = notes.indexOf( it.value )
             if ( curIndex > 0 ) curIndex -= 1
             notes.remove( it )
