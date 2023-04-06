@@ -53,7 +53,7 @@ class View(private val noteModel: Model): BorderPane() {
 
     private var splitView = SplitPane(noteList, noteViewWrapper)
     var curDividerPos = splitView.dividerPositions.first()
-    val contextMenuSort = SortMenuContext(SortMenu(noteModel, noteListView))
+    val contextMenuSort = SortMenuContext(noteModel, noteListView)
 
     init {
         top = topVBox

@@ -5,11 +5,14 @@ package notes.view
 import javafx.collections.ListChangeListener
 import javafx.collections.ObservableList
 import javafx.geometry.Insets
+import javafx.geometry.Pos
 import javafx.scene.control.Label
 import javafx.scene.input.MouseButton
 import javafx.scene.layout.HBox
 import javafx.scene.layout.Priority
 import javafx.scene.layout.VBox
+import javafx.scene.text.Font
+import javafx.scene.text.TextAlignment
 import notes.shared.Constants
 import notes.shared.model.Model
 import notes.shared.model.NoteData
@@ -18,10 +21,21 @@ class NoteList(val noteModel: Model): VBox() {
 
     inner class NotePreview(noteData: NoteData): VBox() {
 
-        val title = Label( noteData.title ).apply {
+        fun formatNoteTitle(noteData: NoteData, node: HBox) {
+            node.children.clear()
+            var notePin = Label(noteData.getPin())
+            notePin.style = "-fx-font-size: 30px"
+            notePin.textAlignment = TextAlignment.CENTER
+            var noteTitle =  Label(noteData.getNoteTitle())
+            noteTitle.style = "-fx-font-weight: bold;" + "-fx-font-family: Arial;"
+            noteTitle.textAlignment = TextAlignment.CENTER
+            node.alignment = Pos.CENTER
+            node.children.addAll(notePin, noteTitle)
+        }
+
+        val title = HBox().apply {
             HBox.setHgrow(this, Priority.NEVER)
-            style = "-fx-font-weight: bold;" +
-                    "-fx-font-family: Arial;"
+            formatNoteTitle(noteData, this)
         }
 
         val date = Label( noteData.getDateEdited()).apply {
@@ -51,6 +65,10 @@ class NoteList(val noteModel: Model): VBox() {
             HBox.setMargin(date, Insets(0.0, 0.0, 0.0, 0.0))
         }
 
+        fun formatTitleDisplay(noteData: NoteData): String {
+            return noteData.getPin() + noteData.getNoteTitle()
+        }
+
         fun formatTagDisplay(previewTags: ObservableList<String>) : String {
             var tagDisplay = ""
 
@@ -66,9 +84,11 @@ class NoteList(val noteModel: Model): VBox() {
         }
         fun refresh(noteData: NoteData) {
             //title.text = noteData.title
-            title.text = noteData.getNoteTitle()
+            // title.text = formatTitleDisplay(noteData)
+            formatNoteTitle(noteData, title)
             date.text = noteData.getDateEdited()
             preview.text = noteData.getPreview()
+
             if (noteData.isActive) {
                 setToActiveColor()
             } else {
@@ -129,7 +149,8 @@ class NoteList(val noteModel: Model): VBox() {
                     println("Note named ${noteData.title} set as active note with body ${noteData.getHTML()}")
                     println("Note tags ${noteData.getAllTags()}")
                 } else if (e.button == MouseButton.SECONDARY) {
-
+                    println("Note Data Selected")
+                    noteModel.setPrepData(noteData)
                 }
             }
 
@@ -141,9 +162,17 @@ class NoteList(val noteModel: Model): VBox() {
     }
     fun refreshList(noteList: ObservableList<NoteData>) {
         children.clear()
+        for (noteData in noteList.reversed()) {
+            if (noteData.isDisplay) {
+                if (noteData.isPinned) {
+                    var notePreview = NotePreview(noteData)
+                    children.add(notePreview)
+                }
+            }
+        }
 
         for (noteData in noteList.reversed()) {
-            if(noteData.isDisplay) {
+            if (noteData.isDisplay && !noteData.isPinned) {
                 var notePreview = NotePreview(noteData)
 
                 if (noteData.isActive) {
@@ -153,7 +182,6 @@ class NoteList(val noteModel: Model): VBox() {
                 }
                 children.add(notePreview)
             }
-
         }
     }
     init {

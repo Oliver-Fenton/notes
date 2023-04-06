@@ -15,6 +15,7 @@ class Model {
     private val webServiceClient = WebServiceClient()
     var isSplitView = SimpleBooleanProperty( true )
     val activeNote = SimpleObjectProperty<NoteData?>(null)
+    val prepNote = SimpleObjectProperty<NoteData?>(null)
     var notes: ObservableList<NoteData> = FXCollections.observableArrayList()
     var allTags: Array<String> = arrayOf<String>()
 
@@ -51,6 +52,12 @@ class Model {
 
         activeNote.value?.setDateHTMLEditor()
         activeNote.value?.setTitleHTMLEditor()
+    }
+
+    fun setPrepData( note: NoteData? ) {
+        prepNote.value?.inactivePrepData()
+        prepNote.set(note)
+        note?.activePrepData()
     }
 
     fun createNote(title: String? = null) {
@@ -130,8 +137,16 @@ class Model {
             sortedNotes = sortedNotes.reversed()
         }
         notes.clear()
+
         sortedNotes.forEach {element ->
-            notes.add(element)
+            if (element.isPinned) {
+                notes.add(element)
+            }
+        }
+        sortedNotes.forEach {element ->
+            if (!element.isPinned) {
+                notes.add(element)
+            }
         }
     }
 
@@ -142,8 +157,16 @@ class Model {
             sortedNotes = sortedNotes.reversed()
         }
         notes.clear()
+
         sortedNotes.forEach {element ->
-            notes.add(element)
+            if (element.isPinned) {
+                notes.add(element)
+            }
+        }
+        sortedNotes.forEach {element ->
+            if (!element.isPinned) {
+                notes.add(element)
+            }
         }
     }
 
@@ -151,10 +174,19 @@ class Model {
         var sortedNotes = notes.sortedWith(compareBy{ it.dateEdited})
         if (reverseOrder) {
             sortedNotes = sortedNotes.reversed()
+
         }
         notes.clear()
+
         sortedNotes.forEach {element ->
-            notes.add(element)
+            if (element.isPinned) {
+                notes.add(element)
+            }
+        }
+        sortedNotes.forEach {element ->
+            if (!element.isPinned) {
+                notes.add(element)
+            }
         }
     }
 
@@ -165,8 +197,16 @@ class Model {
             sortedNotes = sortedNotes.reversed()
         }
         notes.clear()
+
         sortedNotes.forEach {element ->
-            notes.add(element)
+            if (element.isPinned) {
+                notes.add(element)
+            }
+        }
+        sortedNotes.forEach {element ->
+            if (!element.isPinned) {
+                notes.add(element)
+            }
         }
     }
 

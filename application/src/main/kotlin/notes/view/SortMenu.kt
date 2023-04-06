@@ -65,7 +65,6 @@ class SortMenu(noteModel: Model, noteList: NoteList): Menu("Sort") {
             this.sortAscending.isSelected = true
             this.sortDescending.isSelected = false
             this.reverseOrder = false
-            noteModel.sortAlpha(this.reverseOrder)
             whichSort(noteModel)
             noteList.refreshList(noteModel.notes)
         }
