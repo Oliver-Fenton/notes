@@ -95,6 +95,10 @@ class NoteData(public val id: Int, public var title: String): ObservableObjectVa
     var dateEdited = LocalDateTime.now()
     var isActive = false
     var isDisplay = true
+    // IGNORE THIS
+    var prepData = false
+    // ADD THIS
+    var isPinned = false
 
     var undoStack = ArrayList<Pair<TextChange, String>>()
     var redoStack = ArrayList<Pair<TextChange, String>>()
@@ -293,6 +297,34 @@ class NoteData(public val id: Int, public var title: String): ObservableObjectVa
 
     fun getDisplay(): Boolean {
         return isDisplay
+    }
+
+    fun pin() {
+        this.isPinned = true
+    }
+
+    fun removePin() {
+        this.isPinned = false
+    }
+
+    fun getPin(): String {
+        if (this.isPinned) {
+            return "\uD83D\uDCCC"
+        } else {
+            return ""
+        }
+    }
+
+    fun activePrepData() {
+        this.prepData = true
+    }
+
+    fun inactivePrepData() {
+        this.prepData = false;
+    }
+
+    fun getPrep(): Boolean {
+        return this.prepData
     }
 
     fun undo(): String? {
