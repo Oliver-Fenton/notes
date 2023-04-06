@@ -6,6 +6,7 @@ import javafx.beans.property.SimpleBooleanProperty
 import javafx.beans.property.SimpleObjectProperty
 import javafx.collections.FXCollections
 import javafx.collections.ObservableList
+import notes.shared.Constants
 import notes.shared.database.NoteDatabase
 import notes.shared.preferences.Preferences
 import notes.shared.webserviceclient.WebServiceClient
@@ -74,18 +75,15 @@ class Model {
 
     fun deleteNote() {
         activeNote.value?.let {
-            println("Deleting active note titled '${it.title}'")
             var curIndex = notes.indexOf( it.value )
             if ( curIndex > 0 ) curIndex -= 1
             notes.remove( it )
-            //noteDatabase.deleteNote( it )
             webServiceClient.delete( it.id )
             if ( notes.isNotEmpty() ) { setActiveNote( notes[curIndex] ) }
             else {
                 activeNote.value?.clearTitleAndDateHTMLEditor()
                 setActiveNote( null )
-               // activeNote.value?.clearTitleAndDateHTMLEditor()
-                // no active notes left, so clear the title and date visible on htmleditor
+                Constants.notesArea.isDisable = true
             }
         }
     }
