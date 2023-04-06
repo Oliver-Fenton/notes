@@ -26,7 +26,7 @@ class SearchBar(noteModel: Model, nList: NoteList) : StackPane(){
         return this.searchBar.text
     }
 
-    private fun tagMatch(list: ObservableList<NoteData>, input: String) {
+    fun tagMatch(list: ObservableList<NoteData>, input: String) {
         println("Search By Tag")
         println(input)
         for (item in list) {
@@ -53,7 +53,7 @@ class SearchBar(noteModel: Model, nList: NoteList) : StackPane(){
         return temp
     }
 
-    private fun stringMatch(list: ObservableList<NoteData>, input: String) {
+    fun stringMatch(list: ObservableList<NoteData>, input: String) {
         if (input.length > 1 && input.substring(0,1) == "#") {
             clearDisplay(list)
             val parsedTags = input.substring(1,input.length).split(";")
@@ -77,6 +77,8 @@ class SearchBar(noteModel: Model, nList: NoteList) : StackPane(){
 
     init {
         searchBar.promptText = "search"
+        searchBar.isFocusTraversable = false
+        searchButton.isFocusTraversable = false
         HBox.setHgrow(searchBar, Priority.ALWAYS)
         this.labelContainer.children.add(searchLabel)
         children.add(searchContainer)
