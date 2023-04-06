@@ -24,7 +24,7 @@ class NoteList(val noteModel: Model): VBox() {
         fun formatNoteTitle(noteData: NoteData, node: HBox) {
             node.children.clear()
             var notePin = Label(noteData.getPin())
-            notePin.style = "-fx-font-size: 30px"
+            notePin.style = "-fx-font-size: 19px"
             notePin.textAlignment = TextAlignment.CENTER
             var noteTitle =  Label(noteData.getNoteTitle())
             noteTitle.style = "-fx-font-weight: bold;" + "-fx-font-family: Arial;"
@@ -166,6 +166,12 @@ class NoteList(val noteModel: Model): VBox() {
             if (noteData.isDisplay) {
                 if (noteData.isPinned) {
                     var notePreview = NotePreview(noteData)
+
+                    if (noteData.isActive) {
+                        notePreview.setToActiveColor()
+                    } else {
+                        notePreview.setToInactiveColor()
+                    }
                     children.add(notePreview)
                 }
             }
