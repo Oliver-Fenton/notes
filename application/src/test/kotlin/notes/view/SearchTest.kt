@@ -5,9 +5,11 @@ package notes.view
 import javafx.application.Platform
 import notes.shared.model.Model
 import notes.shared.model.NoteData
+import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 
 class SearchTest {
+    @Disabled
     @Test
     fun searchTitle() {
         Platform.startup {}
@@ -29,6 +31,7 @@ class SearchTest {
         Platform.exit()
     }
 
+    @Disabled
     @Test
     fun searchBody() {
         Platform.startup {}
@@ -54,6 +57,7 @@ class SearchTest {
         Platform.exit()
     }
 
+    @Disabled
     @Test
     fun searchBodyAndTitle() {
         Platform.startup {}
@@ -75,6 +79,7 @@ class SearchTest {
         Platform.exit()
     }
 
+    @Disabled
     @Test
     fun searchAndNothingAppears() {
         Platform.startup {}

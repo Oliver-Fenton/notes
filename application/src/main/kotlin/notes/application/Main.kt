@@ -5,7 +5,6 @@ package notes.application
 import javafx.application.Application
 import javafx.scene.Scene
 import javafx.stage.Stage
-import notes.shared.Constants
 import notes.shared.model.Model
 import notes.view.View
 
@@ -14,7 +13,7 @@ class Main : Application() {
     private val noteView = View( noteModel )
 
     override fun start(stage: Stage) {
-        val preferences = noteModel.getWindowPosition()
+        val preferences = noteModel.getPreferences()
         println("preferences fetched from db: $preferences")
 
         stage.scene = Scene(noteView, 250.0, 150.0)
@@ -29,7 +28,7 @@ class Main : Application() {
         stage.title = "Notes"
 
         stage.setOnCloseRequest { _ ->
-            noteModel.saveWindowPosition( stage.x, stage.y, stage.width, stage.height, noteView.getDividerPos(), noteView.isListCollapsed() )
+            noteModel.savePreferences( stage.x, stage.y, stage.width, stage.height, noteView.getDividerPos(), noteView.isListCollapsed(), noteView.getTheme() )
             noteModel.activeNote.value?.let { noteModel.saveNoteToDatabase( it ) }
         }
 
@@ -41,7 +40,4 @@ class Main : Application() {
         // ! important ! this also has to be done after stage.show()
         noteView.loadPreferences( preferences )
     }
-
-
-
 }

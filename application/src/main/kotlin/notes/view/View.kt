@@ -19,6 +19,7 @@ import notes.shared.Constants
 import notes.shared.model.Model
 import notes.shared.model.TextChange
 import notes.shared.preferences.Preferences
+import notes.shared.preferences.Theme
 
 
 class View(private val noteModel: Model): BorderPane() {
@@ -39,7 +40,7 @@ class View(private val noteModel: Model): BorderPane() {
         VBox.setVgrow(noteView, Priority.ALWAYS)
     }
 
-    private val menuBar = Menubar( noteModel, noteView, noteListView, tagsBar)
+    val menuBar = Menubar( noteModel, noteView, noteListView, tagsBar)
     private val topVBox = VBox( menuBar )
 
     private val searchBar = SearchBar(noteModel, noteListView)
@@ -283,9 +284,6 @@ class View(private val noteModel: Model): BorderPane() {
             return splitView.items.size == 1
         }
 
-        /*
-     * for now loadPreferences just sets the divider position
-     */
     fun loadPreferences( preferences: Preferences ) {
         if ( preferences.isListCollapsed ) {
             noteModel.isSplitView.set( false )
@@ -293,12 +291,15 @@ class View(private val noteModel: Model): BorderPane() {
             setDividerPos( preferences.dividerPos )
         }
 
-        // NEED TO LOAD THIS FROM DATABASE PREFERENCES
-        if (Constants.theme == "light") {
+        if (preferences.theme == Theme.LIGHT) {
             menuBar.setLightTheme()
         }
         else {
             menuBar.setDarkTheme()
         }
+    }
+
+    fun getTheme(): Theme {
+        return menuBar.getTheme()
     }
 }
