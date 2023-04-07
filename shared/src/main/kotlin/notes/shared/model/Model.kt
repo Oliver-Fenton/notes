@@ -6,12 +6,13 @@ import javafx.beans.property.SimpleBooleanProperty
 import javafx.beans.property.SimpleObjectProperty
 import javafx.collections.FXCollections
 import javafx.collections.ObservableList
-import notes.shared.database.NoteDatabase
+import notes.shared.database.PreferenceDatabase
 import notes.shared.preferences.Preferences
+import notes.shared.preferences.Theme
 import notes.shared.webserviceclient.WebServiceClient
 
 class Model {
-    private val noteDatabase = NoteDatabase()
+    private val noteDatabase = PreferenceDatabase()
     private val webServiceClient = WebServiceClient()
     var isSplitView = SimpleBooleanProperty( true )
     val activeNote = SimpleObjectProperty<NoteData?>(null)
@@ -90,12 +91,12 @@ class Model {
         }
     }
 
-    fun saveWindowPosition(x: Double, y: Double, width: Double, height: Double, dividerPos: Double, isListCollapsed: Boolean ) {
-        noteDatabase.saveWindowPosition( x, y, width, height, dividerPos, isListCollapsed )
+    fun savePreferences(x: Double, y: Double, width: Double, height: Double, dividerPos: Double, isListCollapsed: Boolean, theme: Theme ) {
+        noteDatabase.savePreferences( x, y, width, height, dividerPos, isListCollapsed, theme )
     }
 
-    fun getWindowPosition(): Preferences {
-        return noteDatabase.getWindowPosition()
+    fun getPreferences(): Preferences {
+        return noteDatabase.getPreferences()
     }
 
     fun saveNoteToDatabase( note: NoteData ) {

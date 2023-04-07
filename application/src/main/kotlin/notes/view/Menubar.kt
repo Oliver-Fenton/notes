@@ -11,6 +11,7 @@ import javafx.scene.input.KeyCodeCombination
 import notes.shared.Constants
 import notes.shared.SysInfo
 import notes.shared.model.Model
+import notes.shared.preferences.Theme
 
 class Menubar(val noteModel: Model, val noteView: NoteView, val noteList: NoteList, val tagsBar: TagsBar): MenuBar() {
     // FILE MENU
@@ -31,8 +32,8 @@ class Menubar(val noteModel: Model, val noteView: NoteView, val noteList: NoteLi
     private var viewMenu = Menu("View")
     private var sortSubMenu = SortMenu(noteModel, noteList)
     private var themeSubMenu = Menu("Theme")
-    private var darkTheme = CheckMenuItem("Dark")
-    private var lightTheme = CheckMenuItem("Light")
+    var darkTheme = CheckMenuItem("Dark")
+    var lightTheme = CheckMenuItem("Light")
 
     init {
 
@@ -206,5 +207,9 @@ class Menubar(val noteModel: Model, val noteView: NoteView, val noteList: NoteLi
             }
         }
         tagsBar.setTagsBarColors()
+    }
+
+    fun getTheme(): Theme {
+        return if (lightTheme.isSelected) Theme.LIGHT else Theme.DARK
     }
 }
