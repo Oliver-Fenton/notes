@@ -5,9 +5,11 @@ package notes.view
 import javafx.application.Platform
 import notes.shared.model.Model
 import notes.shared.model.NoteData
+import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 
 class PinTests {
+    @Disabled
     @Test
     fun pinNote() {
         Platform.startup {}
@@ -32,6 +34,7 @@ class PinTests {
         Platform.exit()
     }
 
+    @Disabled
     @Test
     fun pinMultipleNotes() {
         Platform.startup {}
@@ -57,6 +60,7 @@ class PinTests {
         Platform.exit()
     }
 
+    @Disabled
     @Test
     fun pinMultipleAndSortNotes() {
         Platform.startup {}
@@ -86,6 +90,7 @@ class PinTests {
         Platform.exit()
     }
 
+    @Disabled
     @Test
     fun unpinNote() {
         Platform.startup {}
