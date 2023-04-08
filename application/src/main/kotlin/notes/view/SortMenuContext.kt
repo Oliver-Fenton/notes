@@ -25,6 +25,7 @@ class SortMenuContext(noteModel: Model, noteList: NoteList): ContextMenu() {
             } else {
                 noteModel.prepNote.value?.pin()
             }
+            noteModel.prepNote.value?.let { noteModel.putNoteToWebService(it) }
             noteList.refreshList(noteModel.notes)
         }
 
