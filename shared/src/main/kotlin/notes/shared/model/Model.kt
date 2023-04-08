@@ -24,10 +24,9 @@ class Model {
     private var idCounter: Int = 0
 
     /*
-     * load notes from database
+     * load notes from web service
      */
     init {
-        //val noteList = noteDatabase.getNotes()
         var noteList: List<NoteData> = emptyList()
         try {
             noteList = getNotesFromWebService()
@@ -87,7 +86,7 @@ class Model {
             else {
                 activeNote.value?.clearTitleAndDateHTMLEditor()
                 setActiveNote( null )
-               // activeNote.value?.clearTitleAndDateHTMLEditor()
+                // activeNote.value?.clearTitleAndDateHTMLEditor()
                 // no active notes left, so clear the title and date visible on htmleditor
             }
         }
@@ -99,16 +98,6 @@ class Model {
 
     fun getPreferences(): Preferences {
         return preferenceDatabase.getPreferences()
-    }
-
-    fun getNoteFromWebService(id: Long): NoteData {
-        var string = ""
-        try {
-            string = webServiceClient.get(id)
-        } catch (e: Exception) {
-            println("ERROR: could not connect to web service to fetch note!")
-        }
-        return if (string.isNotEmpty()) NoteData.deserializeNote(string) else NoteData(-1, "error")
     }
 
     fun getNotesFromWebService(): List<NoteData> {

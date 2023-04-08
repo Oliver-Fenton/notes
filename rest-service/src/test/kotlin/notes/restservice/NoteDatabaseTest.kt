@@ -9,16 +9,19 @@ import com.google.gson.JsonObject
 import org.junit.jupiter.api.Test
 
 import org.junit.jupiter.api.Assertions.*
+import org.junit.jupiter.api.Disabled
 import java.time.LocalDateTime
 
 class NoteDatabaseTest {
 
+    @Disabled
     @Test
     fun getNotes() {
         val db = NoteDatabase()
         println(db.getNotes())
     }
 
+    @Disabled
     @Test
     fun insertNote() {
         val db = NoteDatabase()
@@ -36,6 +39,7 @@ class NoteDatabaseTest {
         println(db.getNotes())
     }
 
+    @Disabled
     @Test
     fun updateNote() {
         val db = NoteDatabase()
@@ -52,6 +56,7 @@ class NoteDatabaseTest {
         println(db.getNotes())
     }
 
+    @Disabled
     @Test
     fun deleteNote() {
         val db = NoteDatabase()

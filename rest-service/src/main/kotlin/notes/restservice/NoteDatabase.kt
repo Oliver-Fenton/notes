@@ -48,7 +48,7 @@ class NoteDatabase {
         }
 
         private fun createTableIfNotExists() {
-            val createNoteDataTableIfNotExistsSQL = "CREATE TABLE IF NOT EXISTS note_data ( id INTEGER PRIMARY KEY, title TEXT, body TEXT, dateCreated TEXT, dateEdited TEXT, tags TEXT );"
+            val createNoteDataTableIfNotExistsSQL = "CREATE TABLE IF NOT EXISTS note_data ( id INTEGER PRIMARY KEY, title TEXT, body TEXT, dateCreated TEXT, dateEdited TEXT, tags TEXT, isPinned INTEGER );"
 
             val conn = connect()
             if ( conn == null ) {
@@ -87,6 +87,7 @@ class NoteDatabase {
                     val dateEdited = rs.getString("dateEdited")
                     val tags = rs.getString("tags")
                     val tagsJson = JsonParser.parseString(tags).asJsonArray
+                    val isPinned = rs.getBoolean("isPinned") // isPinned is stored as an INTEGER, however this method should cast the value to a Boolean appropriately
 
                     val json = JsonObject()
                     json.addProperty("id", id)
@@ -95,6 +96,7 @@ class NoteDatabase {
                     json.addProperty("dateCreated", dateCreated)
                     json.addProperty("dateEdited", dateEdited)
                     json.add("tags", tagsJson)
+                    json.addProperty("isPinned", isPinned)
 
                     jsonArray.add(json)
                 }
@@ -113,8 +115,9 @@ class NoteDatabase {
             val dateCreated = note["dateCreated"].asString
             val dateEdited = note["dateEdited"].asString
             val tags = note["tags"].asJsonArray
+            val isPinned = note["isPinned"].asBoolean
 
-            val insertNoteSQL = "INSERT INTO note_data (id, title, body, dateCreated, dateEdited, tags) VALUES ('$id', '$title', '$body', '$dateCreated', '$dateEdited', '$tags');"
+            val insertNoteSQL = "INSERT INTO note_data (id, title, body, dateCreated, dateEdited, tags, isPinned) VALUES ('$id', '$title', '$body', '$dateCreated', '$dateEdited', '$tags', '${if (isPinned) 1 else 0}');"
 
             val conn = connect()
             if ( conn == null ) {
@@ -138,8 +141,9 @@ class NoteDatabase {
             val body = note["body"].asString
             val dateEdited = note["dateEdited"].asString
             val tags = note["tags"].asJsonArray
+            val isPinned = note["isPinned"].asBoolean
 
-            val updateNoteSQL = "UPDATE note_data SET title = '$title', body = '$body', dateEdited = '$dateEdited', tags = '$tags' WHERE id = $id;"
+            val updateNoteSQL = "UPDATE note_data SET title = '$title', body = '$body', dateEdited = '$dateEdited', tags = '$tags', isPinned = ${if (isPinned) 1 else 0} WHERE id = $id;"
 
             require( id == noteId )
 
