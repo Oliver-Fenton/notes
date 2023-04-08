@@ -6,6 +6,7 @@ import javafx.beans.property.SimpleBooleanProperty
 import javafx.beans.property.SimpleObjectProperty
 import javafx.collections.FXCollections
 import javafx.collections.ObservableList
+import notes.shared.Constants
 import notes.shared.database.PreferenceDatabase
 import notes.shared.preferences.Preferences
 import notes.shared.preferences.Theme
