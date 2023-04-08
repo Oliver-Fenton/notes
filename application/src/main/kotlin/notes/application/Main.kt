@@ -29,7 +29,7 @@ class Main : Application() {
 
         stage.setOnCloseRequest { _ ->
             noteModel.savePreferences( stage.x, stage.y, stage.width, stage.height, noteView.getDividerPos(), noteView.isListCollapsed(), noteView.getTheme() )
-            noteModel.activeNote.value?.let { noteModel.saveNoteToDatabase( it ) }
+            noteModel.activeNote.value?.let { noteModel.putNoteToWebService( it ) }
         }
 
         stage.show()
