@@ -34,7 +34,7 @@ class ModelTest {
         }
         note.tags.addAll(listOf("tag1", "tag2", "tag3"))
 
-        val noteFromJson = model.jsonToNote(note.toJson())
+        val noteFromJson = NoteData.deserializeNote(note.toJson())
 
         println("expected: ${note.toJson()}")
         println("actual: ${noteFromJson.toJson()}")

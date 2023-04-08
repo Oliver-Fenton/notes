@@ -6,15 +6,14 @@ import javafx.beans.property.SimpleBooleanProperty
 import javafx.beans.property.SimpleObjectProperty
 import javafx.collections.FXCollections
 import javafx.collections.ObservableList
-import notes.shared.Constants
-import notes.shared.database.NoteDatabase
 import notes.shared.database.PreferenceDatabase
 import notes.shared.preferences.Preferences
 import notes.shared.preferences.Theme
 import notes.shared.webserviceclient.WebServiceClient
+import java.lang.Exception
 
 class Model {
-    private val noteDatabase = PreferenceDatabase()
+    private val preferenceDatabase = PreferenceDatabase()
     private val webServiceClient = WebServiceClient()
     var isSplitView = SimpleBooleanProperty( true )
     val activeNote = SimpleObjectProperty<NoteData?>(null)
@@ -29,21 +28,24 @@ class Model {
      */
     init {
         //val noteList = noteDatabase.getNotes()
-        val noteList = getNotesFromWebService()
+        var noteList: List<NoteData> = emptyList()
+        try {
+            noteList = getNotesFromWebService()
+        } catch (_: Exception) {
+            println("ERROR: unable to fetch notes from web service!")
+        }
 
         for ( note in noteList ) {
             notes.add( note )
         }
 
-        //idCounter = noteDatabase.getMaxId()
         idCounter = notes.maxByOrNull { it.id }?.id ?: 0
     }
 
     fun setActiveNote( note: NoteData? ) {
         // save changes to old note in database
         if ( activeNote.value != null ) {
-            //noteDatabase.updateNote( activeNote.value!! )
-            webServiceClient.put(activeNote.value!!.id, activeNote.value!!.toJson())
+            putNoteToWebService( activeNote.value!! )
         }
 
         // deactivate old note
@@ -70,9 +72,8 @@ class Model {
         notes.add( newNote )
         setActiveNote( newNote )
 
-        // save new note to database
-        //noteDatabase.insertNote( newNote )
-        webServiceClient.post( newNote.toJson() )
+        // save new note to web service database
+        postNoteToWebService( newNote )
     }
 
     fun deleteNote() {
@@ -81,8 +82,7 @@ class Model {
             var curIndex = notes.indexOf( it.value )
             if ( curIndex > 0 ) curIndex -= 1
             notes.remove( it )
-            //noteDatabase.deleteNote( it )
-            webServiceClient.delete( it.id )
+            deleteNoteFromWebService( it.id )
             if ( notes.isNotEmpty() ) { setActiveNote( notes[curIndex] ) }
             else {
                 activeNote.value?.clearTitleAndDateHTMLEditor()
@@ -111,41 +111,55 @@ class Model {
     }
 
     fun savePreferences(x: Double, y: Double, width: Double, height: Double, dividerPos: Double, isListCollapsed: Boolean, theme: Theme ) {
-        noteDatabase.savePreferences( x, y, width, height, dividerPos, isListCollapsed, theme )
+        preferenceDatabase.savePreferences( x, y, width, height, dividerPos, isListCollapsed, theme )
     }
 
     fun getPreferences(): Preferences {
-        return noteDatabase.getPreferences()
-    }
-
-    fun saveNoteToDatabase( note: NoteData ) {
-        webServiceClient.put(note.id, note.toJson())
-    }
-
-    fun jsonToNote(json: String): NoteData {
-        return NoteData.deserializeNote(json)
+        return preferenceDatabase.getPreferences()
     }
 
     fun getNoteFromWebService(id: Long): NoteData {
-        val string = webServiceClient.get(id)
+        var string = ""
+        try {
+            string = webServiceClient.get(id)
+        } catch (e: Exception) {
+            println("ERROR: could not connect to web service to fetch note!")
+        }
         return if (string.isNotEmpty()) NoteData.deserializeNote(string) else NoteData(-1, "error")
     }
 
     fun getNotesFromWebService(): List<NoteData> {
-        val string = webServiceClient.get()
+        var string = ""
+        try {
+            string = webServiceClient.get()
+        } catch (e: Exception) {
+            println("ERROR: could not connect to web service to fetch notes!")
+        }
         return NoteData.deserializeNoteList(string)
     }
 
     fun postNoteToWebService(note: NoteData) {
-        webServiceClient.post(note.toJson())
+        try {
+            webServiceClient.post(note.toJson())
+        } catch (e: Exception) {
+            println("ERROR: could not connect to web service to insert note!")
+        }
     }
 
     fun putNoteToWebService(note: NoteData) {
-        webServiceClient.put(note.id, note.toJson())
+        try {
+            webServiceClient.put(note.id, note.toJson())
+        } catch (e: Exception) {
+            println("ERROR: could not connect to web service to update note!")
+        }
     }
 
     fun deleteNoteFromWebService(id: Int) {
-        webServiceClient.delete(id)
+        try {
+            webServiceClient.delete(id)
+        } catch (e: Exception) {
+            println("ERROR: could not connect to web service to delete note!")
+        }
     }
 
     fun sortDate(reverseOrder: Boolean) {
