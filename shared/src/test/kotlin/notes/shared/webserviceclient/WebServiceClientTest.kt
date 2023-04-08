@@ -11,9 +11,6 @@ class WebServiceClientTest {
     fun getNotes() { println(client.get()) }
     @Disabled
     @Test
-    fun getNote() { println(client.get(1)) }
-    @Disabled
-    @Test
     fun postNote() { println(client.post(NoteData(1, "note 1", "1 1 1 1", "2023-03-20T10:30:15.123456", "2023-03-20T10:30:15.123456", "").toJson())) }
     @Disabled
     @Test

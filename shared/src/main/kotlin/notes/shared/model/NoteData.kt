@@ -63,12 +63,14 @@ class NoteDataTypeAdapter: JsonSerializer<NoteData>, JsonDeserializer<NoteData> 
             ?: LocalDateTime.now()
         val tagsArray = jsonObject?.get("tags")?.asJsonArray ?: JsonArray()
         val tagsList = tagsArray.map { it.asString }
+        val isPinned = jsonObject.get("pinned").asBoolean   //TODO why isn't this isPinned as expected?
 
         return NoteData(id, title).apply {
             this.body = body
             this.dateCreated = dateCreated
             this.dateEdited = dateEdited
             this.tags = FXCollections.observableArrayList(tagsList)
+            this.isPinned = isPinned
         }
     }
 
@@ -80,6 +82,7 @@ class NoteDataTypeAdapter: JsonSerializer<NoteData>, JsonDeserializer<NoteData> 
         json.addProperty("dateCreated", src?.dateCreated?.format(formatter))
         json.addProperty("dateEdited", src?.dateEdited?.format(formatter))
         json.add("tags", context?.serialize(src?.tags))
+        json.addProperty("isPinned", src?.isPinned)
 
         return json
     }

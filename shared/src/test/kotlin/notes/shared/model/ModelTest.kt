@@ -40,16 +40,7 @@ class ModelTest {
         println("actual: ${noteFromJson.toJson()}")
     }
 
-    @Disabled
-    @Test
-    fun getNoteFromWebService() {
-        val model = Model()
-
-        val note = model.getNoteFromWebService(10)
-        println(note.toJson())
-    }
-
-    @Disabled
+    //@Disabled
     @Test
     fun getNotesFromWebService() {
         val model = Model()
@@ -83,9 +74,9 @@ class ModelTest {
     fun deleteNoteFromWebService() {
         val model = Model()
 
-        println(model.getNoteFromWebService(10))
+        println(model.getNotesFromWebService())
         model.deleteNoteFromWebService(10)
-        println(model.getNoteFromWebService(10))
+        println(model.getNotesFromWebService())
     }
 
     @Disabled

@@ -24,10 +24,9 @@ class Model {
     private var idCounter: Int = 0
 
     /*
-     * load notes from database
+     * load notes from web service
      */
     init {
-        //val noteList = noteDatabase.getNotes()
         var noteList: List<NoteData> = emptyList()
         try {
             noteList = getNotesFromWebService()
@@ -116,16 +115,6 @@ class Model {
 
     fun getPreferences(): Preferences {
         return preferenceDatabase.getPreferences()
-    }
-
-    fun getNoteFromWebService(id: Long): NoteData {
-        var string = ""
-        try {
-            string = webServiceClient.get(id)
-        } catch (e: Exception) {
-            println("ERROR: could not connect to web service to fetch note!")
-        }
-        return if (string.isNotEmpty()) NoteData.deserializeNote(string) else NoteData(-1, "error")
     }
 
     fun getNotesFromWebService(): List<NoteData> {

@@ -37,21 +37,6 @@ class WebServiceClient {
         return response.body()
     }
 
-    fun get(id: Long): String {
-        val client = HttpClient.newBuilder()
-            .version(HttpClient.Version.HTTP_2)
-            .followRedirects(HttpClient.Redirect.NEVER)
-            .connectTimeout(Duration.ofSeconds(20))
-            .build()
-        val request = HttpRequest.newBuilder()
-            .uri(UriComponentsBuilder.fromUriString(SERVER_ADDRESS).path("/{id}").buildAndExpand(id).toUri())
-            .GET()
-            .build()
-
-        val response = client.send(request, HttpResponse.BodyHandlers.ofString())
-        return response.body()
-    }
-
     fun post(note: String): String {
         val client = HttpClient.newBuilder()
             .version(HttpClient.Version.HTTP_2)
