@@ -186,7 +186,6 @@ class NoteDatabase {
             try {
                 val preparedStatement = conn.prepareStatement( updateNoteSQL )
                 preparedStatement.executeUpdate()
-                println("Updated note titled ${note.title}} in database.")
             } catch ( e: SQLException ) {
                 println( e.message )
             }
@@ -204,7 +203,6 @@ class NoteDatabase {
             try {
                 val preparedStatement = conn.prepareStatement( deleteNoteSQL )
                 preparedStatement.executeUpdate()
-                println("Deleted note titled ${note.title}} in database.")
             } catch ( e: SQLException ) {
                 println( e.message )
             }

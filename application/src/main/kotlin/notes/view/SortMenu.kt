@@ -81,7 +81,6 @@ class SortMenu(noteModel: Model, noteList: NoteList): Menu("Sort") {
             this.setAllSelectedFalse(this.sortDateCreated)
             this.sortAscending.text = this.getMessage(true, "Date")
             this.sortDescending.text = this.getMessage(false, "Date")
-            println("Sort Date Menu")
             whichSort(noteModel)
             noteList.refreshList(noteModel.notes)
         }
@@ -90,7 +89,6 @@ class SortMenu(noteModel: Model, noteList: NoteList): Menu("Sort") {
             this.setAllSelectedFalse(this.sortDateEdited)
             this.sortAscending.text = this.getMessage(true, "Date")
             this.sortDescending.text = this.getMessage(false, "Date")
-            println("Sort Date Edited Menu")
             whichSort(noteModel)
             noteList.refreshList(noteModel.notes)
         }
@@ -99,7 +97,6 @@ class SortMenu(noteModel: Model, noteList: NoteList): Menu("Sort") {
             this.setAllSelectedFalse(this.sortAlphaTitle)
             this.sortDescending.text = this.getMessage(false, "Alphabetical")
             this.sortAscending.text = this.getMessage(true, "Alphabetical")
-            println("Sort Note Title")
             whichSort(noteModel)
             noteList.refreshList(noteModel.notes)
         }

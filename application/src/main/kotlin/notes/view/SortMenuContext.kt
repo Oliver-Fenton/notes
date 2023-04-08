@@ -20,9 +20,6 @@ class SortMenuContext(noteModel: Model, noteList: NoteList): ContextMenu() {
         this.items.add(pinMessage)
 
         pinMessage.setOnAction {
-            println("pinMessage: " + noteModel.activeNote.value)
-            println("prepNote: " + noteModel.prepNote.value?.getText())
-            println(noteModel.prepNote.value?.getText())
             if (noteModel.prepNote.value?.isPinned == true) {
                 noteModel.prepNote.value?.removePin()
             } else {
