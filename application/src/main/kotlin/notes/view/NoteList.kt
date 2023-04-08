@@ -145,16 +145,12 @@ class NoteList(val noteModel: Model): VBox() {
             this.setOnMouseClicked{e ->
                 if (e.button == MouseButton.PRIMARY) {
                     noteModel.setActiveNote(noteData)
-                    println("Note named ${noteData.title} set as active note with body ${noteData.getHTML()}")
-                    println("Note tags ${noteData.getAllTags()}")
                 } else if (e.button == MouseButton.SECONDARY) {
-                    println("Note Data Selected")
                     noteModel.setPrepData(noteData)
                 }
             }
 
             noteData.addListener { _, _, newValue ->
-                println("detected a change in note ${newValue?.title}")
                 if (newValue != null) refresh(newValue)
             }
         }
@@ -196,7 +192,6 @@ class NoteList(val noteModel: Model): VBox() {
         refreshList( noteModel.notes )
 
         noteModel.notes.addListener(ListChangeListener {
-            println("detected a change in note list")
             refreshList( noteModel.notes )
         })
     }

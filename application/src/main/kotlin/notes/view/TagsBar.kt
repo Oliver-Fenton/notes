@@ -154,7 +154,6 @@ class TagsBar(noteModel: Model, noteList: NoteList) : HBox() {
         noteModel.activeNote.addListener { _, _, newActiveNote ->
             if (newActiveNote != null) {
                 val tagList = newActiveNote.getAllTags()
-                println(newActiveNote.getNoteTitle())
                 while (tagsBar.children.size > 1) {
                     tagsBar.children.remove(tagsBar.children.last())
                 }

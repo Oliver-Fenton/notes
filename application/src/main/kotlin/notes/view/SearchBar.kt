@@ -22,13 +22,10 @@ class SearchBar(noteModel: Model, nList: NoteList) : StackPane(){
     private val searchContainer = HBox(searchBar, searchButton)
 
     private fun getSearchValue(): String {
-        println(this.searchBar.text)
         return this.searchBar.text
     }
 
     fun tagMatch(list: ObservableList<NoteData>, input: String) {
-        println("Search By Tag")
-        println(input)
         for (item in list) {
             for (tag in item.tags) {
                 if (input == tag) {
@@ -66,7 +63,6 @@ class SearchBar(noteModel: Model, nList: NoteList) : StackPane(){
                 val ref = item.getText()
                 val title = item.getNoteTitle()
                 if (ref.contains(input, true) || title.contains(input, true)) {
-                    println(ref)
                     item.doDisplay()
                 } else {
                     item.notDisplay()

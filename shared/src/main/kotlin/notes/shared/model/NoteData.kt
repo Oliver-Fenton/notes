@@ -203,7 +203,6 @@ class NoteData(public val id: Int, public var title: String): ObservableObjectVa
         if(date is Label) {
             if (this.isActive) {
                 date.text = this.getDateEdited()
-                println("html editor date updated")
             }
         }
 
@@ -216,7 +215,6 @@ class NoteData(public val id: Int, public var title: String): ObservableObjectVa
         if(title is TextField) {
             if (this.isActive) {
                 title.text = this.getNoteTitle()
-                println("html editor title updated")
             }
         }
     }
@@ -228,12 +226,10 @@ class NoteData(public val id: Int, public var title: String): ObservableObjectVa
         val title = toolBar2.lookup(".text-field")
         if(title is TextField) {
             title.text = ""
-            println("html editor title cleared")
         }
         val date = toolBar2.lookup(".label")
         if(date is Label) {
             date.text = ""
-            println("html editor date cleared")
         }
 
     }
@@ -263,14 +259,12 @@ class NoteData(public val id: Int, public var title: String): ObservableObjectVa
 
     fun getDateCreated(): String {
         val formatter = DateTimeFormatter.ofPattern("MMMM d, yyyy '@' h:mm a")
-        //val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:MM:SS")
 
         return dateCreated.format(formatter)
     }
 
     fun getDateEdited(): String {
         val formatter = DateTimeFormatter.ofPattern("MMMM d, yyyy '@' h:mm a")
-        //val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:MM:SS")
 
         return dateEdited.format(formatter)
     }
