@@ -117,6 +117,17 @@ class Model {
 
     fun getPreferences(): Preferences {
         return preferenceDatabase.getPreferences()
+        return preferenceDatabase.getPreferences()
+    }
+
+    fun getNoteFromWebService(id: Long): NoteData {
+        var string = ""
+        try {
+            string = webServiceClient.get(id)
+        } catch (e: Exception) {
+            println("ERROR: could not connect to web service to fetch note!")
+        }
+        return if (string.isNotEmpty()) NoteData.deserializeNote(string) else NoteData(-1, "error")
     }
 
     fun getNotesFromWebService(): List<NoteData> {
