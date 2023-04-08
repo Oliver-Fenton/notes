@@ -90,5 +90,6 @@ data class Note(
     @SerializedName("body") var body: String,
     @SerializedName("dateCreated") var dateCreated: String,
     @SerializedName("dateEdited") var dateEdited: String,
-    @SerializedName("tags") var tags: List<String>
+    @SerializedName("tags") var tags: List<String>,
+    @SerializedName("isPinned") var isPinned: Boolean
 )
