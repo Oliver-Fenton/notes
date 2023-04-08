@@ -251,7 +251,6 @@ class View(private val noteModel: Model): BorderPane() {
             else if (event.code == KeyCode.BACK_SPACE || event.code == KeyCode.DELETE) {
                 noteModel.activeNote.value?.emptyRedo()
                 noteModel.activeNote.value?.addToUndoStack(TextChange.DELETE)
-                event.consume()
             }
             else if (event.isMetaDown && KeyCode.X == event.code) {
                 noteModel.activeNote.value?.addToUndoStack(TextChange.DELETE)
