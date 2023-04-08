@@ -86,8 +86,6 @@ class Model {
             else {
                 activeNote.value?.clearTitleAndDateHTMLEditor()
                 setActiveNote( null )
-                // activeNote.value?.clearTitleAndDateHTMLEditor()
-                // no active notes left, so clear the title and date visible on htmleditor
                 Constants.notesArea.isDisable = true
 
                 val htmlEditorTheme = if (Constants.theme == "light") Constants.LightHTMLEditorColor else Constants.DarkHTMLEditorColor
@@ -116,7 +114,6 @@ class Model {
     }
 
     fun getPreferences(): Preferences {
-        return preferenceDatabase.getPreferences()
         return preferenceDatabase.getPreferences()
     }
 
