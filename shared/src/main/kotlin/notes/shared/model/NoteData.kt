@@ -16,7 +16,6 @@ import javafx.scene.control.TextField
 import javafx.scene.control.ToolBar
 import javafx.scene.input.KeyCode
 import notes.shared.Constants
-import notes.shared.SysInfo
 import org.jsoup.Jsoup
 import java.lang.reflect.Type
 import java.time.LocalDateTime
@@ -61,7 +60,7 @@ class NoteDataTypeAdapter: JsonSerializer<NoteData>, JsonDeserializer<NoteData> 
             ?: LocalDateTime.now()
         val dateEdited = context?.deserialize(jsonObject.get("dateEdited"), LocalDateTime::class.java)
             ?: LocalDateTime.now()
-        val tagsArray = jsonObject?.get("tags")?.asJsonArray ?: JsonArray()
+        val tagsArray = jsonObject.get("tags")?.asJsonArray ?: JsonArray()
         val tagsList = tagsArray.map { it.asString }
         val isPinned = jsonObject.get("pinned").asBoolean   //TODO why isn't this isPinned as expected?
 
@@ -88,7 +87,7 @@ class NoteDataTypeAdapter: JsonSerializer<NoteData>, JsonDeserializer<NoteData> 
     }
 }
 
-class NoteData(public val id: Int, public var title: String): ObservableObjectValue<NoteData?> {
+class NoteData(val id: Int, var title: String): ObservableObjectValue<NoteData?> {
     private var changeListeners = mutableListOf<ChangeListener<in NoteData>?>()
     private var invalidationListeners = mutableListOf<InvalidationListener?>()
     var tags: ObservableList<String> = FXCollections.observableArrayList()
@@ -239,14 +238,14 @@ class NoteData(public val id: Int, public var title: String): ObservableObjectVa
         val endingStyleIndex = this.body.indexOf("contenteditable=")
 
         if (beginningStyleIndex == -1) { // no style set yet
-            var bodyTagIndex = this.body.indexOf("<body")
-            var beginningSubstring = this.body.substring(0, bodyTagIndex + 5)
-            var endingSubstring = this.body.substring(bodyTagIndex + 5)
+            val bodyTagIndex = this.body.indexOf("<body")
+            val beginningSubstring = this.body.substring(0, bodyTagIndex + 5)
+            val endingSubstring = this.body.substring(bodyTagIndex + 5)
             return "$beginningSubstring style=\"background-color: $backgroundColor;\" $endingSubstring"
         }
         else { // has style already
-            var beginningSubstring = this.body.substring(0, beginningStyleIndex + 12)
-            var endingSubstring = this.body.substring(endingStyleIndex)
+            val beginningSubstring = this.body.substring(0, beginningStyleIndex + 12)
+            val endingSubstring = this.body.substring(endingStyleIndex)
             return "$beginningSubstring\"background-color: $backgroundColor;\" $endingSubstring"
         }
     }
@@ -295,10 +294,6 @@ class NoteData(public val id: Int, public var title: String): ObservableObjectVa
         isDisplay = false
     }
 
-    fun getDisplay(): Boolean {
-        return isDisplay
-    }
-
     fun pin() {
         this.isPinned = true
     }
@@ -320,11 +315,7 @@ class NoteData(public val id: Int, public var title: String): ObservableObjectVa
     }
 
     fun inactivePrepData() {
-        this.prepData = false;
-    }
-
-    fun getPrep(): Boolean {
-        return this.prepData
+        this.prepData = false
     }
 
     fun undo(): String? {

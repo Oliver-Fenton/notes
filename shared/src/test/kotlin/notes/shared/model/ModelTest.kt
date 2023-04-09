@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import java.time.LocalDateTime
 
-class ModelTest {
+class ModelTest { // Disabled to avoid tampering with database of notes
 
     @Disabled
     @Test
@@ -25,8 +25,6 @@ class ModelTest {
     @Disabled
     @Test
     fun jsonToNote() {
-        val model = Model()
-
         val note = NoteData( 1, "Test Note").apply {
             body = "<html><body>This is a test note</body></html>"
             dateCreated = LocalDateTime.now()
@@ -95,7 +93,6 @@ class ModelTest {
         Assertions.assertEquals(model.notes.size, 3)
     }
 
-    // Ignored to avoid creating notes upon running
     @Disabled
     @Test
     fun deleteNote() {

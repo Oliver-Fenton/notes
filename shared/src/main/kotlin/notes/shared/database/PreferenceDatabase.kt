@@ -41,7 +41,7 @@ class PreferenceDatabase {
 
         private fun createTableIfNotExists() {
             val createPreferencesTableIfNotExistsSQL = "CREATE TABLE IF NOT EXISTS preferences ( id INTEGER PRIMARY KEY, x REAL, y REAL, width REAL, height REAL, dividerPos REAL, isListCollapsed INTEGER, theme TEXT );"
-            val setDefaultPreferencesIfTableEmptySQL = "INSERT INTO preferences (x, y, width, height, dividerPos, isListCollapsed, theme ) SELECT 0.0, 0.0, 600.0, 400.0, 200.0, 0, 'LIGHT' WHERE NOT EXISTS (SELECT 1 FROM preferences);"
+            val setDefaultPreferencesIfTableEmptySQL = "INSERT INTO preferences (x, y, width, height, dividerPos, isListCollapsed, theme ) SELECT 0.0, 0.0, 600.0, 400.0, 225.0, 0, 'LIGHT' WHERE NOT EXISTS (SELECT 1 FROM preferences);"
 
             val conn = connect()
             if ( conn == null ) {
