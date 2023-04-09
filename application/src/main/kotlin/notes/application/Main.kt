@@ -14,7 +14,6 @@ class Main : Application() {
 
     override fun start(stage: Stage) {
         val preferences = noteModel.getPreferences()
-        println("preferences fetched from db: $preferences")
 
         stage.scene = Scene(noteView, 250.0, 150.0)
         stage.isResizable = true

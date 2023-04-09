@@ -30,13 +30,13 @@ class TagsBar(noteModel: Model, noteList: NoteList) : HBox() {
             tagImageView.maxWidth(10.0)
             tagImageView.isPreserveRatio = true
 
-            var textBackgroundColor = if (Constants.theme == "light") "white" else "black"
+            val textBackgroundColor = if (Constants.theme == "light") "white" else "black"
             tagText.apply {
                 style = "-fx-background: $textBackgroundColor;"
             }
 
-            var backgroundColor = if (Constants.theme == "light") "white" else "black"
-            var borderColor = if (Constants.theme == "light") "#BEBEBE" else "#5A5A5A"
+            val backgroundColor = if (Constants.theme == "light") "white" else "black"
+            val borderColor = if (Constants.theme == "light") "#BEBEBE" else "#5A5A5A"
             this.style =
                         "-fx-padding: 3;" +
                         "-fx-border-width: 1;" +
@@ -148,27 +148,45 @@ class TagsBar(noteModel: Model, noteList: NoteList) : HBox() {
 
         this.AddTagTextField(noteModel.activeNote, noteList, noteModel).prefHeightProperty().bind(this.heightProperty())
         this.apply{
-            HBox.setHgrow(this.AddTagTextField(noteModel.activeNote, noteList, noteModel), Priority.ALWAYS)
+            setHgrow(this.AddTagTextField(noteModel.activeNote, noteList, noteModel), Priority.ALWAYS)
 
         }
         noteModel.activeNote.addListener { _, _, newActiveNote ->
-            if (newActiveNote != null)
-            {
+            if (newActiveNote != null) {
                 val tagList = newActiveNote.getAllTags()
-                println(newActiveNote.getNoteTitle())
                 while (tagsBar.children.size > 1) {
                     tagsBar.children.remove(tagsBar.children.last())
                 }
+                val tagsTextFieldHBox = tagsBar.children[0] as HBox
+                val tagsTextField = tagsTextFieldHBox.children[0] as TextField
+                tagsTextField.clear()
+                tagsTextField.isEditable = true
                 if (tagList != null) {
                     for (n in tagList) {
                         TagButton(noteModel.activeNote, n, noteList, noteModel)
                     }
                 }
             }
+            else if (noteModel.notes.size == 0) {
+                while (tagsBar.children.size > 1) {
+                    tagsBar.children.remove(tagsBar.children.last())
+                }
+                val tagsTextFieldHBox = tagsBar.children[0] as HBox
+                val tagsTextField = tagsTextFieldHBox.children[0] as TextField
+                tagsTextField.clear()
+                tagsTextField.isEditable = false
+            }
 
         }
         this.children.add( 0, tagsBar.AddTagTextField(noteModel.activeNote, noteList, noteModel))
-        this.AddTagTextField(noteModel.activeNote, noteList, noteModel).setBackground(null)
+        this.AddTagTextField(noteModel.activeNote, noteList, noteModel).background = null
+
+        if (noteModel.activeNote.value == null || noteModel.notes.size == 0) {
+            val tagsTextFieldHBox = tagsBar.children[0] as HBox
+            val tagsTextField = tagsTextFieldHBox.children[0] as TextField
+            tagsTextField.clear()
+            tagsTextField.isEditable = false
+        }
     }
 
 }

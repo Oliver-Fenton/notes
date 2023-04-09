@@ -38,6 +38,16 @@ class NoteView(noteModel: Model): StackPane() {
         }
 
         Constants.notesArea.setOnKeyReleased { e ->
+            if (e.code == KeyCode.COMMAND) {
+                Constants.notesArea.isDisable = false
+                e.consume()
+                return@setOnKeyReleased
+            }
+            if (e.isMetaDown && e.code == KeyCode.D) {
+                Constants.notesArea.isDisable = false
+                e.consume()
+                return@setOnKeyReleased
+            }
             val toolBar2: ToolBar = Constants.notesArea.lookup(".bottom-toolbar") as ToolBar
             val title = toolBar2.lookup(".text-field") as TextField
             if (noteModel.notes.size == 0 && title.text == "") {
@@ -55,7 +65,6 @@ class NoteView(noteModel: Model): StackPane() {
                 if (e.code == KeyCode.SPACE) {
                     noteModel.activeNote.value?.addToUndoStack(TextChange.INSERT)
                 }
-                println("activeNoteData: ${noteModel.activeNote.value?.getHTML()}")
             }
         }
 

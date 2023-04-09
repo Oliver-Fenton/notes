@@ -6,6 +6,7 @@ import javafx.beans.property.SimpleBooleanProperty
 import javafx.beans.property.SimpleObjectProperty
 import javafx.collections.FXCollections
 import javafx.collections.ObservableList
+import notes.shared.Constants
 import notes.shared.database.PreferenceDatabase
 import notes.shared.preferences.Preferences
 import notes.shared.preferences.Theme
@@ -77,7 +78,6 @@ class Model {
 
     fun deleteNote() {
         activeNote.value?.let {
-            println("Deleting active note titled '${it.title}'")
             var curIndex = notes.indexOf( it.value )
             if ( curIndex > 0 ) curIndex -= 1
             notes.remove( it )
@@ -86,8 +86,25 @@ class Model {
             else {
                 activeNote.value?.clearTitleAndDateHTMLEditor()
                 setActiveNote( null )
-                // activeNote.value?.clearTitleAndDateHTMLEditor()
-                // no active notes left, so clear the title and date visible on htmleditor
+                Constants.notesArea.isDisable = true
+
+                val htmlEditorTheme = if (Constants.theme == "light") Constants.LightHTMLEditorColor else Constants.DarkHTMLEditorColor
+                // Update html background color
+                Constants.notesArea.htmlText = "<html dir=\"ltr\"><head></head><body contenteditable=\"true\"></body></html>\n"
+                val beginningStyleIndex = Constants.notesArea.htmlText.indexOf("<body style=")
+                val endingStyleIndex = Constants.notesArea.htmlText.indexOf("contenteditable=")
+
+                if (beginningStyleIndex == -1) { // no style set yet
+                    var bodyTagIndex = Constants.notesArea.htmlText.indexOf("<body")
+                    var beginningSubstring = Constants.notesArea.htmlText.substring(0, bodyTagIndex + 5)
+                    var endingSubstring = Constants.notesArea.htmlText.substring(bodyTagIndex + 5)
+                    Constants.notesArea.htmlText = "$beginningSubstring style=\"background-color: $htmlEditorTheme;\" $endingSubstring"
+                }
+                else { // has style already
+                    var beginningSubstring = Constants.notesArea.htmlText.substring(0, beginningStyleIndex + 12)
+                    var endingSubstring = Constants.notesArea.htmlText.substring(endingStyleIndex)
+                    Constants.notesArea.htmlText = "$beginningSubstring\"background-color: $htmlEditorTheme;\" $endingSubstring"
+                }
             }
         }
     }
@@ -134,29 +151,7 @@ class Model {
         }
     }
 
-
-    fun sortAlpha(reverseOrder: Boolean) {
-        println("Sort Alphabetically")
-        var sortedNotes = notes.sortedWith(compareBy{ it.getText() })
-        if (reverseOrder) {
-            sortedNotes = sortedNotes.reversed()
-        }
-        notes.clear()
-
-        sortedNotes.forEach {element ->
-            if (element.isPinned) {
-                notes.add(element)
-            }
-        }
-        sortedNotes.forEach {element ->
-            if (!element.isPinned) {
-                notes.add(element)
-            }
-        }
-    }
-
     fun sortDate(reverseOrder: Boolean) {
-        println("Sort Date")
         var sortedNotes = notes.sortedWith(compareBy{ it.getDateCreated()})
         if (reverseOrder) {
             sortedNotes = sortedNotes.reversed()
@@ -196,7 +191,6 @@ class Model {
     }
 
     fun sortAlphaTitle(reverseOrder: Boolean) {
-        println("Sort Note Title")
         var sortedNotes = notes.sortedWith(compareBy{ it.getNoteTitle()})
         if (reverseOrder) {
             sortedNotes = sortedNotes.reversed()

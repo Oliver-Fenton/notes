@@ -39,14 +39,12 @@ class Menubar(val noteModel: Model, val noteView: NoteView, val noteList: NoteLi
 
         // TODO: ADD FUNCTIONALITY WHEN POSSIBLE
         newNote.setOnAction {
-            println("User Created New Note")
             noteModel.createNote()
             //var newNote = NoteTemplate("")
             // data.listOfNotes.add(newNote)
             // data.preview.add("New Note")
         }
         deleteNote.setOnAction {
-            println("User Deleted Active Note")
             noteModel.deleteNote()
         }
         //newFolder.setOnAction {  }
@@ -65,7 +63,6 @@ class Menubar(val noteModel: Model, val noteView: NoteView, val noteList: NoteLi
             if (pasteButton is Button) {
                 pasteButton.fire()
                 noteModel.activeNote.value?.setNoteBody(Constants.notesArea.htmlText)
-                println("activeNoteDataPaste: ${noteModel.activeNote.value?.getHTML()}")
             }
         }
         cut.setOnAction {
@@ -73,7 +70,6 @@ class Menubar(val noteModel: Model, val noteView: NoteView, val noteList: NoteLi
             if (cutButton is Button) {
                 cutButton.fire()
                 noteModel.activeNote.value?.setNoteBody(Constants.notesArea.htmlText)
-                println("activeNoteDataCut: ${noteModel.activeNote.value?.getHTML()}")
             }
         }
         copy.setOnAction {
@@ -122,10 +118,28 @@ class Menubar(val noteModel: Model, val noteView: NoteView, val noteList: NoteLi
         noteList.apply {
             style = "-fx-background-color: ${Constants.DarkNoteListBackgroundColor};" // change to be theme background color
         }
-        val newHtml = noteModel.activeNote.value?.changeBodyBackgroundColor(Constants.DarkHTMLEditorColor)
-        if (newHtml != null) {
-            noteModel.activeNote.value?.changeNoteBody(newHtml)
-            noteView.setTextArea(newHtml)
+        if (noteModel.activeNote.value != null) {
+            val newHtml = noteModel.activeNote.value?.changeBodyBackgroundColor(Constants.DarkHTMLEditorColor)
+            if (newHtml != null) {
+                noteModel.activeNote.value?.changeNoteBody(newHtml)
+                noteView.setTextArea(newHtml)
+            }
+        }
+        else {
+            val beginningStyleIndex = Constants.notesArea.htmlText.indexOf("<body style=")
+            val endingStyleIndex = Constants.notesArea.htmlText.indexOf("contenteditable=")
+
+            if (beginningStyleIndex == -1) { // no style set yet
+                var bodyTagIndex = Constants.notesArea.htmlText.indexOf("<body")
+                var beginningSubstring = Constants.notesArea.htmlText.substring(0, bodyTagIndex + 5)
+                var endingSubstring = Constants.notesArea.htmlText.substring(bodyTagIndex + 5)
+                Constants.notesArea.htmlText = "$beginningSubstring style=\"background-color: ${Constants.DarkHTMLEditorColor};\" $endingSubstring"
+            }
+            else { // has style already
+                var beginningSubstring = Constants.notesArea.htmlText.substring(0, beginningStyleIndex + 12)
+                var endingSubstring = Constants.notesArea.htmlText.substring(endingStyleIndex)
+                Constants.notesArea.htmlText = "$beginningSubstring\"background-color: ${Constants.DarkHTMLEditorColor};\" $endingSubstring"
+            }
         }
 
         val toolBar2: ToolBar = Constants.notesArea.lookup(".bottom-toolbar") as ToolBar
@@ -170,11 +184,30 @@ class Menubar(val noteModel: Model, val noteView: NoteView, val noteList: NoteLi
         noteList.apply {
             style = "-fx-background-color: ${Constants.LightNoteListBackgroundColor};" // change to be theme background color
         }
-        val newHtml = noteModel.activeNote.value?.changeBodyBackgroundColor(Constants.LightHTMLEditorColor)
-        if (newHtml != null) {
-            noteModel.activeNote.value?.changeNoteBody(newHtml)
-            noteView.setTextArea(newHtml)
+        if (noteModel.activeNote.value != null) {
+            val newHtml = noteModel.activeNote.value?.changeBodyBackgroundColor(Constants.LightHTMLEditorColor)
+            if (newHtml != null) {
+                noteModel.activeNote.value?.changeNoteBody(newHtml)
+                noteView.setTextArea(newHtml)
+            }
         }
+        else {
+            val beginningStyleIndex = Constants.notesArea.htmlText.indexOf("<body style=")
+            val endingStyleIndex = Constants.notesArea.htmlText.indexOf("contenteditable=")
+
+            if (beginningStyleIndex == -1) { // no style set yet
+                var bodyTagIndex = Constants.notesArea.htmlText.indexOf("<body")
+                var beginningSubstring = Constants.notesArea.htmlText.substring(0, bodyTagIndex + 5)
+                var endingSubstring = Constants.notesArea.htmlText.substring(bodyTagIndex + 5)
+                Constants.notesArea.htmlText = "$beginningSubstring style=\"background-color: ${Constants.LightHTMLEditorColor};\" $endingSubstring"
+            }
+            else { // has style already
+                var beginningSubstring = Constants.notesArea.htmlText.substring(0, beginningStyleIndex + 12)
+                var endingSubstring = Constants.notesArea.htmlText.substring(endingStyleIndex)
+                Constants.notesArea.htmlText = "$beginningSubstring\"background-color: ${Constants.LightHTMLEditorColor};\" $endingSubstring"
+            }
+        }
+
 
         val toolBar2: ToolBar = Constants.notesArea.lookup(".bottom-toolbar") as ToolBar
         toolBar2.apply {
