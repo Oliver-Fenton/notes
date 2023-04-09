@@ -65,6 +65,7 @@ class NoteView(noteModel: Model): StackPane() {
                 if (e.code == KeyCode.SPACE) {
                     noteModel.activeNote.value?.addToUndoStack(TextChange.INSERT)
                 }
+                noteModel.sort()
             }
         }
 

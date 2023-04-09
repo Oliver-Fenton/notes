@@ -40,11 +40,15 @@ class SortMenu(noteModel: Model, noteList: NoteList): Menu("Sort") {
     }
 
     fun whichSort(noteModel: Model) {
+        noteModel.isSortAscending = !this.reverseOrder
         if (sortAlphaTitle.isSelected) {
+            noteModel.sorting = "title"
             noteModel.sortAlphaTitle(this.reverseOrder)
         } else if (sortDateCreated.isSelected) {
+            noteModel.sorting = "dateCreated"
             noteModel.sortDate(this.reverseOrder)
         } else if (sortDateEdited.isSelected) {
+            noteModel.sorting = "dateEdited"
             noteModel.sortDateEdited(this.reverseOrder)
         }
     }

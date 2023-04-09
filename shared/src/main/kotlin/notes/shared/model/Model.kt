@@ -20,7 +20,8 @@ class Model {
     val activeNote = SimpleObjectProperty<NoteData?>(null)
     val prepNote = SimpleObjectProperty<NoteData?>(null)
     var notes: ObservableList<NoteData> = FXCollections.observableArrayList()
-    var allTags: Array<String> = arrayOf<String>()
+    var sorting: String = "dateCreated"
+    var isSortAscending: Boolean = true
 
     private var idCounter: Int = 0
 
@@ -95,14 +96,14 @@ class Model {
                 val endingStyleIndex = Constants.notesArea.htmlText.indexOf("contenteditable=")
 
                 if (beginningStyleIndex == -1) { // no style set yet
-                    var bodyTagIndex = Constants.notesArea.htmlText.indexOf("<body")
-                    var beginningSubstring = Constants.notesArea.htmlText.substring(0, bodyTagIndex + 5)
-                    var endingSubstring = Constants.notesArea.htmlText.substring(bodyTagIndex + 5)
+                    val bodyTagIndex = Constants.notesArea.htmlText.indexOf("<body")
+                    val beginningSubstring = Constants.notesArea.htmlText.substring(0, bodyTagIndex + 5)
+                    val endingSubstring = Constants.notesArea.htmlText.substring(bodyTagIndex + 5)
                     Constants.notesArea.htmlText = "$beginningSubstring style=\"background-color: $htmlEditorTheme;\" $endingSubstring"
                 }
                 else { // has style already
-                    var beginningSubstring = Constants.notesArea.htmlText.substring(0, beginningStyleIndex + 12)
-                    var endingSubstring = Constants.notesArea.htmlText.substring(endingStyleIndex)
+                    val beginningSubstring = Constants.notesArea.htmlText.substring(0, beginningStyleIndex + 12)
+                    val endingSubstring = Constants.notesArea.htmlText.substring(endingStyleIndex)
                     Constants.notesArea.htmlText = "$beginningSubstring\"background-color: $htmlEditorTheme;\" $endingSubstring"
                 }
             }
@@ -209,14 +210,16 @@ class Model {
         }
     }
 
-    fun trimTags(currTag: String) {
-        for (n in notes) {
-            if (!n.getDisplay()) {
-                continue
-            }else if (this.allTags.contains(currTag)) {
-                n.doDisplay()
-            } else {
-                n.notDisplay()
+    fun sort() {
+        when (sorting) {
+            "dateCreated" -> {
+                sortDate(!isSortAscending)
+            }
+            "dateEdited" -> {
+                sortDateEdited(!isSortAscending)
+            }
+            "title" -> {
+                sortAlphaTitle(!isSortAscending)
             }
         }
     }

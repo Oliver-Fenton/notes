@@ -48,7 +48,7 @@ class View(private val noteModel: Model): BorderPane() {
 
     private val noteList = ScrollPane(searchListVBox).apply {
         isFitToWidth = true
-        minWidth = 250.0
+        minWidth = 225.0
         maxWidth = 500.0
     }
 
@@ -108,44 +108,45 @@ class View(private val noteModel: Model): BorderPane() {
         Constants.notesArea.lookup(".html-editor-cut").addEventHandler(MouseEvent.MOUSE_CLICKED) {
             noteModel.activeNote.value?.addToUndoStack(TextChange.DELETE)
             noteModel.activeNote.value?.setNoteBody(Constants.notesArea.htmlText)
+            noteModel.sort()
         }
         nodesToKeepTop.add(Constants.notesArea.lookup(".html-editor-copy"))
         nodesToKeepTop.add(Constants.notesArea.lookup(".html-editor-paste"))
         Constants.notesArea.lookup(".html-editor-paste").addEventHandler(MouseEvent.MOUSE_CLICKED) {
             noteModel.activeNote.value?.addToUndoStack(TextChange.INSERT)
             noteModel.activeNote.value?.setNoteBody(Constants.notesArea.htmlText)
+            noteModel.sort()
         }
-//        nodesToKeepTop.add(editor.lookup(".html-editor-numbers"))
         nodesToKeepTop.add(Constants.notesArea.lookup(".html-editor-bullets"))
         Constants.notesArea.lookup(".html-editor-bullets").addEventHandler(MouseEvent.MOUSE_CLICKED) {
             noteModel.activeNote.value?.addToUndoStack(TextChange.LIST)
             noteModel.activeNote.value?.setNoteBody(Constants.notesArea.htmlText)
+            noteModel.sort()
         }
         nodesToKeepTop.add(Constants.notesArea.lookup(".html-editor-foreground"))
         Constants.notesArea.lookup(".html-editor-foreground").addEventHandler(MouseEvent.MOUSE_CLICKED) {
             noteModel.activeNote.value?.addToUndoStack(TextChange.COLOR)
             noteModel.activeNote.value?.setNoteBody(Constants.notesArea.htmlText)
+            noteModel.sort()
         }
-//        nodesToKeepTop.add(editor.lookup(".html-editor-background"))
-
-//        nodesToKeepBottom.add(editor.lookup(".font-menu-button"))
-        nodesToKeepTop.add(Constants.notesArea.lookup(".font-menu-button"))
-        nodesToKeepBottom.add(Constants.notesArea.lookup(".font-menu-button"))
 
         nodesToKeepBottom.add(Constants.notesArea.lookup(".html-editor-bold"))
         Constants.notesArea.lookup(".html-editor-bold").addEventHandler(MouseEvent.MOUSE_CLICKED) {
             noteModel.activeNote.value?.addToUndoStack(TextChange.BOLD)
             noteModel.activeNote.value?.setNoteBody(Constants.notesArea.htmlText)
+            noteModel.sort()
         }
         nodesToKeepBottom.add(Constants.notesArea.lookup(".html-editor-italic"))
         Constants.notesArea.lookup(".html-editor-italic").addEventHandler(MouseEvent.MOUSE_CLICKED) {
             noteModel.activeNote.value?.addToUndoStack(TextChange.ITALICIZE)
             noteModel.activeNote.value?.setNoteBody(Constants.notesArea.htmlText)
+            noteModel.sort()
         }
         nodesToKeepBottom.add(Constants.notesArea.lookup(".html-editor-underline"))
         Constants.notesArea.lookup(".html-editor-underline").addEventHandler(MouseEvent.MOUSE_CLICKED) {
             noteModel.activeNote.value?.addToUndoStack(TextChange.UNDERLINE)
             noteModel.activeNote.value?.setNoteBody(Constants.notesArea.htmlText)
+            noteModel.sort()
         }
 
         toolBar1.items.removeIf { n: Node? -> !nodesToKeepTop.contains(n) }
@@ -158,14 +159,10 @@ class View(private val noteModel: Model): BorderPane() {
         toolBar1.items.addAll(toCopy)
 
         val date = Label(noteModel.activeNote.value?.getDateEdited()).apply {
-            // minWidth = Label.USE_PREF_SIZE
-            //minWidth = toolBar2.width
              alignment = Pos.CENTER
         }
 
         val title = TextField(noteModel.activeNote.value?.getNoteTitle()).apply {
-        // minWidth = Label.USE_PREF_SIZE
-        //minWidth = toolBar2.width
             alignment = Pos.CENTER
             promptText = "New Note"
         }
@@ -178,6 +175,7 @@ class View(private val noteModel: Model): BorderPane() {
                 } else {
                     noteModel.activeNote.value?.setNoteTitle(title.text)
                     date.text = noteModel.activeNote.value?.getDateEdited()
+                    noteModel.sort()
                 }
             }
             else {
@@ -242,10 +240,12 @@ class View(private val noteModel: Model): BorderPane() {
         Constants.notesArea.addEventFilter(KeyEvent.KEY_RELEASED) { event ->
             if (event.isMetaDown && KeyCode.Z == event.code) {
                 Constants.notesArea.htmlText = noteModel.activeNote.value?.undo()
+                noteModel.sort()
                 event.consume()
             }
             else if (event.isMetaDown && KeyCode.R == event.code) {
                 Constants.notesArea.htmlText = noteModel.activeNote.value?.redo()
+                noteModel.sort()
                 event.consume()
             }
             else if (event.code == KeyCode.BACK_SPACE || event.code == KeyCode.DELETE) {
