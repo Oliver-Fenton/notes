@@ -40,7 +40,7 @@ class ModelTest {
         println("actual: ${noteFromJson.toJson()}")
     }
 
-    //@Disabled
+    @Disabled
     @Test
     fun getNotesFromWebService() {
         val model = Model()
