@@ -9,7 +9,7 @@ plugins {
 }
 
 group = "notes"
-version = "1.2.0"
+version = "1.0"
 
 val compileKotlin: KotlinCompile by tasks
 val compileJava: JavaCompile by tasks
