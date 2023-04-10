@@ -32,7 +32,7 @@ Run the executable inside the releases folder
 * Filter By Tag: in search bar type ‘#’ before first tag and for multiple tags separate them with ‘;’ (e.g. search "#abc; #def")
 * Pin/Unpin Note: right click on note and click pin/unpin
 
-## Release Notes v0.4 - April 10th, 2023
+## Release Notes v1.0 - April 10th, 2023
 * Web service Docker setup
 * Pin notes to top of notes list/Unpin notes
 * Filter by tags (single and multiple tags) - tags are filtered on an "OR" basis
