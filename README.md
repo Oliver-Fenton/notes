@@ -22,7 +22,7 @@ Follow these steps to start the web service before running the application.
 `docker run -dp 8080:8080 --mount type=volume,src=web-service-db,target=/database obfenton/cs346:latest`
 
 ### Start the application
-Run the executable inside the distribution folder
+Run the executable inside the releases folder
 
 ## Additional Features
 * Light/Dark Themes
