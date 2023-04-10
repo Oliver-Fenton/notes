@@ -29,7 +29,7 @@ Run the executable inside the distribution folder
 * Pinned Notes
 
 ## Feature Instructions
-* Filter By Tag: in search bar type ‘#’ before first tag and for multiple tags separate them with ‘;’ (e.g. #abc; #def)
+* Filter By Tag: in search bar type ‘#’ before first tag and for multiple tags separate them with ‘;’ (e.g. search "#abc; #def")
 * Pin/Unpin Note: right click on note and click pin/unpin
 
 ## Release Notes v0.4 - April 10th, 2023
