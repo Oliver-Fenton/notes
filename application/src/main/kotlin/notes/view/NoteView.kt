@@ -38,25 +38,25 @@ class NoteView(noteModel: Model): StackPane() {
         }
 
         Constants.notesArea.setOnKeyReleased { e ->
-            if (e.code == KeyCode.COMMAND) {
-                Constants.notesArea.isDisable = false
-                e.consume()
-                return@setOnKeyReleased
-            }
-            if (e.isMetaDown && e.code == KeyCode.D) {
-                Constants.notesArea.isDisable = false
-                e.consume()
-                return@setOnKeyReleased
-            }
-            val toolBar2: ToolBar = Constants.notesArea.lookup(".bottom-toolbar") as ToolBar
-            val title = toolBar2.lookup(".text-field") as TextField
-            if (noteModel.notes.size == 0 && title.text == "") {
-                val currentNotesAreaHtml = Constants.notesArea.htmlText
-                noteModel.createNote()
-                noteModel.activeNote.value?.setNoteBody(currentNotesAreaHtml)
-                setTextArea(currentNotesAreaHtml)
-            }
-            else {
+//            if (e.code == KeyCode.COMMAND) {
+//                Constants.notesArea.isDisable = false
+//                e.consume()
+//                return@setOnKeyReleased
+//            }
+//            if (e.isMetaDown && e.code == KeyCode.D) {
+//                Constants.notesArea.isDisable = false
+//                e.consume()
+//                return@setOnKeyReleased
+//            }
+//            val toolBar2: ToolBar = Constants.notesArea.lookup(".bottom-toolbar") as ToolBar
+//            val title = toolBar2.lookup(".text-field") as TextField
+//            if (noteModel.notes.size == 0 && title.text == "") {
+//                val currentNotesAreaHtml = Constants.notesArea.htmlText
+//                noteModel.createNote()
+//                noteModel.activeNote.value?.setNoteBody(currentNotesAreaHtml)
+//                setTextArea(currentNotesAreaHtml)
+//            }
+//            else {
                 if (e.code.isLetterKey || e.code == KeyCode.SPACE || e.code.isDigitKey) {
                     noteModel.activeNote.value?.emptyRedo()
                     noteModel.activeNote.value?.addToUndoStack(TextChange.INSERT, e.code)
@@ -66,7 +66,7 @@ class NoteView(noteModel: Model): StackPane() {
                     noteModel.activeNote.value?.addToUndoStack(TextChange.INSERT)
                 }
                 noteModel.sort()
-            }
+//            }
         }
 
         children.add(Constants.notesArea)

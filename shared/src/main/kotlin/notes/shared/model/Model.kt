@@ -70,6 +70,7 @@ class Model {
         idCounter++
         val newNote = NoteData(idCounter, title ?: "New Note #$idCounter")
         newNote.addToUndoStack(TextChange.INSERT)
+        Constants.notesArea.isDisable = false
         notes.add( newNote )
         setActiveNote( newNote )
 

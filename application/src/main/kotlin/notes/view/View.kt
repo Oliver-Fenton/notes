@@ -61,7 +61,10 @@ class View(private val noteModel: Model): BorderPane() {
         center = splitView
 
         // select most recent note
-        if (noteModel.notes.isNotEmpty()) noteModel.setActiveNote(noteModel.notes.last())
+        if (noteModel.notes.isNotEmpty()) {
+            noteModel.setActiveNote(noteModel.notes.last())
+        }
+        Constants.notesArea.isDisable = noteModel.notes.isEmpty()
 
         noteModel.isSplitView.addListener { _, _, newValue ->
             if (newValue) { // split view
@@ -178,9 +181,9 @@ class View(private val noteModel: Model): BorderPane() {
                     noteModel.sort()
                 }
             }
-            else {
-                noteModel.createNote(newValue)
-            }
+//            else {
+//                noteModel.createNote(newValue)
+//            }
         }
 
         toolBar2.isVisible = true // everything from toolBar2 in now in toolBar1
